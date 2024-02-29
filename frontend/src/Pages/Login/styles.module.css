@@ -1,0 +1,67 @@
+.formPadding {
+  padding: 50px !important;
+}
+
+.google {
+  width: 20px;
+  height: 20px;
+}
+
+.leftAlignText {
+  text-align: left;
+}
+
+.loginContainer {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.honeycombContainer {
+  min-height: 60vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.signInButton {
+  background-color: #162d3a !important;
+  border-color: #162d3a !important;
+  color: #ffffff !important;
+}
+
+.forgotPasswordButton {
+  color: #1e4ae9;
+  font-size: 14px;
+}
+
+.cardNoBorder {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.smallButton {
+  padding: 5px 10px !important;
+  font-size: 0.7rem !important;
+}
+
+.smallInput {
+  padding: 5px !important;
+  font-size: 0.7rem !important;
+}
+
+.smallFont {
+  font-size: 0.7rem !important;
+}
+
+.error_msg {
+  width: 450px;
+  padding: 15px;
+  margin: 5px 0;
+  font-size: 14px;
+  background-color: #f34646;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+}

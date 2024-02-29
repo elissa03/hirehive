@@ -30,16 +30,15 @@ const CvSchema = new mongoose.Schema({
     
     email: {
         type: String,
-        required: true,
-        unique: true
+        required: true, 
     },
     
     education: [{
         school: { type: String, required: true },
         degree: { type: String, required: true },
         fieldOfStudy: { type: String, required: true },
-        startDate: { type: Date, required: true },
-        endDate: { type: Date },
+        startDate: { type: String, required: true }, // format: Month Year
+        endDate: { type: String, default: "Present" },
         description: { type: String }
     }],
     

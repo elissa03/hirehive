@@ -4,11 +4,12 @@ dotenv.config();
 import connectDB from "./database/db.js";
 import { UserRouter } from "./routes/user.js";
 import { AuthRouter } from "./routes/auth.js";
+import { CvRouter } from "./routes/CV.js";
 const app = express();
 connectDB(); // Connect to Database
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import cors from "cors"
+import cors from "cors";
 
 const port = process.env.PORT;
 
@@ -24,6 +25,7 @@ app.use(cors({ origin: "*" }));
 //routes
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
+app.use("/cvs/", CvRouter)
 
 
 // npm run dev --to run

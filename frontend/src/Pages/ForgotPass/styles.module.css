@@ -1,0 +1,49 @@
+/* ForgotPass.module.css */
+.container {
+}
+
+.card {
+  border-color: #ffeb3b; /* a light yellow border, akin to honey */
+  /* background-color: rgba(
+    255,
+    235,
+    59,
+    0.9
+  ); a semi-transparent yellow background */
+  background-color: white;
+}
+
+.title {
+  color: #3e2723; /* a dark brown color for text, reminiscent of bee stripes */
+}
+
+.label {
+  color: #1b1b1b; /* black color for labels */
+}
+
+.btnSubmit {
+  background-color: #ffca28; /* a yellow button, similar to a bee */
+  border-color: #ffa000; /* a darker yellow border */
+  color: #1b1b1b; /* black text on the button */
+}
+
+.btnSubmit:hover {
+  background-color: #ffb300; /* a darker yellow for hover */
+  border-color: #ff6f00; /* a honey orange border for hover */
+}
+
+.backgroundAfter {
+  position: relative;
+}
+
+.backgroundAfter::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("/path-to-honeycomb-pattern.png") repeat;
+  opacity: 0.2; /* Adjust the opacity to not overpower the content */
+  z-index: -1; /* Adjust the opacity to not overpower the content */
+}

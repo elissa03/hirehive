@@ -97,9 +97,9 @@ const getCv = async (cvId, data) => {
             return { status: 404, message: 'Requested user does not exist!' }; 
         }
 
-        if (!user.cvIds || !cv._id in user.cvIds) {
+        if (!user.cvIds || !user.cvIds.map(id => id.toString()).includes(cvId)) {
             return { status: 403, message: 'Forbidden: CV does not correspond to user!' }; 
-        }
+        }   
 
         console.log('success ' + JSON.stringify(cv));
         
@@ -113,7 +113,57 @@ const getCv = async (cvId, data) => {
     }
 };
 
+/**
+ * The request expects userId in req.body, and cvId as param, makes sure the requested CV is existent,
+ * the user exists, and whether he/she has permission to delete this CV
+ * @param {*} cvId : from req.params
+ * @param {*} data : req.body
+ * @returns 
+ */
+const deleteCv = async (cvId, data) => {
+
+    try {  
+        
+        if (!data.userId) {
+            return { status: 400, message: 'The field userId is missing from req body' }; 
+        }
+
+        const cv =  await CV.findById(cvId);
+        
+        if (!cv) {
+            return { status: 404, message: 'CV not found!' }; 
+        }
+         
+        const user = await User.findById(data.userId);
+
+        if (!user) {
+            return { status: 404, message: 'Requested user does not exist!' }; 
+        }
+
+        if (!user.cvIds || !user.cvIds.map(id => id.toString()).includes(cvId)) {
+            return { status: 403, message: 'Forbidden: CV does not correspond to user!' }; 
+        }        
+        
+        await CV.deleteOne({ _id: cvId });
+
+        await User.updateOne(
+            { _id: user._id }, 
+            { $pull: { cvIds: cvId } } 
+        );
+          
+
+        return { status: 200, message: "CV deleted successfully."};
+
+    } catch (error) {
+
+        console.log(error);
+        return { status: 500, message: "Internal error" };
+
+    }
+};
+
 export { 
     createCv,
-    getCv
+    getCv, 
+    deleteCv
 };

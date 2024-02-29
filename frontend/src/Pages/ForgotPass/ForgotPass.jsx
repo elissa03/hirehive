@@ -5,7 +5,7 @@ import authService from "../../services/authService";
 import { ToastContainer, toast } from "react-toastify";
 
 
-// TODO: fix design & display errors
+// TODO: fix design 
 
 
 function ForgotPass() {

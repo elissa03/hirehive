@@ -4,14 +4,14 @@ dotenv.config();
 import connectDB from "./database/db.js";
 import { UserRouter } from "./routes/user.js";
 import { AuthRouter } from "./routes/auth.js";
+import { FirebaseRouter } from "./routes/firebase.js";
 const app = express();
-connectDB(); // Connect to Database
+connectDB(); // connect to database
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import cors from "cors"
+import cors from "cors";
 
 const port = process.env.PORT;
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -24,7 +24,7 @@ app.use(cors({ origin: "*" }));
 //routes
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
-
+app.use("/firebase", FirebaseRouter);
 
 // npm run dev --to run
 app.listen(port, () => {

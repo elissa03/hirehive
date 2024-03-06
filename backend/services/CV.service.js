@@ -162,8 +162,39 @@ const deleteCv = async (cvId, data) => {
     }
 };
 
+const getAllCvs = async(userId) => {
+    try {  
+         
+        const user =  await User.findById(userId); 
+
+        if (!user) {
+            return { status: 404, message: 'Requested user does not exist!' }; 
+        }
+
+        const cvIds = user.cvIds;
+        let cvObjs = {};
+
+        const cvPromises = cvIds.map(cvId => CV.findById(cvId)); 
+
+        const cvs = await Promise.all(cvPromises); 
+
+        cvs.forEach(cv => {
+            cvObjs[cv.id] = cv; 
+        });        
+
+        return { status: 200, cvs: cvObjs};
+
+    } catch (error) {
+
+        console.log(error);
+        return { status: 500, message: "Internal error" };
+
+    }
+}
+
 export { 
     createCv,
     getCv, 
-    deleteCv
+    deleteCv,
+    getAllCvs
 };

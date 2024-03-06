@@ -1,4 +1,4 @@
-import { createCv, getCv, deleteCv, getAllCvs } from "../services/CV.service.js";
+import { createCv, getCv, deleteCv, getAllCvs, updateCv } from "../services/CV.service.js";
 
 const createCvController = async (req, res) => {
     try {
@@ -37,6 +37,18 @@ const deleteCvController = async(req, res) => {
     }
 }
 
+const updateCvController = async(req, res) => {
+    try {
+        const result = await updateCv(req.params.cvId, req.body);
+
+        return res.status(result.status).json({ message: result.message });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 const getAllCvsController = async (req, res) => {
     try {
         const result = await getAllCvs(req.params.userId);
@@ -56,5 +68,6 @@ export {
     createCvController,
     getCvController,
     deleteCvController,
-    getAllCvsController
+    getAllCvsController,
+    updateCvController
 };

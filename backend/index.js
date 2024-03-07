@@ -5,6 +5,7 @@ import connectDB from "./database/db.js";
 import { UserRouter } from "./routes/user.js";
 import { AuthRouter } from "./routes/auth.js";
 import { FirebaseRouter } from "./routes/firebase.js";
+import { CvRouter } from "./routes/CV.js";
 const app = express();
 connectDB(); // connect to database
 import bodyParser from "body-parser";
@@ -25,6 +26,8 @@ app.use(cors({ origin: "*" }));
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
 app.use("/firebase", FirebaseRouter);
+app.use("/cvs/", CvRouter)
+
 
 // npm run dev --to run
 app.listen(port, () => {

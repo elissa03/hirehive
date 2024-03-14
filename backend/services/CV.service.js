@@ -184,7 +184,7 @@ const getAllCvs = async(userId) => {
         const cvs = await Promise.all(cvPromises); 
 
         cvs.forEach(cv => {
-            cvObjs[cv.id] = cv; 
+            cvObjs[cv._id] = cv; 
         });        
 
         return { status: 200, cvs: cvObjs};

@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   JobApps: [{ type: Schema.Types.ObjectId, ref: 'JobApp'}],
-  cvIds: [{ type: Schema.Types.ObjectId, ref: 'CV', default: []}]
+  cvIds: [{ type: Schema.Types.ObjectId, ref: 'CV', default: [] }],
+  jobs: [{ type: Schema.Types.ObjectId, ref: 'Job', default: [] }]
 });
 
 const UserModel = mongoose.model("User", UserSchema);

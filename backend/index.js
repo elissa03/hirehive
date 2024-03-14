@@ -5,6 +5,7 @@ import connectDB from "./database/db.js";
 import { UserRouter } from "./routes/user.js";
 import { AuthRouter } from "./routes/auth.js";
 import { CvRouter } from "./routes/CV.js";
+import { JobRouter } from "./routes/job.js";
 const app = express();
 connectDB(); // Connect to Database
 import bodyParser from "body-parser";
@@ -25,7 +26,9 @@ app.use(cors({ origin: "*" }));
 //routes
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter);
-app.use("/cvs/", CvRouter)
+app.use("/cvs/", CvRouter);
+app.use("/jobs/", JobRouter);
+
 
 
 // npm run dev --to run

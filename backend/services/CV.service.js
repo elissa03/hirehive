@@ -53,7 +53,9 @@ const createCv = async (data) => {
         if (missingField) {
             return { status: 400, message: `The ${missingField} field is required in education section.` };
         }
- 
+        
+        data['user'] = userId;
+
         const newCv =  new CV({...data});
 
         await newCv.save();
@@ -97,10 +99,6 @@ const getCv = async (cvId, data) => {
             return { status: 404, message: 'Requested user does not exist!' }; 
         }
 
-        if (!user.cvIds || !user.cvIds.map(id => id.toString()).includes(cvId)) {
-            return { status: 403, message: 'Forbidden: CV does not correspond to user!' }; 
-        }   
-
         console.log('success ' + JSON.stringify(cv));
         
         return { status: 200, cv};
@@ -140,7 +138,7 @@ const deleteCv = async (cvId, data) => {
             return { status: 404, message: 'Requested user does not exist!' }; 
         }
 
-        if (!user.cvIds || !user.cvIds.map(id => id.toString()).includes(cvId)) {
+        if (data.userId !== cv.user) {
             return { status: 403, message: 'Forbidden: CV does not correspond to user!' }; 
         }        
         
@@ -186,7 +184,7 @@ const getAllCvs = async(userId) => {
         const cvs = await Promise.all(cvPromises); 
 
         cvs.forEach(cv => {
-            cvObjs[cv.id] = cv; 
+            cvObjs[cv._id] = cv; 
         });        
 
         return { status: 200, cvs: cvObjs};
@@ -227,7 +225,7 @@ const updateCv = async (cvId, data) => {
             return { status: 404, message: 'Requested user does not exist!' }; 
         }
 
-        if (!user.cvIds || !user.cvIds.map(id => id.toString()).includes(cvId)) {
+        if (data.userId !== cv.user) {
             return { status: 403, message: 'Forbidden: CV does not correspond to user!' }; 
         }        
 

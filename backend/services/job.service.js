@@ -39,13 +39,7 @@ const createJob = async (data) => {
 
         const requiredFields = ['title', 'description', 'requirements'];
 
-        let missingField = null;
-
-        requiredFields.forEach(field => {
-            if (!data[field]) {  
-                missingField = field;
-            }
-        });
+        let missingField = requiredFields.find(field => (!data[field] || data[field].length === 0));
 
         if (missingField) {
             
@@ -54,8 +48,8 @@ const createJob = async (data) => {
         }  
 
         if ('deadline' in data) {
-            if (data.deadline) { 
-                if (!isvalidDate(data.deadline)) 
+            if (data['deadline']) { 
+                if (!isvalidDate(data['deadline'])) 
                 return { status: 400, message: "The deadline is not a valid date." };
             }
             else {
@@ -184,7 +178,10 @@ const deleteJob = async (jobId, data) => {
             return { status: 404, message: 'Requested user does not exist!' }; 
         }
 
-        if (data.userId !== job.postedBy) {
+        console.log(`userId ${data.userId}`);
+        console.log(`postedBy ${job.postedBy}`);
+
+        if (data.userId !== job.postedBy.toString()) {
             return { status: 403, message: 'Forbidden: Job does not correspond to user!' }; 
         }        
         
@@ -234,7 +231,7 @@ const updateJob = async (jobId, data) => {
             return { status: 404, message: 'Requested user does not exist!' }; 
         }
 
-        if (data.userId !== job.postedBy) {
+        if (data.userId !== job.postedBy.toString()) {
             return { status: 403, message: 'Forbidden: Job does not correspond to user!' }; 
         }        
 

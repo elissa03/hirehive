@@ -56,3 +56,6 @@
   font-weight: bold;
 }
 
+.navLink:hover {
+  cursor: pointer;
+}

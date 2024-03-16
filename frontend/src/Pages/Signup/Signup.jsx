@@ -20,27 +20,6 @@ function Signup() {
   const navigate = useNavigate();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  useEffect(() => {
-    const loadGoogleScript = () => {
-      const script = document.createElement("script");
-      script.src = "https://accounts.google.com/gsi/client";
-      script.onload = () => initGoogleSignIn();
-      document.body.appendChild(script);
-    };
-
-    const initGoogleSignIn = () => {
-      window.google.accounts.id.initialize({
-        client_id:
-          "552189366871-65676mpr7eue0adi8aj5j236v8k0ve6p.apps.googleusercontent.com",
-        callback: handleGoogleSignUp,
-      });
-    };
-    loadGoogleScript();
-  }, []);
-
-   const handleGoogleSignUp = async(response) => {
-    const token = response.credential;
-   };
 
   const handleSignup = async () => {
     setError("");
@@ -224,7 +203,6 @@ function Signup() {
               <button
                 type="button"
                 className={`btn btn-light border w-100 mb-3 ${styles.smallButton}`}
-                onClick={() => window.google.accounts.id.prompt()}
               >
                 <img
                   src={googleIcon}

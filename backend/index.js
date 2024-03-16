@@ -30,7 +30,6 @@ app.use("/user", UserRouter);
 app.use("/firebase", FirebaseRouter);
 app.use("/cvs/", CvRouter);
 app.use("/google", GoogleRouter);
-app.use("/cvs/", CvRouter) 
 app.use("/jobs/", JobRouter); 
 
 

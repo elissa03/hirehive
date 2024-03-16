@@ -18,11 +18,9 @@ function ForgotPass() {
     try {
       if (!email) {
         setError("Please input your email");
-        //console.log("Please input your email");
         return;
       }
       if (!emailRegex.test(email)) {
-        //console.log("Please enter a valid email address.");
         setError("Please enter a valid email address.");
         return;
       }
@@ -45,7 +43,6 @@ function ForgotPass() {
       ) {
         setError(error.response.data.message);
       }
-      //console.log(error);
     }
   };
 

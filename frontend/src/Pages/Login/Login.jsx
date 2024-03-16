@@ -9,7 +9,6 @@ import authService from "../../services/authService";
 import localStorageUtils from "../../utils/localStorageUtils";
 import { useNavigate } from "react-router-dom";
 
-
 // TODO: implement sign in with google
 
 function Login({ onLogin }) {
@@ -51,7 +50,7 @@ function Login({ onLogin }) {
             // ensure onLogin and navigation occur after the toast
             onLogin();
             reset(); //clear the form fields
-            navigate("/home");
+            navigate("/dashboard");
           },
         });
       }

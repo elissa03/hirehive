@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+:root {
+  --font-family-poppins: "Poppins", sans-serif;
+  --sidebar-background-color: #f8f9fa; 
+  --sidebar-text-color: #333; 
+  --sidebar-menu-title-color: #555; 
+  --sidebar-active-color: rgba(254, 234, 0, 0.5);
+  --sidebar-font-size: 0.7rem; 
+  --sidebar-menu-title-font-size: 0.85rem;
+}
+
+.brand {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.labels {
+  color: grey;
+  margin-top: 20px;
+  margin-left: 20px;
+  font-size: 0.8rem;
+}
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background-color: var(--sidebar-background-color);
+  font-family: var(--font-family-poppins);
+  color: var(--sidebar-text-color);
+  font-size: var(--sidebar-font-size);
+}
+
+.navItem {
+  margin-bottom: 10px;
+}
+
+.navLink {
+  color: var(--sidebar-text-color);
+  transition: background-color 0.3s;
+}
+
+.navLink:hover,
+.navLink.active {
+  background-color: var(--sidebar-active-color);
+  color: #000;
+}
+
+.icon {
+  margin-right: 0.5rem;
+}
+
+.active {
+  font-weight: bold;
+}
+
+.navLink:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,29 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  flex: 0 0 250px;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 50px;
+  overflow-y: auto;
+}
+
+.burgerIcon {
+  position: absolute;
+  top: 25px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.burgerIcon:hover {
+  cursor: pointer;
+}

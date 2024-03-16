@@ -7,6 +7,7 @@ import { AuthRouter } from "./routes/auth.js";
 import { FirebaseRouter } from "./routes/firebase.js";
 import { CvRouter } from "./routes/CV.js";
 import { JobRouter } from "./routes/job.js";
+import { GoogleRouter } from "./routes/google.js";
 const app = express();
 connectDB(); // connect to database
 import bodyParser from "body-parser";
@@ -27,6 +28,8 @@ app.use(cors({ origin: "*" }));
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter); 
 app.use("/firebase", FirebaseRouter);
+app.use("/cvs/", CvRouter);
+app.use("/google", GoogleRouter);
 app.use("/cvs/", CvRouter) 
 app.use("/jobs/", JobRouter); 
 

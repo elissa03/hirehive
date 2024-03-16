@@ -19,8 +19,18 @@ const getToken = () => {
   return parsedUser.token;
 };
 
+const isUserLoggedIn = () => {
+  const user = getLocalStorageUser();
+  if (!user || !user.token) 
+    return false;
+
+  return true;
+};
+
+
 export default {
   getLocalStorageUser,
   setLocalStorageUser,
   getToken,
+  isUserLoggedIn
 };

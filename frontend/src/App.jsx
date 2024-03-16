@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Route, Routes, BrowserRouter, useNavigate } from "react-router-dom";
 import ForgotPass from "./Pages/ForgotPass/ForgotPass";
 import Home from "./Pages/Home/Home";
@@ -9,9 +9,13 @@ import localStorageUtils from "./utils/localStorageUtils";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorageUtils.isUserLoggedIn());
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setIsLoggedIn(localStorageUtils.isUserLoggedIn());
+  }, []);
+ 
   const handleLogin = () => {
     setIsLoggedIn(true);
   };

@@ -270,47 +270,38 @@ const updateJob = async (jobId, data) => {
     }
 };
 
-// /**
-//  * The request expects userId in req.body, makes sure the user is existent, 
-//  * and gets the jobs excluding the ones created by the person
-//  * 
-//  * @param {*} data : req.body 
-//  * @returns {jobId1: jobData1, ...}
-//  */
-// const getAllJobs = async(data) => {
-//     try {  
+/**
+ * The request expects userId in req.body, makes sure the user is existent, 
+ * and gets the jobs excluding the ones created by the person
+ * 
+ * @param {*} data : req.body 
+ * @returns {jobId1: jobData1, ...}
+ */
+const getAllJobs = async(data) => {
+    try {  
          
-//         if (!data.userId) {
-//             return { status: 400, message: 'The field userId is missing from req body' }; 
-//         }
+        if (!data.userId) {
+            return { status: 400, message: 'The field userId is missing from req body' }; 
+        }
 
-//         const userId = data.userId;
-//         const user = await User.findById(userId); 
+        const userId = data.userId;
+        const user = await User.findById(userId); 
 
-//         if (!user) {
-//             return { status: 404, message: 'Requested user does not exist!' }; 
-//         }
+        if (!user) {
+            return { status: 404, message: 'Requested user does not exist!' }; 
+        }
 
-//         const jobIds = user.jobs;
-//         let jobObjs = {};
+        const jobs = await Job.find({ postedBy: { $ne: userId } })
+ 
+        return { status: 200, jobs };
 
-//         const jobPromises = jobIds.map(jobId => Job.findById(jobId)); 
+    } catch (error) {
 
-//         const jobs = await Promise.all(jobPromises); 
+        console.log(error);
+        return { status: 500, message: "Internal error" };
 
-//         jobs.forEach(job => {
-//             jobObjs[job._id] = job; 
-//         });        
-
-//         return { status: 200, jobs: jobObjs};
-
-//     } catch (error) {
-
-//         console.log(error);
-//         return { status: 500, message: "Internal error" };
-
-//     }
-// }
+    }
+}
 
 
 
@@ -319,5 +310,6 @@ export {
     getJobDetails,
     getMyJobs,
     deleteJob,
-    updateJob
+    updateJob,
+    getAllJobs
 };

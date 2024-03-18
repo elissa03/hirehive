@@ -20,7 +20,7 @@ function isvalidDate(date) {
  * 
  * This request expects the following data upon creating a job offer:
  * 'userId': to add new Job to user model & postedBy in Job,
- * 'title', 'description', 'requirements': [], 'deadline' (optional): Job details 
+ * 'title', 'description', 'requirements': [], 'deadline' (optional), 'isCoverLetterNeeded' (optional): Job details 
  * 
  * @param {*} data: req body 
  * @returns : status and message of creation
@@ -37,7 +37,7 @@ const createJob = async (data) => {
         const userId = data.userId;
         delete data.userId;
 
-        const requiredFields = ['title', 'description', 'requirements'];
+        const requiredFields = ['title', 'description', 'requirements', 'type'];
 
         let missingField = requiredFields.find(field => (!data[field] || data[field].length === 0));
 

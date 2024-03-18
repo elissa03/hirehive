@@ -7,6 +7,7 @@ import { AuthRouter } from "./routes/auth.js";
 import { FirebaseRouter } from "./routes/firebase.js";
 import { CvRouter } from "./routes/CV.js";
 import { JobRouter } from "./routes/job.js";
+import { JobAppRouter } from "./routes/jobApp.js";
 const app = express();
 connectDB(); // connect to database
 import bodyParser from "body-parser";
@@ -29,7 +30,7 @@ app.use("/user", UserRouter);
 app.use("/firebase", FirebaseRouter);
 app.use("/cvs/", CvRouter) 
 app.use("/jobs/", JobRouter); 
-
+app.use("/jobApps/", JobAppRouter);
 
 // npm run dev --to run
 app.listen(port, () => {

@@ -14,18 +14,18 @@ const JobAppSchema = new mongoose.Schema({
         required: true
     },
 
-    user: { 
+    userId: { 
         type: Schema.Types.ObjectId, 
         ref: 'User' 
     },
 
-    CV: { 
+    cvId: { 
         type: Schema.Types.ObjectId,
         ref: 'CV',
         required: true
     },
 
-    job: { 
+    jobId: { 
         type: Schema.Types.ObjectId, 
         ref: 'Job' 
     },
@@ -40,8 +40,10 @@ const JobAppSchema = new mongoose.Schema({
         default: false 
     },
 
+    // Unchecked or Under Review
     status: {
         type: String,
+        default: "Unchecked"
 
     },
 

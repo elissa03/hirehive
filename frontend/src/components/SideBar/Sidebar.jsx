@@ -11,6 +11,7 @@ import {
   faUser,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import logo from "../../../public/images/plain-logo.png";
 
 function Sidebar({ handleLogout, setActiveComponent }) {
   const [active, setActive] = useState("dashboard");
@@ -25,8 +26,10 @@ function Sidebar({ handleLogout, setActiveComponent }) {
       <p
         className={`d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none ${styles.brand}`}
       >
+        <img src={logo} alt="Logo" style={{ height: "32px" }} />
         HireHive
       </p>
+
       <hr />
       <p className={styles.labels}>MENU</p>
       <ul className="nav nav-pills flex-column mb-auto">

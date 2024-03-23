@@ -10,15 +10,22 @@ import {
   faCog,
   faUser,
   faSignOutAlt,
+  faCaretDown,
+  faCaretRight,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../../public/images/plain-logo.png";
 
 function Sidebar({ handleLogout, setActiveComponent }) {
   const [active, setActive] = useState("dashboard");
+  const [jobsDropdownOpen, setJobsDropdownOpen] = useState(false);
 
   const handleSetActive = (name) => {
     setActive(name);
     setActiveComponent(name);
+  };
+
+  const toggleJobsDropdown = () => {
+    setJobsDropdownOpen(!jobsDropdownOpen);
   };
 
   return (
@@ -58,14 +65,39 @@ function Sidebar({ handleLogout, setActiveComponent }) {
         </li>
         <li className="nav-item">
           <a
-            onClick={() => handleSetActive("jobs")}
-            className={`nav-link ${active === "jobs" ? styles.active : ""} ${
-              styles.navLink
-            }`}
+            onClick={toggleJobsDropdown}
+            className={`nav-link ${
+              active === "jobs" || active === "exploreJobs" ? styles.active : ""
+            } ${styles.navLink}`}
             aria-current="page"
           >
             <FontAwesomeIcon icon={faBriefcase} className={styles.icon} /> Jobs
+            <FontAwesomeIcon
+              icon={jobsDropdownOpen ? faCaretDown : faCaretRight}
+              className={` ${styles.icon} ${styles.dropdownIcon}`}
+            />{" "}
+            {/* Dropdown icon */}
           </a>
+          {jobsDropdownOpen && (
+            <ul className={`ps-4 ${styles.dropdown}`}>
+              <li>
+                <a
+                  onClick={() => handleSetActive("myjobs")}
+                  className={`nav-link ${styles.navLinkDropdown}`}
+                >
+                  My Jobs
+                </a>
+              </li>
+              <li>
+                <a
+                  onClick={() => handleSetActive("explorejobs")}
+                  className={`nav-link ${styles.navLinkDropdown}`}
+                >
+                  Explore Jobs
+                </a>
+              </li>
+            </ul>
+          )}
         </li>
         <li className="nav-item">
           <a

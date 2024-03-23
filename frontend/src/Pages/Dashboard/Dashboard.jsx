@@ -4,7 +4,8 @@ import MainDash from "../../components/MainDash/MainDash";
 import Account from "../../components/Account/Account";
 import Applications from "../../components/Applications/Applications";
 import CVs from "../../components/CVs/CVs";
-import Jobs from "../../components/Jobs/Jobs";
+import MyJobs from "../../components/MyJobs/MyJobs";
+import ExploreJobs from "../../components/ExploreJobs/ExploreJobs";
 import Settings from "../../components/Settings/Settings";
 import styles from "./styles.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,8 +28,11 @@ function Dashboard({ handleLogout }) {
       case "cvs":
         return <CVs />;
 
-      case "jobs":
-        return <Jobs />;
+      case "myjobs":
+        return <MyJobs />;
+
+      case "explorejobs":
+        return <ExploreJobs />;
 
       case "applications":
         return <Applications />;

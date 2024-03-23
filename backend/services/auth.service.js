@@ -96,7 +96,7 @@ const resetPass = async (data) => {
     const id = decoded.id;
 
     const hashedPassword = await bcrypt.hash(password, 8);
-    await User.findByIdAndUpdate({_id: id}, {password: hashedPassword});
+    await User.findByIdAndUpdate({ _id: id }, { password: hashedPassword });
     return { status: 200, message: "Password has been reset successfully" };
   } catch (error) {
     console.log(error);

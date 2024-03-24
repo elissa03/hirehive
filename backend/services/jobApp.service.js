@@ -1,4 +1,4 @@
-import { JobApp } from "../models/Job.js";
+import { JobApp } from "../models/JobApp.js";
 import { Job } from "../models/Job.js";
 import { CV } from "../models/CV.js";
 import { User } from "../models/User.js";
@@ -11,6 +11,7 @@ function getCurrentDate() {
 
     return dateToStore;
 }
+
 
 /**
  * 
@@ -88,10 +89,229 @@ const createJobApp = async (jobId, data) => {
 };
 
 
+/**
+ * The request expects userId in req.body, and jobAppId as param, makes sure the requested jobApp is existent,
+ * the user exists, and whether he/she has permission to delete this jobApp (only the applicants can revoke 
+ * their applications)
+ * @param {*} jobAppId : from req.params
+ * @param {*} data : req.body
+ * @returns 
+ */
+const deleteJobApp = async (jobAppId, data) => {
 
+    try {  
+        
+        if (!data.userId) {
+            return { status: 400, message: 'The field userId is missing from req body' }; 
+        }
+
+        const jobApp =  await JobApp.findById(jobAppId); 
+        
+        if (!jobApp) {
+            return { status: 404, message: 'Job App not found!' }; 
+        }
+            
+        const user = await User.findById(data.userId);
+
+        if (!user) {
+            return { status: 404, message: 'Requested user does not exist!' }; 
+        }
+
+        if (data.userId !== jobApp.userId.toString()) {
+            return { status: 403, message: 'Forbidden: Job App does not correspond to user!' }; 
+        }        
+        
+        await JobApp.deleteOne({ _id: jobAppId });
+
+        await User.updateOne(
+            { _id: user._id }, 
+            { $pull: { jobApps: jobAppId } } 
+        );
+
+        await CV.updateCOne(
+            { _id: jobApp.cvId }, 
+            { $pull: { jobApps: jobAppId } } 
+        );
+        
+        return { status: 200, message: "Job App deleted successfully."};
+
+    } catch (error) {
+
+        console.log(error);
+        return { status: 500, message: "Internal error" };
+
+    }
+};
+
+
+/**
+ * The request expects userId in req.body, and jobId as param, makes sure the requested 
+ * job is existent, the user exists, and whether he/she has permission to shortlist 
+ * this application.
+ * @param {*} jobAppId : from req.params
+ * @param {*} data : req.body: {userID: ...}
+ * @returns 
+ */
+const shortlistJobApp = async (jobAppId, data) => {
+
+    try {  
+        
+        if (!data.userId) {
+            return { status: 400, message: 'The field userId is missing from req body' }; 
+        }
+
+        const jobApp =  await JobApp.findById(jobAppId);
+        
+        if (!jobApp) {
+            return { status: 404, message: 'Job App not found!' }; 
+        }
+            
+        const user = await User.findById(data.userId);
+
+        if (!user) {
+            return { status: 404, message: 'Requested user does not exist!' }; 
+        }
+
+        const job = await Job.findById(jobApp.jobId);
+        const hirer = job.postedBy; 
+        
+        if (data.userId !== hirer) {
+            return { status: 403, message: 'Forbidden: Only hirer can view job App!' }; 
+        }        
+        
+        await JobApp.findByIdAndUpdate(jobAppId, {'isShortListed': true }, { new: true });         
+
+        return { status: 200, message: "JobApp shortlisted successfully."};
+
+    } catch (error) {
+
+        console.log(error);
+        return { status: 500, message: "Internal error" };
+
+    }
+};
+
+/**
+ * The request expects userId in req.body, and jobAppId, makes sure the requested job is existent,
+ * the user exists
+ * @param {*} jobAppId : from req.params
+ * @param {*} data : req.body
+ * @returns 
+ */
+const getJobAppDetails = async (jobAppId, data) => {
+
+    try {  
+        
+        if (!data.userId) {
+            return { status: 400, message: 'The field userId is missing from req body' }; 
+        }
+
+        const jobApp =  await JobApp.findById(jobAppId);
+        
+        if (!jobApp) {
+            return { status: 404, message: 'Job App not found!' }; 
+        }
+         
+        const user = await User.findById(data.userId);
+
+        if (!user) {
+            return { status: 404, message: 'Requested user does not exist!' }; 
+        }
+
+        const job = await Job.findById(jobApp.jobId);
+        const hirer = job.postedBy; 
+        
+        if (data.userId !== hirer) {
+            return { status: 403, message: 'Forbidden: Only hirer can view Job App!' }; 
+        }   
+
+        console.log('success ' + JSON.stringify(jobApp));
+        
+        return { status: 200, jobApp};
+
+    } catch (error) {
+
+        console.log(error);
+        return { status: 500, message: "Internal error" };
+
+    }
+};
+
+// /**
+//  * The request expects userId in req.body, makes sure the user is existent, 
+//  * and gets the jobs excluding the ones created by the person
+//  * 
+//  * @param {*} data : req.body 
+//  * @returns {jobId1: jobData1, ...}
+//  */
+// const getAllJobs = async(data) => {
+//     try {  
+         
+//         if (!data.userId) {
+//             return { status: 400, message: 'The field userId is missing from req body' }; 
+//         }
+
+//         const userId = data.userId;
+//         const user = await User.findById(userId); 
+
+//         if (!user) {
+//             return { status: 404, message: 'Requested user does not exist!' }; 
+//         }
+
+//         const jobs = await Job.find({ postedBy: { $ne: userId } })
+ 
+//         return { status: 200, jobs };
+
+//     } catch (error) {
+
+//         console.log(error);
+//         return { status: 500, message: "Internal error" };
+
+//     }
+// }
+
+// /**
+//  * The request expects userId in req.body, makes sure the user is existent, 
+//  * and gets the jobs created by the person
+//  * 
+//  * @param {*} userId : Id of user from params 
+//  * @returns {jobId1: jobData1, ...}
+//  */
+// const getMyJobs = async(userId) => {
+//     try {  
+           
+//         const user = await User.findById(userId); 
+
+//         if (!user) {
+//             return { status: 404, message: 'Requested user does not exist!' }; 
+//         }
+
+//         const jobIds = user.jobs;
+//         let jobObjs = {};
+
+//         const jobPromises = jobIds.map(jobId => Job.findById(jobId)); 
+
+//         const jobs = await Promise.all(jobPromises); 
+
+//         jobs.forEach(job => {
+//             jobObjs[job._id] = job; 
+//         });        
+
+//         return { status: 200, jobs: jobObjs};
+
+//     } catch (error) {
+
+//         console.log(error);
+//         return { status: 500, message: "Internal error" };
+
+//     }
+// }
 
 
 
 export { 
     createJobApp,  
+    deleteJobApp,
+    shortlistJobApp,
+    getJobAppDetails,
 };

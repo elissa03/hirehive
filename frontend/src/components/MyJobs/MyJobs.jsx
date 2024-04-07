@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import jobService from "../../services/jobService";
 import localStorageUtils from "../../utils/localStorageUtils";
+import JobUploadModal from "./JobUpload/JobUploadModal";
+import JobCards from "./JobCards/JobCards";
+import styles from "./styles.module.css"
+import { FaPlus } from "react-icons/fa";
 
 function MyJobs() {
   const [jobs, setJobs] = useState([]);
-  const [error, setError] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -12,19 +16,44 @@ function MyJobs() {
         const user = localStorageUtils.getLocalStorageUser();
         const userId = user._id;
         if (!userId) {
-          setError("User ID is not available.");
+          console.log("User ID is not available.");
           return;
         }
 
         const response = await jobService.getMyJobs(userId);
-        console.log(response);
+        const jobsArray = Object.values(response.data);
+        setJobs(jobsArray);
+       
       } catch (error) {
         console.error("There was an error fetching the jobs:", error);
       }
     };
     fetchJobs();
   }, []);
-  return <div>MyJobs</div>;
+
+  
+
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+
+  return (
+    <div>
+      <h2>My Jobs</h2>
+      {jobs.length > 0 ? (
+        <JobCards jobs={jobs} />
+      ) : (
+        <p>You have not posted any jobs.</p>
+      )}
+
+      <div className="d-flex justify-content-center col-12 mb-4">
+        <button className={`btn fab ${styles.bottomRightButton}`}>
+          <FaPlus />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default MyJobs;

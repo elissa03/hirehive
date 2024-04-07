@@ -28,7 +28,7 @@ app.use("/auth", AuthRouter);
 app.use("/user", UserRouter); 
 app.use("/firebase", FirebaseRouter);
 app.use("/cvs/", CvRouter) 
-app.use("/jobs/", JobRouter); 
+app.use("/jobs", JobRouter); 
 
 
 // npm run dev --to run

@@ -197,6 +197,8 @@ const deleteJob = async (jobId, data) => {
  * @returns
  */
 const updateJob = async (jobId, data) => {
+  // console.log(jobId);
+  // console.log(data);
   try {
     if (!data.userId) {
       return {

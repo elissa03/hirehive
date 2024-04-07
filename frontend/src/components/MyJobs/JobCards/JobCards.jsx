@@ -30,11 +30,15 @@ function JobCards({ jobs }) {
   const toggleEditMode = (jobId) => {
     if (editModeJobId === jobId) {
       setEditModeJobId(null);
-      setEditedJob({});
+      setEditedJob({});  
     } else {
+      const jobToEdit = jobs.find((job) => job._id === jobId); 
+      const jobDataForEditing = {
+        ...jobToEdit,
+        deadline: jobToEdit.deadline ? jobToEdit.deadline.slice(0, 10) : '', // Ensure deadline is in 'yyyy-mm-dd'
+      };
       setEditModeJobId(jobId);
-      const jobToEdit = jobs.find((job) => job._id === jobId);
-      setEditedJob({ ...jobToEdit });
+      setEditedJob(jobDataForEditing);
     }
   };
 
@@ -143,6 +147,14 @@ function JobCards({ jobs }) {
               >
                 <FaPlus /> Add Requirement
               </button>
+              <div>
+                <label>Deadline:</label>
+                <input
+                  type="date"
+                  value={editedJob.deadline || ''}
+                  onChange={(e) => handleChange(e, "deadline")}
+                />
+              </div>
             </>
           ) : (
             <>

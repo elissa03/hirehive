@@ -29,8 +29,13 @@ async function isHirer(jobId, userId) {
 }
 
 function calculateMatchingPercentage(jobSkills, applicantSkills) {
-    const totalSkills = jobSkills.length;
-    let matchingSkills = 0;
+    const totalSkills = jobSkills.length; 
+
+    // if no skills required auto 100% match
+    if (totalSkills === 0)
+        return 100;
+
+    let matchingSkills = 0; 
 
     for (const skill of jobSkills) {
         if (applicantSkills.includes(skill)) {
@@ -38,18 +43,19 @@ function calculateMatchingPercentage(jobSkills, applicantSkills) {
         }
     }
 
+    console.log('matching ', matchingSkills);
     return (matchingSkills / totalSkills) * 100;
 }
 
-function findTopMatchingApplicants(job, applicants, threshold=10) {
+async function findTopMatchingApplicants(job, applicants, threshold=10) {
 
     const matchingApplicants = []; 
 
     for (const applicant of applicants) {
 
-        const cv = CV.findById(applicant.cvId);
+        const cv = await CV.findById(applicant.cvId); 
 
-        const matchingPercentage = calculateMatchingPercentage(job.requirements, cv.skills);
+        const matchingPercentage = Math.round(calculateMatchingPercentage(job.requirements, cv.skills));
         
         if (matchingPercentage >= threshold) {
 
@@ -82,8 +88,8 @@ async function getAppsForJob(jobId, data) {
     if (!job) {
         return { status: 404, message: 'Requested job does not exist!' }; 
     }
-
-    if (!jobId in user.jobs) {
+    
+    if (userId !== job.postedBy.toString()) {
         return { status: 403, message: 'Forbidden: Only hirer can request Job Apps!' }; 
     }
 

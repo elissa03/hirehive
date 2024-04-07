@@ -231,7 +231,7 @@ const getJobAppDetails = async (jobAppId, data) => {
  * and gets the jobs excluding the ones created by the person
  * @param
  * @param {*} data : req.body 
- * @returns {jobAppId1: jobAppData1, ...}
+ * @returns { status, jobApps: [{jobApp1, jobApp2, ...}]}
  */
 const getJobApps = async(jobId, data) => {
     try {  
@@ -241,23 +241,8 @@ const getJobApps = async(jobId, data) => {
         if (result.status === 200) {
 
             const jobApps = result.jobApps;
-
-            const transformedJobApps = jobApps.reduce((acc, jobApp) => {
-
-                // convert Mongoose document to a plain JavaScript object
-                const jobAppObj = jobApp.toObject();
-                
-                // extract _id and rest of the properties
-                const { _id, ...rest } = jobAppObj;
-            
-                // use _id as key, rest of the data as value
-                acc[_id.toString()] = rest;
-            
-                return acc;
-
-            }, {});
      
-            return { status: 200, jobApps: transformedJobApps };
+            return { status: 200, jobApps };
         }
 
         return result;        
@@ -286,7 +271,7 @@ const getMatchingJobApps = async(jobId, data) => {
 
             const job = await Job.findById(jobId);
 
-            const matching = findTopMatchingApplicants(job, result.jobApps, threshold=10);
+            const matching = await findTopMatchingApplicants(job, result.jobApps, 10);
 
             return {status: 200, jobApps: matching};
         }
@@ -300,7 +285,6 @@ const getMatchingJobApps = async(jobId, data) => {
 
     }
 }
-
 
 
 export { 

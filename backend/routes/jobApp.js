@@ -9,7 +9,7 @@ router.post("/apply/:jobId", authenticateToken, createJobAppController);
 router.delete("/:jobAppId", authenticateToken, deleteJobAppController);
 router.put("/:jobAppId", authenticateToken, shortlistJobAppController); 
 router.get("/:jobAppId", authenticateToken, getJobAppDetailsController); 
-router.get("/getAllApplicants/:jobId", getApplicantsController);
-router.get("/getMatchingApplicants/:jobId", getMatchingJobAppsController);
+router.get("/getAllApplicants/:jobId", authenticateToken, getApplicantsController);
+router.get("/getMatchingApplicants/:jobId", authenticateToken, getMatchingJobAppsController);
 
 export { router as JobAppRouter };

@@ -1,4 +1,4 @@
-import { createJobApp, deleteJobApp, shortlistJobApp, getJobAppDetails } from "../services/jobApp.service.js";
+import { createJobApp, deleteJobApp, shortlistJobApp, getJobAppDetails, getJobApps, getMatchingJobApps } from "../services/jobApp.service.js";
  
 const createJobAppController = async (req, res) => {
     try {
@@ -50,12 +50,12 @@ const getJobAppDetailsController = async (req, res) => {
     }
 };
 
-const getMyJobsController = async (req, res) => {
+const getApplicantsController = async (req, res) => {
     try {
-        const result = await getMyJobs(req.params.userId);
+        const result = await getJobApps(req.params.jobId, req.body);
 
         if (result.status === 200) 
-            return res.status(200).json(result.jobs);
+            return res.status(200).json(result.jobApps);
 
         return res.status(result.status).json({ message: result.message });
 
@@ -65,12 +65,12 @@ const getMyJobsController = async (req, res) => {
     }
 };
 
-const getAllJobsController = async (req, res) => {
+const getMatchingJobAppsController = async (req, res) => {
     try {
-        const result = await getAllJobs(req.body);
+        const result = await getMatchingJobApps(req.params.jobId, req.body);
 
         if (result.status === 200) 
-            return res.status(200).json(result.jobs);
+            return res.status(200).json(result.jobApps);
 
         return res.status(result.status).json({ message: result.message });
 
@@ -79,12 +79,13 @@ const getAllJobsController = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
-
 
 
 export { 
     createJobAppController,  
     deleteJobAppController,
     shortlistJobAppController,
-    getJobAppDetailsController
+    getJobAppDetailsController,
+    getApplicantsController,
+    getMatchingJobAppsController
 };

@@ -13,6 +13,12 @@ const JobSchema = new mongoose.Schema({
         required: true
     },
 
+    // Internship, Part-time, Full-time, Project
+    type: {
+        type: String,
+        required: true
+    },
+
     requirements: {
         type: [String],
         required: true
@@ -26,6 +32,11 @@ const JobSchema = new mongoose.Schema({
     deadline: {
         type: Date,
         default: null,
+    },
+
+    isCoverLetterNeeded: {
+        type: Boolean,
+        default: false
     }
 
 }, {timestamps: true});

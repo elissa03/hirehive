@@ -1,72 +1,64 @@
 import { Job } from "../models/Job.js";
 import { User } from "../models/User.js";
-
-/**
- * Mediator function to ensure our date is valid
- * @param {*} date: string
- * @returns true or false
- */
-function isvalidDate(date) {
-  const deadlineDate = new Date(date);
-  if (isNaN(deadlineDate.getTime())) {
-    return false;
-  }
-
-  return true;
-}
+import { isValidDate } from "./utils/utils.js";
 
 /**
  *
  * This request expects the following data upon creating a job offer:
  * 'userId': to add new Job to user model & postedBy in Job,
- * 'title', 'description', 'requirements': [], 'deadline' (optional): Job details
- *
- * @param {*} data: req body
+ * 'title', 'description', 'requirements': [], 'deadline' (optional), 'isCoverLetterNeeded' (optional): Job details 
+ * 
+ * @param {*} data: req body 
  * @returns : status and message of creation
  */
-const createJob = async (data) => {
+const createJob = async (data) => { 
   try {
-    console.log("data " + JSON.stringify(data));
+      console.log("data " + JSON.stringify(data));
 
-    if (!data.userId) {
-      return { status: 400, message: `The userId is required.` };
-    }
-
-    const userId = data.userId;
-    delete data.userId;
-
-    const requiredFields = ["title", "description", "requirements"];
-
-    let missingField = requiredFields.find(
-      (field) => !data[field] || data[field].length === 0
-    );
-
-    if (missingField) {
-      return { status: 400, message: `The ${missingField} field is required.` };
-    }
-
-    if ("deadline" in data) {
-      if (data["deadline"]) {
-        if (!isvalidDate(data["deadline"]))
-          return { status: 400, message: "The deadline is not a valid date." };
-      } else {
-        delete data["deadline"];
+      if (!data.userId) {
+          return { status: 400, message: `The userId is required.` };
       }
-    }
 
-    data["postedBy"] = userId;
+      const userId = data.userId;
+      delete data.userId;
 
-    const newJob = new Job({ ...data });
+      const requiredFields = ['title', 'description', 'requirements', 'type'];
 
-    await newJob.save();
+      let missingField = requiredFields.find(field => (!data[field] || data[field].length === 0));
 
-    await User.findByIdAndUpdate(userId, { $push: { jobs: newJob._id } });
+      if (missingField) {
+          
+          return { status: 400, message: `The ${missingField} field is required.` };
 
-    return { status: 201, message: "Job created!" };
+      }  
+
+      if ('deadline' in data) {
+          if (data['deadline']) { 
+              if (!isValidDate(data['deadline'])) 
+              return { status: 400, message: "The deadline is not a valid date." };
+          }
+          else {
+              delete data['deadline'];
+          }
+      }
+      
+      data['postedBy'] = userId;
+
+      const newJob =  new Job({...data});
+
+      await newJob.save();
+
+      await User.findByIdAndUpdate(userId, { $push: { jobs: newJob._id } });
+
+      return { status: 201, message: "Job created!" };
+
   } catch (error) {
-    console.log(error);
-    return { status: 500, message: "Internal error" };
+
+      console.log(error);
+      return { status: 500, message: "Internal error" };
+
   }
+     
 };
 
 /**
@@ -197,74 +189,60 @@ const deleteJob = async (jobId, data) => {
  * @returns
  */
 const updateJob = async (jobId, data) => {
-  // console.log(jobId);
-  // console.log(data);
-  try {
-    if (!data.userId) {
-      return {
-        status: 400,
-        message: "The field userId is missing from req body",
-      };
-    }
 
-    const job = await Job.findById(jobId);
-
-    if (!job) {
-      return { status: 404, message: "Job not found!" };
-    }
-
-    const user = await User.findById(data.userId);
-
-    if (!user) {
-      return { status: 404, message: "Requested user does not exist!" };
-    }
-
-    if (data.userId !== job.postedBy.toString()) {
-      return {
-        status: 403,
-        message: "Forbidden: Job does not correspond to user!",
-      };
-    }
-
-    if (
-      !data["newData"] ||
-      typeof data["newData"] !== "object" ||
-      Object.keys(data["newData"]).length === 0
-    ) {
-      return {
-        status: 400,
-        message: "The new data is missing from req body or wrong format!",
-      };
-    }
-
-    const newData = data.newData;
-
-    if ("deadline" in newData) {
-      if (newData.deadline) {
-        if (!isvalidDate(data.deadline))
-          return { status: 400, message: "The deadline is not a valid date." };
+  try {  
+      
+      if (!data.userId) {
+          return { status: 400, message: 'The field userId is missing from req body' }; 
       }
 
-      // if the deadline is empty delete it from data
-      else {
-        delete newData["deadline"];
+      const job =  await Job.findById(jobId);
+      
+      if (!job) {
+          return { status: 404, message: 'Job not found!' }; 
       }
-    }
+        
+      const user = await User.findById(data.userId);
 
-    await Job.updateOne(
-      { _id: jobId },
-      {
-        $set: {
-          ...newData,
-        },
+      if (!user) {
+          return { status: 404, message: 'Requested user does not exist!' }; 
       }
-    );
 
-    return { status: 200, message: "Job updated successfully." };
+      if (data.userId !== job.postedBy.toString()) {
+          return { status: 403, message: 'Forbidden: Job does not correspond to user!' }; 
+      }        
+
+      if (!data['newData'] || typeof data['newData'] !== 'object' || Object.keys(data['newData']).length === 0) {
+          return { status: 400, message: 'The new data is missing from req body or wrong format!' }; 
+      }
+
+      const newData = data.newData;
+
+        if ('deadline' in newData) {
+          if(newData.deadline) {
+              if (!isValidDate(newData.deadline)) 
+              return { status: 400, message: "The deadline is not a valid date." };
+          }
+
+          // if the deadline is empty delete it from data
+          else {
+              delete newData['deadline'];
+          }
+        }
+      
+      await Job.updateOne({ _id: jobId }, {$set: {
+          ...newData
+      }});          
+
+      return { status: 200, message: "Job updated successfully."};
+
   } catch (error) {
-    console.log(error);
-    return { status: 500, message: "Internal error" };
+
+      console.log(error);
+      return { status: 500, message: "Internal error" };
+
   }
+
 };
 
 /**

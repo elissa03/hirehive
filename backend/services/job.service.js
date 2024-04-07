@@ -1,20 +1,6 @@
 import { Job } from "../models/Job.js";
 import { User } from "../models/User.js";
-
-/**
- * Mediator function to ensure our date is valid
- * @param {*} date: string  
- * @returns true or false
- */
-function isvalidDate(date) {
-
-    const deadlineDate = new Date(date);
-    if (isNaN(deadlineDate.getTime())) { 
-        return false;
-    }
-
-    return true;
-}
+import { isValidDate } from "./utils/utils.js";
 
 /**
  * 
@@ -49,7 +35,7 @@ const createJob = async (data) => {
 
         if ('deadline' in data) {
             if (data['deadline']) { 
-                if (!isvalidDate(data['deadline'])) 
+                if (!isValidDate(data['deadline'])) 
                 return { status: 400, message: "The deadline is not a valid date." };
             }
             else {
@@ -243,7 +229,7 @@ const updateJob = async (jobId, data) => {
 
          if ('deadline' in newData) {
             if(newData.deadline) {
-                if (!isvalidDate(data.deadline)) 
+                if (!isValidDate(newData.deadline)) 
                 return { status: 400, message: "The deadline is not a valid date." };
             }
 

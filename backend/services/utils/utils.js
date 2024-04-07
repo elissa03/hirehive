@@ -63,6 +63,7 @@ function findTopMatchingApplicants(job, applicants, threshold=10) {
     return matchingApplicants.sort((a, b) => b.matchingPercentage - a.matchingPercentage);
 }
 
+
 async function getAppsForJob(jobId, data) {
 
     if (!data.userId) {
@@ -91,9 +92,26 @@ async function getAppsForJob(jobId, data) {
     return { status: 200, jobApps};
 }
 
+
+/**
+ * Mediator function to ensure our date is valid
+ * @param {*} date: string  "YYYY-MM-DD"
+ * @returns true or false
+ */
+function isValidDate(date) {
+
+    const deadlineDate = new Date(date);
+    if (isNaN(deadlineDate.getTime())) { 
+        return false;
+    }
+
+    return true;
+}
+
 export {
     getCurrentDate,
     isHirer,
     findTopMatchingApplicants,
-    getAppsForJob
+    getAppsForJob,
+    isValidDate
 }

@@ -1,68 +1,163 @@
 .jobCardsContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; 
-  justify-content: start;
+   gap: 15px; 
   padding: 20px;
 }
 
 .jobCard {
-  position: relative;
-  width: 300px; 
-  border: 1px solid #ccc; 
+  border: 2px solid #ffcc00;
   border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-  background-color: #fff; 
-}
-
-.jobCard h3,
-.jobCard h4 {
-  margin-top: 0;
-}
-
-.jobCard div {
-  margin-top: 10px;
-  font-size: 0.9em; 
-}
-
-.jobCard svg {
-  vertical-align: middle; 
-  margin-right: 5px;
+  padding: 10px;
+  width: 300px;
+  background-color: #f6eabe;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 }
 
-.menuIcon {
-  cursor: pointer;
+.cardHeader h3 {
+  font-size: 1rem; 
+}
+
+.menuContainer {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
 }
 
 .cardMenu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 5px);
   right: 0;
-  background-color: white;
+  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 100;
+  padding: 5px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
 .cardMenu button {
   display: block;
-  background: none;
-  border: none;
-  padding: 5px;
   width: 100%;
+  padding: 6px 10px;
+  font-size: 0.8rem;
   text-align: left;
+  border: none;
+  background-color: transparent;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+label {
+  font-size: 0.8rem;
+  margin-right: 7px;
 }
 
 .cardMenu button:hover {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;
 }
+
+.cardMenu button + button {
+  border-top: 1px solid #ccc;
+}
+
+.editInput,
+textarea,
+select,
+input[type="date"] {
+  padding: 6px;
+  font-size: 0.8rem; 
+  margin-bottom: 10px;
+}
+
+.editInput,
+textarea {
+  background-color: #fff3e0; 
+  border: 1px solid #ffab40; 
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); 
+  padding: 8px;
+  border-radius: 4px; 
+}
+
+select {
+  background-color: #fff3e0;
+  border: 1px solid #ffab40;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+}
+
+input[type="date"] {
+  background-color: #fff3e0;
+  border: 1px solid #ffab40;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button {
+  color: white;
+  padding: 6px 15px;
+  font-size: 0.8rem;
+  margin: 5px 0; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.fa {
+  font-size: 0.8rem; 
+}
+
+.saveButton {
+  background-color: #4caf50; 
+  margin-right: 5px;
+}
+
+.cancelButton {
+  background-color: #f44336; 
+}
+
+.addButton {
+  background-color: #2196f3; 
+}
+
+.minusButton {
+  font-size: 0.75rem; 
+  background-color: #f44336; 
+  font-size: 0.6rem;  
+  height: 30px;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+}
+
+
+.minusButton .fa {
+  font-size: 0.75rem; 
+  vertical-align: middle; 
+}
+
+
+.requirementField {
+  display: flex;
+  align-items: center; 
+  margin-bottom: 10px; 
+  gap: 5px;
+}
+
+.requirementInput {
+  border: 1px solid #ccc; 
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 4px;
+  width: calc(100% - 22px); /* Adjust based on padding and margin if needed */
+  font-size: 14px;
+}
+
+

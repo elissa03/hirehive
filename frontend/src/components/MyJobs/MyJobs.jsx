@@ -8,49 +8,65 @@ import { FaPlus } from "react-icons/fa";
 
 function MyJobs() {
   const [jobs, setJobs] = useState([]);
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+
+  const fetchJobs = async () => {
+    try {
+      const user = localStorageUtils.getLocalStorageUser();
+      const userId = user._id;
+      if (!userId) {
+        console.log("User ID is not available.");
+        return;
+      }
+
+      const response = await jobService.getMyJobs(userId);
+      const jobsArray = Object.values(response.data);
+      setJobs(jobsArray);
+    } catch (error) {
+      console.error("There was an error fetching the jobs:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const user = localStorageUtils.getLocalStorageUser();
-        const userId = user._id;
-        if (!userId) {
-          console.log("User ID is not available.");
-          return;
-        }
-
-        const response = await jobService.getMyJobs(userId);
-        const jobsArray = Object.values(response.data);
-        setJobs(jobsArray);
-       
-      } catch (error) {
-        console.error("There was an error fetching the jobs:", error);
-      }
-    };
     fetchJobs();
   }, []);
 
-  
 
-
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
-
+  const addJob = (newJob) => {
+    setJobs(...jobs, newJob);
+    fetchJobs()
+  }
 
   return (
     <div>
       <h2>My Jobs</h2>
       {jobs.length > 0 ? (
-        <JobCards jobs={jobs} />
+        <JobCards initialJobsData={jobs} />
       ) : (
         <p>You have not posted any jobs.</p>
       )}
 
       <div className="d-flex justify-content-center col-12 mb-4">
-        <button className={`btn fab ${styles.bottomRightButton}`}>
+        <button
+          className={`btn fab ${styles.bottomRightButton}`}
+          onClick={toggleModal}
+        >
           <FaPlus />
         </button>
+        {isModalOpen && (
+          <div className={styles.modalBackdrop}>
+            <JobUploadModal
+              isOpen={isModalOpen}
+              onClose={toggleModal}
+              addJob={addJob}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

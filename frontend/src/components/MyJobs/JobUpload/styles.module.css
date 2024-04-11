@@ -1,27 +1,52 @@
-/* Add this CSS in your main stylesheet or scoped within JobUploadModal if using CSS modules */
-.modal {
+.modalBackground {
   position: fixed;
-  z-index: 1000;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6); /* Darker backdrop to make the modal pop */
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1050;
 }
 
-.modal_content {
-  background-color: #fff;
+.modalContainer {
+  background-color: #fffbee; /* Light bee-yellow background */
   padding: 20px;
   border-radius: 5px;
-  width: 500px; /* Adjust as necessary */
+  border: 2px solid #ffc107; /* Yellow border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
 }
 
-.close {
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+/* Updating button styles to fit the bee theme */
+.btn-primary {
+  background-color: #ffc107; /* Bee-yellow background */
+  border-color: #ffc107;
+}
+
+.btn-primary:hover {
+  background-color: #e0a800;
+  border-color: #d39e00;
+}
+
+.btn-secondary {
+  background-color: #000; /* Black for contrast */
+  border-color: #000;
+}
+
+.btn-secondary:hover {
+  background-color: #444; /* Lighter black on hover */
+  border-color: #444;
+}
+
+.btn-close {
+  filter: invert(1); /* Makes the close button white for better visibility */
+}
+
+.form-control:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
 }

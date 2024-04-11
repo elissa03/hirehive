@@ -12,11 +12,22 @@ const getMyJobs = async (id) => {
   return response;
 };
 
-const deleteJob = async (id) => {
-  const response = await axios.delete(`${API_URL}${id}`, {
+const createJob = async (data) => {
+  const response = await axios.post(`${API_URL}`, data, {
     headers: {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
+  });
+  console.log("here", response);
+  return response;
+};
+
+const deleteJob = async (jobId, data) => {
+  const response = await axios.delete(`${API_URL}${jobId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+    data: data, // pass the data as part of the config object
   });
   return response;
 };
@@ -27,12 +38,13 @@ const updateJob = async (id, data) => {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
   });
-  console.log("here",response)
+  console.log("here", response);
   return response;
 };
 
 export default {
   getMyJobs,
+  createJob,
   deleteJob,
   updateJob,
 };

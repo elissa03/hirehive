@@ -10,181 +10,216 @@ import {
   FaMinus,
 } from "react-icons/fa";
 import styles from "../JobCards/styles.module.css";
-import jobService from "../../../services/jobService"
-import localStorageUtils from "../../../utils/localStorageUtils";
+import {
+  formatDate,
+  toggleMenu,
+  toggleEditMode,
+  handleChange,
+  handleRequirementsChange,
+  addRequirement,
+  removeRequirement,
+  saveChanges,
+  deleteJob,
+} from "./utils.js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function JobCards({ jobs }) {
+function JobCards({ initialJobsData }) {
+  const [jobs, setJobs] = useState(initialJobsData);
   const [activeMenuJobId, setActiveMenuJobId] = useState(null);
   const [editModeJobId, setEditModeJobId] = useState(null);
   const [editedJob, setEditedJob] = useState({});
 
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  const toggleMenu = (jobId) => {
-    setActiveMenuJobId(activeMenuJobId === jobId ? null : jobId);
-  };
-
-  const toggleEditMode = (jobId) => {
-    if (editModeJobId === jobId) {
-      setEditModeJobId(null);
-      setEditedJob({});  
-    } else {
-      const jobToEdit = jobs.find((job) => job._id === jobId); 
-      const jobDataForEditing = {
-        ...jobToEdit,
-        deadline: jobToEdit.deadline ? jobToEdit.deadline.slice(0, 10) : '', // Ensure deadline is in 'yyyy-mm-dd'
-      };
-      setEditModeJobId(jobId);
-      setEditedJob(jobDataForEditing);
-    }
-  };
-
-  const handleChange = (e, field) => {
-    setEditedJob({ ...editedJob, [field]: e.target.value });
-  };
-
-  const handleRequirementsChange = (e, index) => {
-    const newRequirements = [...editedJob.requirements];
-    newRequirements[index] = e.target.value;
-    setEditedJob({ ...editedJob, requirements: newRequirements });
-  };
-
-  const addRequirement = () => {
-    const updatedRequirements = [...editedJob.requirements, ""];
-    setEditedJob({ ...editedJob, requirements: updatedRequirements });
-  };
-
-  const removeRequirement = (index) => {
-    const updatedRequirements = editedJob.requirements.filter(
-      (_, reqIndex) => reqIndex !== index
-    );
-    setEditedJob({ ...editedJob, requirements: updatedRequirements });
-  };
-
-  const saveChanges = async () => {
-    try {
-       const { _id, createdAt, updatedAt, ...updateDetails } = editedJob;
-       const user = localStorageUtils.getLocalStorageUser();
-       const userId = user._id;
-
-        const response = await jobService.updateJob(_id, {
-          newData: updateDetails,
-          userId: userId,
-        });
-
-       if (response.status === 200) {
-         alert("Job updated successfully");
-         const updatedJobs = jobs.map((job) => {
-           if (job._id === _id) {
-             return { ...job, ...updateDetails };
-           }
-           return job;
-         });
-         setJobs(updatedJobs); 
-         toggleEditMode(null);
-       } else {
-         alert(`Failed to update job: ${response.data.message}`);
-       }
-
-    } catch (error) {
-      console.error("Failed to save job details", error);
-    }
-  };
-
   return (
-    <div className={styles.jobCardsContainer}>
-      {jobs.map((job) => (
-        <div key={job._id} className={styles.jobCard}>
-          <div className={styles.cardHeader}>
-            {editModeJobId === job._id ? (
-              <input
-                type="text"
-                value={editedJob.title}
-                onChange={(e) => handleChange(e, "title")}
-                className={styles.editInput}
-              />
-            ) : (
-              <h3>{job.title}</h3>
-            )}
-            <FaEllipsisV
-              className={styles.menuIcon}
-              onClick={() => toggleMenu(job._id)}
-            />
-          </div>
-          {activeMenuJobId === job._id && (
-            <div className={styles.cardMenu}>
-              <button onClick={() => toggleEditMode(job._id)}>Edit</button>
-              <button onClick={() => console.log("Deleting job", job._id)}>
-                Delete
-              </button>
-            </div>
-          )}
-          {editModeJobId === job._id ? (
-            <>
-              <textarea
-                value={editedJob.description}
-                onChange={(e) => handleChange(e, "description")}
-              />
-              {editedJob.requirements.map((requirement, index) => (
-                <div key={index}>
-                  <input
-                    type="text"
-                    value={requirement}
-                    onChange={(e) => handleRequirementsChange(e, index)}
-                  />
-                  <button
-                    onClick={() => removeRequirement(index)}
-                  >
-                    <FaMinus />
-                  </button>
-                </div>
-              ))}
-              <button
-                onClick={addRequirement}
-              >
-                <FaPlus /> Add Requirement
-              </button>
-              <div>
-                <label>Deadline:</label>
+    <>
+      <ToastContainer />
+      <div className={styles.jobCardsContainer}>
+        {jobs.map((job) => (
+          <div key={job._id} className={styles.jobCard}>
+            <div className={styles.cardHeader}>
+              {editModeJobId === job._id ? (
                 <input
-                  type="date"
-                  value={editedJob.deadline || ''}
-                  onChange={(e) => handleChange(e, "deadline")}
+                  type="text"
+                  value={editedJob.title}
+                  onChange={(e) =>
+                    handleChange(e, "title", editedJob, setEditedJob)
+                  }
+                  className={styles.editInput}
                 />
+              ) : (
+                <h3>{job.title}</h3>
+              )}
+              <div className={styles.menuContainer}>
+                <FaEllipsisV
+                  className={styles.menuIcon}
+                  onClick={() =>
+                    toggleMenu(job._id, activeMenuJobId, setActiveMenuJobId)
+                  }
+                />
+                {activeMenuJobId === job._id && (
+                  <div className={styles.cardMenu}>
+                    <button
+                      onClick={() =>
+                        toggleEditMode(
+                          job._id,
+                          editModeJobId,
+                          setEditModeJobId,
+                          setEditedJob,
+                          jobs
+                        )
+                      }
+                    >
+                      Edit
+                    </button>
+                    <button onClick={() => deleteJob(job._id, jobs, setJobs)}>
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
-            </>
-          ) : (
-            <>
-              <h4>
-                <FaRegBuilding /> {job.company}
-              </h4>
-              <p>{job.description}</p>
-              <div>
-                <FaRegListAlt /> Requirements: {job.requirements.join(", ")}
-              </div>
-            </>
-          )}
-          <div>
-            <FaRegClock /> Posted on {formatDate(job.createdAt)}
-          </div>
-          {editModeJobId === job._id && (
-            <div>
-              <button onClick={saveChanges}>
-                <FaSave /> Save
-              </button>
-              <button
-                onClick={() => toggleEditMode(job._id)}
-              >
-                <FaTimes /> Cancel
-              </button>
             </div>
-          )}
-        </div>
-      ))}
-    </div>
+            {editModeJobId === job._id ? (
+              <>
+                <textarea
+                  value={editedJob.description}
+                  onChange={(e) =>
+                    handleChange(e, "description", editedJob, setEditedJob)
+                  }
+                />
+                {editedJob.requirements.map((requirement, index) => (
+                  <div key={index} className={styles.requirementField}>
+                    <input
+                      className={styles.requirementInput}
+                      type="text"
+                      value={requirement}
+                      onChange={(e) =>
+                        handleRequirementsChange(
+                          e,
+                          index,
+                          editedJob,
+                          setEditedJob
+                        )
+                      }
+                    />
+                    <button
+                      className={`${styles.button} ${styles.minusButton}`}
+                      onClick={() =>
+                        removeRequirement(index, editedJob, setEditedJob)
+                      }
+                    >
+                      <FaMinus />
+                    </button>
+                  </div>
+                ))}
+                <button
+                  className={`${styles.button} ${styles.addButton}`}
+                  onClick={() => addRequirement(editedJob, setEditedJob)}
+                >
+                  <FaPlus /> Add Requirement
+                </button>
+                <div>
+                  <label>Job Type:</label>
+                  <select
+                    value={editedJob.type || ""}
+                    onChange={(e) =>
+                      handleChange(e, "type", editedJob, setEditedJob)
+                    }
+                  >
+                    <option value="full-time">Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="contract">Contract</option>
+                    <option value="temporary">Temporary</option>
+                    <option value="internship">Internship</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Deadline:</label>
+                  <input
+                    type="date"
+                    value={editedJob.deadline || ""}
+                    onChange={(e) =>
+                      handleChange(e, "deadline", editedJob, setEditedJob)
+                    }
+                  />
+                </div>
+                <div>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={editedJob.isCoverLetterNeeded || false} // Adjust this line according to how you store this value
+                      onChange={(e) =>
+                        handleChange(
+                          { target: { value: e.target.checked } }, // Make sure the handleChange can handle this structure
+                          "isCoverLetterNeeded",
+                          editedJob,
+                          setEditedJob
+                        )
+                      }
+                    />
+                    Cover letter required
+                  </label>
+                </div>
+              </>
+            ) : (
+              <>
+                <h4>
+                  <FaRegBuilding /> {job.company}
+                </h4>
+                <p>{job.description}</p>
+                <div>
+                  <FaRegListAlt /> Requirements: {job.requirements.join(", ")}
+                </div>
+                <div>
+                  <strong>Type:</strong> {job.type}
+                </div>
+                <div>
+                  <strong>Deadline:</strong> {formatDate(job.deadline)}
+                </div>
+                <div>
+                  <strong>Cover Letter:</strong>{" "}
+                  {job.isCoverLetterNeeded ? "Required" : "Not required"}
+                </div>
+              </>
+            )}
+            <div>
+              <FaRegClock /> Posted on {formatDate(job.createdAt)}
+            </div>
+            {editModeJobId === job._id && (
+              <div>
+                <button
+                  className={`${styles.button} ${styles.saveButton}`}
+                  onClick={() =>
+                    saveChanges(
+                      editedJob,
+                      jobs,
+                      setJobs,
+                      setEditModeJobId,
+                      setEditedJob
+                    )
+                  }
+                >
+                  <FaSave /> Save
+                </button>
+                <button
+                  className={`${styles.button} ${styles.cancelButton}`}
+                  onClick={() =>
+                    toggleEditMode(
+                      job._id,
+                      editModeJobId,
+                      setEditModeJobId,
+                      setEditedJob,
+                      jobs
+                    )
+                  }
+                >
+                  <FaTimes /> Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 

@@ -6,7 +6,12 @@ import { isValidDate } from "./utils/utils.js";
  *
  * This request expects the following data upon creating a job offer:
  * 'userId': to add new Job to user model & postedBy in Job,
+<<<<<<< HEAD
  * 'title', 'description', 'requirements': [], 'deadline' (optional), type, 'isCoverLetterNeeded' (optional): Job details 
+=======
+ * 'title', 'description', 'requirements': [], 'type': ('Part-time', 'Full-time', 'Internship', 'Project'),
+ * 'deadline' (optional), 'isCoverLetterNeeded' (optional): Job details 
+>>>>>>> d4ae63d24dd6152081bc2b71f554975b48bcf4e7
  * 
  * @param {*} data: req body 
  * @returns : status and message of creation

@@ -1,6 +1,27 @@
-import React from 'react';
-import "../CVs/CV.module.css"; 
+import React, { useState } from 'react';
+import "./CVs.module.css"; 
 function CVs() {
+
+  const [experiences, setExperiences] = useState([]);
+  const [educationFields, setEducationFields] = useState([]);
+
+  const addExperience = () => {
+    setExperiences([...experiences, { title: '', since: '', till: '', details: '' }]);
+  };
+
+  const removeExperience = (index) => {
+    setExperiences(experiences.filter((_, i) => i !== index));
+  };
+
+  const addEducation = () => {
+    setEducationFields([...educationFields, { title: '', since: '', till: '', details: '' }]);
+  };
+
+  const removeEducation = (index) => {
+    setEducationFields(educationFields.filter((_, i) => i !== index));
+  };
+
+
   return (
     <>
       <div id="wrapper">
@@ -26,45 +47,84 @@ function CVs() {
             </fieldset>
             <hr />
             <fieldset className="form-group">
-              <h5>Experience</h5>
-              <button way-action-push="inputData.experience" className="btn btn-primary">Add Experience</button>
-              <fieldset className="form-group" way-repeat="inputData.experience">
-                <label>Title</label>
-                <input className="form-control" way-persistent way-data="title" placeholder="Job title" />
-                <fieldset className="form-group form-inline">
-                  <label>From</label>
-                  <input className="form-control" way-persistent way-data="since" placeholder="Some year" />
-                  <label>Till</label>
-                  <input className="form-control" way-persistent way-data="till" placeholder="Default: Present" />
-                </fieldset> 
-                <label>Details</label>
-                <textarea className="form-control" way-persistent way-data="about" placeholder="Explain your role etc."></textarea>
-                <button way-action-remove="inputData.experience.$$key" way-persistent className="btn btn-danger">Remove</button>
+            <h5>Experience</h5>
+              <button type="button" className="btn btn-primary" onClick={addExperience}>Add Experience</button>
+              {experiences.map((experience, index) => (
+                <fieldset key={index} className="form-group">
+                  <label>Title</label>
+                  <input className="form-control" value={experience.title} onChange={e => {
+                    const newExperiences = [...experiences];
+                    newExperiences[index].title = e.target.value;
+                    setExperiences(newExperiences);
+                  }} placeholder="Job title" />
+                  
+                  <div className="form-inline">
+                    <label>From</label>
+                    <input className="form-control" value={experience.since} onChange={e => {
+                      const newExperiences = [...experiences];
+                      newExperiences[index].since = e.target.value;
+                      setExperiences(newExperiences);
+                    }} placeholder="Month & Year" />
+                    <label>Till</label>
+                    <input className="form-control" value={experience.till} onChange={e => {
+                      const newExperiences = [...experiences];
+                      newExperiences[index].till = e.target.value;
+                      setExperiences(newExperiences);
+                    }} placeholder="Default: Present" />
+                  </div>
+                  
+                  <label>Details</label>
+                  <textarea className="form-control" value={experience.details} onChange={e => {
+                    const newExperiences = [...experiences];
+                    newExperiences[index].details = e.target.value;
+                    setExperiences(newExperiences);
+                  }} placeholder="Explain your role"></textarea>
+                  
+                  <button type="button" className="btn btn-danger" onClick={() => removeExperience(index)}>Remove</button>
               </fieldset>
+              ))}
             </fieldset>
             <hr />
             <h5>Education</h5>
-            <button way-action-push="inputData.education" className="btn btn-primary">Add Education</button>
-            <fieldset className="form-group" way-repeat="inputData.education">
-              <label>Title</label>
-              <input className="form-control" way-persistent way-data="title" placeholder="Your course name?" />
-              <fieldset className="form-group">
-                <label>From</label>
-                <input className="form-control" way-persistent way-data="since" placeholder="Year admitted in" />
-                <label>Till</label>
-                <input className="form-control" way-persistent way-data="till" placeholder="Graduate(d) at" />
-              </fieldset> 
-              <label>Details</label>
-              <textarea className="form-control" way-persistent way-data="about" placeholder="Enter Description"></textarea>
-              <button way-action-remove="inputData.education.$$key" way-persistent className="btn btn-danger">Remove</button>
-            </fieldset>
+            <button type="button" className="btn btn-primary" onClick={addEducation}>Add Education</button>
+            {educationFields.map((education, index) => (
+              <fieldset key={index} className="form-group">
+                <label>Title</label>
+                <input className="form-control" value={education.title} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].title = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="Your course name?" />
+                <div className="form-group">
+                  <label>From</label>
+                  <input className="form-control" value={education.since} onChange={e => {
+                    const newEducationFields = [...educationFields];
+                    newEducationFields[index].since = e.target.value;
+                    setEducationFields(newEducationFields);
+                  }} placeholder="Year admitted in" />
+                  <label>Till</label>
+                  <input className="form-control" value={education.till} onChange={e => {
+                    const newEducationFields = [...educationFields];
+                    newEducationFields[index].till = e.target.value;
+                    setEducationFields(newEducationFields);
+                  }} placeholder="Graduate(d) at" />
+                </div>
+                <label>Details</label>
+                <textarea className="form-control" value={education.details} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].details = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="Enter Description"></textarea>
+                <button type="button" className="btn btn-danger" onClick={() => removeEducation(index)}>Remove</button>
+              </fieldset>
+            ))}
             <hr />
             <fieldset className="form-group">
               <h5>Projects</h5>
               <button way-action-push="inputData.projects" className="btn btn-primary">Add project</button>
               <fieldset className="form-group" way-repeat="inputData.projects">
                 <label>Title</label><input className="form-control" way-persistent way-data="title" placeholder="Title" />
-                <label>URL</label><input className="form-control" way-persistent way-data="url" placeholder="https://github.com/yourname/something" /> 
+                <label>URL</label><input className="form-control" way-persistent way-data="url" placeholder="https://github.com/username/project" /> 
                 <button way-action-remove="inputData.projects.$$key" way-persistent className="btn btn-danger">Remove</button>
               </fieldset>
             </fieldset>

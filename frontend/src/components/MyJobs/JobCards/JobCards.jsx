@@ -23,12 +23,27 @@ import {
 } from "./utils.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DeleteModal from "../../ConfirmDelete/DeleteModal.jsx";
 
 function JobCards({ initialJobsData }) {
   const [jobs, setJobs] = useState(initialJobsData);
   const [activeMenuJobId, setActiveMenuJobId] = useState(null);
   const [editModeJobId, setEditModeJobId] = useState(null);
   const [editedJob, setEditedJob] = useState({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [jobToDelete, setJobToDelete] = useState(null);
+
+  // Function to open delete modal and set jobToDelete state
+  const openDeleteModal = (jobId) => {
+    setJobToDelete(jobId);
+    setShowDeleteModal(true);
+  };
+
+  // Function to close delete modal
+  const closeDeleteModal = () => {
+    setJobToDelete(null);
+    setShowDeleteModal(false);
+  };
 
   return (
     <>
@@ -65,13 +80,14 @@ function JobCards({ initialJobsData }) {
                           editModeJobId,
                           setEditModeJobId,
                           setEditedJob,
-                          jobs
+                          jobs,
+                          setActiveMenuJobId
                         )
                       }
                     >
                       Edit
                     </button>
-                    <button onClick={() => deleteJob(job._id, jobs, setJobs)}>
+                    <button onClick={() => openDeleteModal(job._id)}>
                       Delete
                     </button>
                   </div>
@@ -219,6 +235,14 @@ function JobCards({ initialJobsData }) {
           </div>
         ))}
       </div>
+      <DeleteModal
+        isOpen={showDeleteModal} 
+        onCancel={closeDeleteModal}
+        onConfirm={() => {
+          deleteJob(jobToDelete, jobs, setJobs);
+          closeDeleteModal(); 
+        }}
+      />
     </>
   );
 }

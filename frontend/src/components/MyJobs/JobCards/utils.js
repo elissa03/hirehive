@@ -17,7 +17,8 @@ export const toggleEditMode = (
   editModeJobId,
   setEditModeJobId,
   setEditedJob,
-  jobs
+  jobs,
+  setActiveMenuJobId
 ) => {
   if (editModeJobId === jobId) {
     setEditModeJobId(null);
@@ -31,6 +32,7 @@ export const toggleEditMode = (
     setEditModeJobId(jobId);
     setEditedJob(jobDataForEditing);
   }
+  setActiveMenuJobId(null);
 };
 
 export const handleChange = (e, field, editedJob, setEditedJob) => {
@@ -104,4 +106,5 @@ export const deleteJob = async (jobId, jobs, setJobs) => {
   } catch (error) {
     toast.error("Failed to delete job. Please try again.");
   }
+  setActiveMenuJobId(null);
 };

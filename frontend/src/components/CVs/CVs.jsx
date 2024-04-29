@@ -1,140 +1,204 @@
-import React, { useState } from 'react';
-import "./CVs.module.css"; 
-function CVs() {
+import React, { useState, useEffect } from 'react';
+import styles from './CVs.module.css';
+import cvService from '../../services/cvService'; 
+import cvsUtils from './cvsUtils';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-  const [experiences, setExperiences] = useState([]);
-  const [educationFields, setEducationFields] = useState([]);
+const CVs = () => { 
+  
+  const [cvs, setCvs] = useState([]);
+  const [editCVId, setEditCVId] = useState(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [contextMenu, setContextMenu] = useState(null);
 
-  const addExperience = () => {
-    setExperiences([...experiences, { title: '', since: '', till: '', details: '' }]);
+  // use effect to render the user's cvs by default
+  useEffect(() => {
+    fetchCvs();
+  }, []);
+
+  // handles closing the context menu which appears when right click is pressed
+  useEffect(() => {
+    const closeContextMenu = () => setContextMenu(null);
+    document.addEventListener('click', closeContextMenu);
+    return () => {
+      document.removeEventListener('click', closeContextMenu);
+    };
+  }, []);
+
+  // fetches the cvs from backend
+  const fetchCvs = async () => {
+    try { 
+
+      const userId = cvsUtils.getLocalUserId();
+      
+      if (!userId)
+        return;
+
+      const response = await cvService.getAllCvs(userId);
+      console.log(Object.values(response.data))
+      const cvs = Object.values(response.data); 
+
+      const cvsArray = []
+      cvs.forEach(cv => {
+        cvsArray.push({id: cv._id, title: cv.title, updatedAt: cv.updatedAt})
+      })
+
+      setCvs(cvsArray);
+
+    } catch (error) {
+      console.error("There was an error fetching the cvs:", error);
+    }
+  };
+  
+  // handles opening the cv 
+  const handleCVClick = (cvId) => {
+    console.log(`CV with id ${cvId} was clicked`);
   };
 
-  const removeExperience = (index) => {
-    setExperiences(experiences.filter((_, i) => i !== index));
+
+  // opens the menu to choose what to do with cv
+  const handleRightClick = (event, cv) => {
+    event.preventDefault();
+    setContextMenu({
+      cv: cv,
+      position: { x: event.pageX, y: event.pageY }
+    });
   };
 
-  const addEducation = () => {
-    setEducationFields([...educationFields, { title: '', since: '', till: '', details: '' }]);
+  // edits the title when renaming cv
+  const handleTitleChange = (event) => {
+    setEditTitle(event.target.value);
   };
 
-  const removeEducation = (index) => {
-    setEducationFields(educationFields.filter((_, i) => i !== index));
+  const handleKeyPress = async (event) => {
+    if (event.key === 'Enter') {
+      await handleUpdateTitle();
+    }
   };
 
+  const handleUpdateTitle = async () => { 
+    try {
+      const userId = cvsUtils.getLocalUserId();
+      if (!userId) return;
+
+      await cvService.updateCv(editCVId, { newData: { title: editTitle }, userId }); 
+      setCvs(cvs.map(cv => {
+        if (cv.id === editCVId) {
+          return { ...cv, title: editTitle };
+        }
+        return cv;
+      }));
+      setEditCVId(null);
+    } catch (error) {
+      console.error('Error updating CV title:', error);
+    }
+  };
+
+  const handleBlur = async () => { 
+    await handleUpdateTitle();
+  };
+
+  const handleRename = (cv) => {
+    setEditCVId(cv.id);
+    setEditTitle(cv.title);
+    setContextMenu(null);  
+  };
+
+  // to-do: test this when user is correct
+  const handleDelete = async(cv) => {
+    try { 
+
+      const userId = cvsUtils.getLocalUserId();
+      
+      if (!userId)
+        return;
+
+      const response = await cvService.deleteCv(cv.id, userId);
+
+      console.log(response)
+      if(response.status === 200) {
+        const cvsArray = []
+        cvs.forEach(currCv => {
+            if (currCv.id !== cv.id)
+              cvsArray.push({id: cv.id, title: cv.title, updatedAt: cv.updatedAt})
+        })
+
+        setCvs(cvsArray);
+
+        toast.success("CV deleted successfully", {
+          position: "top-right",
+          autoClose: 2000, // display for 2 seconds 
+        });
+      }
+      
+      else {
+        toast.error("Error deleting CV", {
+          position: "top-right",
+          autoClose: 2000, // display for 2 seconds 
+        });
+      } 
+
+    } catch (error) {
+      console.error("There was an error fetching the cvs:", error);
+      toast.error("Error deleting CV", {
+        position: "top-right",
+        autoClose: 2000, // display for 2 seconds 
+      });
+    }
+  }
+
+  const ContextMenu = ({ position, onRename, onDelete }) => {
+    return (
+      <ul className={styles.contextMenu} style={{ top: position.y, left: position.x }}>
+        <li onClick={onRename}>Rename</li>
+        <li onClick={() => console.log('Edit clicked')}>Edit</li>
+        <li onClick={onDelete}>Delete</li>
+      </ul>
+    );
+  };
 
   return (
-    <>
-      <div id="wrapper">
-        <div id="left-wrapper" className="container">
-          <h4> CV </h4>
-          <form id="inputData" way-data="inputData" way-persistent className="form-group">
-            <fieldset className="form-group">
-              <label>Full Name</label>
-              <input className="form-control" name="fullName" />
-              <label>Email</label>
-              <input className="form-control" name="email" /> 
-            </fieldset>
-            <hr />
-            <fieldset className="form-group">
-              <label>Title</label><input className="form-control" name="title" />
-              <label>Location</label><input className="form-control" name="location" /> 
-              <label>Skills</label><input className="form-control" name="tech" />
-            </fieldset>
-            <hr />
-            <fieldset className="form-group">
-              <label>About</label>
-              <textarea className="form-control" name="about" rows="4"></textarea>
-            </fieldset>
-            <hr />
-            <fieldset className="form-group">
-            <h5>Experience</h5>
-              <button type="button" className="btn btn-primary" onClick={addExperience}>Add Experience</button>
-              {experiences.map((experience, index) => (
-                <fieldset key={index} className="form-group">
-                  <label>Title</label>
-                  <input className="form-control" value={experience.title} onChange={e => {
-                    const newExperiences = [...experiences];
-                    newExperiences[index].title = e.target.value;
-                    setExperiences(newExperiences);
-                  }} placeholder="Job title" />
-                  
-                  <div className="form-inline">
-                    <label>From</label>
-                    <input className="form-control" value={experience.since} onChange={e => {
-                      const newExperiences = [...experiences];
-                      newExperiences[index].since = e.target.value;
-                      setExperiences(newExperiences);
-                    }} placeholder="Month & Year" />
-                    <label>Till</label>
-                    <input className="form-control" value={experience.till} onChange={e => {
-                      const newExperiences = [...experiences];
-                      newExperiences[index].till = e.target.value;
-                      setExperiences(newExperiences);
-                    }} placeholder="Default: Present" />
-                  </div>
-                  
-                  <label>Details</label>
-                  <textarea className="form-control" value={experience.details} onChange={e => {
-                    const newExperiences = [...experiences];
-                    newExperiences[index].details = e.target.value;
-                    setExperiences(newExperiences);
-                  }} placeholder="Explain your role"></textarea>
-                  
-                  <button type="button" className="btn btn-danger" onClick={() => removeExperience(index)}>Remove</button>
-              </fieldset>
-              ))}
-            </fieldset>
-            <hr />
-            <h5>Education</h5>
-            <button type="button" className="btn btn-primary" onClick={addEducation}>Add Education</button>
-            {educationFields.map((education, index) => (
-              <fieldset key={index} className="form-group">
-                <label>Title</label>
-                <input className="form-control" value={education.title} onChange={e => {
-                  const newEducationFields = [...educationFields];
-                  newEducationFields[index].title = e.target.value;
-                  setEducationFields(newEducationFields);
-                }} placeholder="Your course name?" />
-                <div className="form-group">
-                  <label>From</label>
-                  <input className="form-control" value={education.since} onChange={e => {
-                    const newEducationFields = [...educationFields];
-                    newEducationFields[index].since = e.target.value;
-                    setEducationFields(newEducationFields);
-                  }} placeholder="Year admitted in" />
-                  <label>Till</label>
-                  <input className="form-control" value={education.till} onChange={e => {
-                    const newEducationFields = [...educationFields];
-                    newEducationFields[index].till = e.target.value;
-                    setEducationFields(newEducationFields);
-                  }} placeholder="Graduate(d) at" />
-                </div>
-                <label>Details</label>
-                <textarea className="form-control" value={education.details} onChange={e => {
-                  const newEducationFields = [...educationFields];
-                  newEducationFields[index].details = e.target.value;
-                  setEducationFields(newEducationFields);
-                }} placeholder="Enter Description"></textarea>
-                <button type="button" className="btn btn-danger" onClick={() => removeEducation(index)}>Remove</button>
-              </fieldset>
-            ))}
-            <hr />
-            <fieldset className="form-group">
-              <h5>Projects</h5>
-              <button way-action-push="inputData.projects" className="btn btn-primary">Add project</button>
-              <fieldset className="form-group" way-repeat="inputData.projects">
-                <label>Title</label><input className="form-control" way-persistent way-data="title" placeholder="Title" />
-                <label>URL</label><input className="form-control" way-persistent way-data="url" placeholder="https://github.com/username/project" /> 
-                <button way-action-remove="inputData.projects.$$key" way-persistent className="btn btn-danger">Remove</button>
-              </fieldset>
-            </fieldset>
-            <hr />
-          </form>
-        </div>
-        
+    <div className={styles.wrapper}>
+      <h2>CVs</h2>
+      
+      <ToastContainer />
+      <div className={styles.cvContainer}>
+        {cvs.map(cv => (
+          <div key={cv.id} className={styles.cvBox} onClick={() => handleCVClick(cv.id)} onContextMenu={(e) => handleRightClick(e, cv)}>
+            <div className={styles.cvHeader}>
+              {editCVId === cv.id ? (
+                <input 
+                  type="text"
+                  value={editTitle}
+                  onChange={handleTitleChange}
+                  onBlur={handleBlur} 
+                  onKeyPress={handleKeyPress}
+                  autoFocus
+                  className={styles.editInput}
+                />
+              ) : (
+                cv.title
+              )}
+            </div>
+            <div className={styles.cvContent}>
+              <br></br>
+            </div>
+            <div className={styles.cvFooter}>
+              {cvsUtils.formatUpdatedAt(cv.updatedAt)}
+            </div>
+          </div>
+        ))}
+        {contextMenu && (
+          <ContextMenu
+            position={contextMenu.position}
+            onRename={() => handleRename(contextMenu.cv)}
+            onDelete={() => handleDelete(contextMenu.cv)}
+          />
+        )}
       </div>
-    </>
+    </div>
   );
-}
+};
 
 export default CVs;

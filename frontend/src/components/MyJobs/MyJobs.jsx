@@ -5,10 +5,12 @@ import JobUploadModal from "./JobUpload/JobUploadModal";
 import JobCards from "./JobCards/JobCards";
 import styles from "./styles.module.css"
 import { FaPlus } from "react-icons/fa";
+import { TailSpin } from "react-loader-spinner"; 
 
 function MyJobs() {
   const [jobs, setJobs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -33,19 +35,23 @@ function MyJobs() {
   };
 
   useEffect(() => {
-    fetchJobs();
+    fetchJobs().then(() => setLoading(false));
   }, []);
 
 
   const addJob = (newJob) => {
-    setJobs(...jobs, newJob);
+    setJobs([...jobs, newJob]);
     fetchJobs()
   }
 
   return (
     <div>
       <h2>My Jobs</h2>
-      {jobs.length > 0 ? (
+      {loading ? (
+        <div className={styles.centeredLoader}>
+          <TailSpin color="#fbf07de1" height={70} width={70} />
+        </div>
+      ) : jobs.length > 0 ? (
         <JobCards initialJobsData={jobs} />
       ) : (
         <p>You have not posted any jobs.</p>

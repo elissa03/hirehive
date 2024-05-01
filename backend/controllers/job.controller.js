@@ -66,7 +66,8 @@ const updateJobController = async(req, res) => {
 
 const getAllJobsController = async (req, res) => {
     try {
-        const result = await getAllJobs(req.body);
+        const { userId } = req.query;
+        const result = await getAllJobs(userId);
 
         if (result.status === 200) 
             return res.status(200).json(result.jobs);

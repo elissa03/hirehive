@@ -122,6 +122,8 @@ const getCv = async (cvId, data) => {
  */
 const deleteCv = async (cvId, data) => {
   try {
+
+    console.log("reached back " + JSON.stringify(data));
     if (!data.userId) {
       return {
         status: 400,
@@ -135,13 +137,14 @@ const deleteCv = async (cvId, data) => {
       return { status: 404, message: "CV not found!" };
     }
 
-    const user = await User.findById(data.userId);
+    const userId = data.userId;
+    const user = await User.findById(userId);
 
     if (!user) {
       return { status: 404, message: "Requested user does not exist!" };
     }
 
-    if (data.userId !== cv.user) {
+    if (userId !== cv.user.toString()) {
       return {
         status: 403,
         message: "Forbidden: CV does not correspond to user!",
@@ -153,6 +156,7 @@ const deleteCv = async (cvId, data) => {
     await User.updateOne({ _id: user._id }, { $pull: { cvIds: cvId } });
 
     return { status: 200, message: "CV deleted successfully." };
+
   } catch (error) {
     console.log(error);
     return { status: 500, message: "Internal error" };

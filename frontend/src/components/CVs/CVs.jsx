@@ -3,6 +3,7 @@ import styles from './CVs.module.css';
 import cvService from '../../services/cvService'; 
 import cvsUtils from './cvsUtils';
 import { ToastContainer, toast } from "react-toastify";
+import { TailSpin } from 'react-loader-spinner'; 
 import "react-toastify/dist/ReactToastify.css";
 
 const CVs = () => { 
@@ -11,12 +12,13 @@ const CVs = () => {
   const [editCVId, setEditCVId] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [contextMenu, setContextMenu] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // use effect to render the user's cvs by default
   useEffect(() => {
-    fetchCvs();
+    fetchCvs().then(() => setLoading(false));
   }, []);
-
+ 
   // handles closing the context menu which appears when right click is pressed
   useEffect(() => {
     const closeContextMenu = () => setContextMenu(null);
@@ -115,8 +117,7 @@ const CVs = () => {
         return;
 
       const response = await cvService.deleteCv(cv.id, userId);
-
-      console.log(response)
+ 
       if(response.status === 200) {
         const cvsArray = []
         cvs.forEach(currCv => {
@@ -161,44 +162,54 @@ const CVs = () => {
   return (
     <div className={styles.wrapper}>
       <h2>CVs</h2>
-      
       <ToastContainer />
-      <div className={styles.cvContainer}>
-        {cvs.map(cv => (
-          <div key={cv.id} className={styles.cvBox} onClick={() => handleCVClick(cv.id)} onContextMenu={(e) => handleRightClick(e, cv)}>
-            <div className={styles.cvHeader}>
-              {editCVId === cv.id ? (
-                <input 
-                  type="text"
-                  value={editTitle}
-                  onChange={handleTitleChange}
-                  onBlur={handleBlur} 
-                  onKeyPress={handleKeyPress}
-                  autoFocus
-                  className={styles.editInput}
-                />
-              ) : (
-                cv.title
-              )}
-            </div>
-            <div className={styles.cvContent}>
-              <br></br>
-            </div>
-            <div className={styles.cvFooter}>
-              {cvsUtils.formatUpdatedAt(cv.updatedAt)}
-            </div>
-          </div>
-        ))}
-        {contextMenu && (
-          <ContextMenu
-            position={contextMenu.position}
-            onRename={() => handleRename(contextMenu.cv)}
-            onDelete={() => handleDelete(contextMenu.cv)}
+      {loading ? (
+        <div className={styles.centeredLoader}>   
+          <TailSpin
+            color="#fbf07de1"
+            height={70}
+            width={70}
           />
-        )}
-      </div>
+        </div> // loading indicator
+      ) : cvs.length > 0 ? (
+        <div className={styles.cvContainer}>
+          {cvs.map(cv => (
+            <div key={cv.id} className={styles.cvBox} onClick={() => handleCVClick(cv.id)} onContextMenu={(e) => handleRightClick(e, cv)}>
+              <div className={styles.cvHeader}>
+                {editCVId === cv.id ? (
+                  <input 
+                    type="text"
+                    value={editTitle}
+                    onChange={handleTitleChange}
+                    onBlur={handleBlur} 
+                    onKeyPress={handleKeyPress}
+                    autoFocus
+                    className={styles.editInput}
+                  />
+                ) : (
+                  cv.title
+                )}
+              </div>
+              <div className={styles.cvContent}><br></br></div>
+              <div className={styles.cvFooter}>
+                {cvsUtils.formatUpdatedAt(cv.updatedAt)}
+              </div>
+            </div>
+          ))}
+          {contextMenu && (
+            <ContextMenu
+              position={contextMenu.position}
+              onRename={() => handleRename(contextMenu.cv)}
+              onDelete={() => handleDelete(contextMenu.cv)}
+            />
+          )}
+        </div>
+      ) : (
+        <p>You have not created any CVs yet.</p>
+      )}
     </div>
   );
+  
 };
 
 export default CVs;

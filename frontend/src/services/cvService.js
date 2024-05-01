@@ -37,11 +37,12 @@ const createCv = async (data) => {
 
 const deleteCv = async (cvId, userId) => {
      
+    console.log('reached')
     const response = await axios.delete(`${API_URL}${cvId}`, {
     headers: {
         Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
-    data: {userId}, // pass the data as part of the config object
+    data: {"userId": userId}, // pass the data as part of the config object
     });
 
     return response;

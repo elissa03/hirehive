@@ -46,8 +46,8 @@ const CvSchema = new mongoose.Schema({
         title: { type: String, required: true },
         company: { type: String, required: true },
         location: { type: String },
-        startDate: { type: Date, required: true },
-        endDate: { type: Date },
+        startDate: { type: String, required: true },
+        endDate: { type: String, default: "Present" },
         description: { type: String }
     }],
     
@@ -59,6 +59,16 @@ const CvSchema = new mongoose.Schema({
     languages: [{
         language: { type: String },
         proficiency: { type: String }
+    }],
+
+    projects: [{
+        title: {
+            type: String,
+            required: true,
+        },
+        URL: {
+            type: String
+        }
     }],
     
     hobbies: [String],

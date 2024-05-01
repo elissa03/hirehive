@@ -122,6 +122,8 @@ const getCv = async (cvId, data) => {
  */
 const deleteCv = async (cvId, data) => {
   try {
+
+    console.log("reached back " + JSON.stringify(data));
     if (!data.userId) {
       return {
         status: 400,
@@ -135,13 +137,14 @@ const deleteCv = async (cvId, data) => {
       return { status: 404, message: "CV not found!" };
     }
 
-    const user = await User.findById(data.userId);
+    const userId = data.userId;
+    const user = await User.findById(userId);
 
     if (!user) {
       return { status: 404, message: "Requested user does not exist!" };
     }
 
-    if (data.userId !== cv.user) {
+    if (userId !== cv.user.toString()) {
       return {
         status: 403,
         message: "Forbidden: CV does not correspond to user!",
@@ -153,6 +156,7 @@ const deleteCv = async (cvId, data) => {
     await User.updateOne({ _id: user._id }, { $pull: { cvIds: cvId } });
 
     return { status: 200, message: "CV deleted successfully." };
+
   } catch (error) {
     console.log(error);
     return { status: 500, message: "Internal error" };
@@ -167,7 +171,8 @@ const deleteCv = async (cvId, data) => {
  * @returns {cvId: cvData, ...}
  */
 const getAllCvs = async (userId) => {
-  try {
+  
+  try { 
     const user = await User.findById(userId);
 
     if (!user) {
@@ -180,12 +185,14 @@ const getAllCvs = async (userId) => {
     const cvPromises = cvIds.map((cvId) => CV.findById(cvId));
 
     const cvs = await Promise.all(cvPromises);
-
+    
     cvs.forEach((cv) => {
-      cvObjs[cv._id] = cv;
+      if (cv)
+        cvObjs[cv._id.toString()] = cv;
     });
 
     return { status: 200, cvs: cvObjs };
+
   } catch (error) {
     console.log(error);
     return { status: 500, message: "Internal error" };
@@ -220,8 +227,8 @@ const updateCv = async (cvId, data) => {
     if (!user) {
       return { status: 404, message: "Requested user does not exist!" };
     }
-
-    if (data.userId !== cv.user) {
+ 
+    if (data.userId !== cv.user.toString()) {
       return {
         status: 403,
         message: "Forbidden: CV does not correspond to user!",

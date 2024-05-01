@@ -1,0 +1,24 @@
+.beeHeader {
+  background-color: #f6eabe;
+  color: #000;
+}
+
+.beeIcon {
+  margin-right: 10px;
+}
+
+.beeBody {
+  background-color: #fff; 
+  color: #000;
+  text-align: center;
+}
+
+.warningText {
+  font-style: italic; 
+  text-align: center;
+}
+
+.beeFooter {
+  background-color: #f6eabe;
+  border-top: none;
+}

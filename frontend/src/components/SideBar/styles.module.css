@@ -2,11 +2,11 @@
 
 :root {
   --font-family-poppins: "Poppins", sans-serif;
-  --sidebar-background-color: #f8f9fa; 
-  --sidebar-text-color: #333; 
-  --sidebar-menu-title-color: #555; 
+  --sidebar-background-color: #f8f9fa;
+  --sidebar-text-color: #333;
+  --sidebar-menu-title-color: #555;
   --sidebar-active-color: rgba(254, 234, 0, 0.5);
-  --sidebar-font-size: 0.7rem; 
+  --sidebar-font-size: 0.7rem;
   --sidebar-menu-title-font-size: 0.85rem;
 }
 
@@ -15,6 +15,8 @@
   margin-right: auto;
   font-size: 1rem;
   font-weight: bold;
+  margin-top: 0; /* remove top margin */
+  margin-bottom: 0;
 }
 
 .labels {
@@ -31,6 +33,8 @@
   font-family: var(--font-family-poppins);
   color: var(--sidebar-text-color);
   font-size: var(--sidebar-font-size);
+  padding-top: 0; /* adjust as needed */
+  padding-bottom: 0;
 }
 
 .navItem {
@@ -58,4 +62,27 @@
 
 .navLink:hover {
   cursor: pointer;
+}
+
+.logoAlignment {
+  align-self: start;
+}
+
+.navLinkDropdown {
+  color: #000;
+}
+
+.navLinkDropdown:hover {
+  background-color: #e0e0e0;
+  color: #000;
+  cursor: pointer;
+}
+
+.dropdown {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.dropdownIcon {
+  margin-left: 120px;
 }

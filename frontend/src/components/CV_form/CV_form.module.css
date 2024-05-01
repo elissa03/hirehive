@@ -1,0 +1,24 @@
+*, *:after, *:before {
+	box-sizing: border-box!important;
+}
+
+html, body { 
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+}
+  
+input[type="submit"] {
+	margin-top: 20px;
+	background-color: rgb(33, 199, 33);
+	color: white;
+	border: 0px;
+	border-radius: 8%;
+	padding: 8px 15px 8px 15px; 
+	margin-left: 45%;
+}

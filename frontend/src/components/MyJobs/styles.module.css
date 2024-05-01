@@ -1,0 +1,36 @@
+/* Update your styles.module.css with these styles */
+.bottomRightButton {
+  position: fixed;
+  bottom: 20px; 
+  right: 20px;
+  z-index: 1000;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color:#ffde59; 
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  border: none;
+  color: #565555; 
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.bottomRightButton:hover{
+   box-shadow: 0 0 15px 5px rgba(255, 235, 59, 0.6);
+   background-color:#ffde59;
+}
+
+.modalBackdrop {
+  position: fixed; /* Positioning relative to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background-color: rgba(0,0,0,0.5); /* Semi-transparent black */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 1050; /* Ensure it sits above other content */
+}
+

@@ -3,7 +3,7 @@ import jobService from "../../services/jobService";
 import localStorageUtils from "../../utils/localStorageUtils";
 import JobUploadModal from "./JobUpload/JobUploadModal";
 import JobCards from "./JobCards/JobCards";
-import styles from "./styles.module.css"
+import styles from "./styles.module.css";
 import { FaPlus } from "react-icons/fa";
 
 function MyJobs() {

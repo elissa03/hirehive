@@ -27,18 +27,22 @@ async function isHirer(jobId, userId) {
 
     return false;
 }
-
+  
 function calculateMatchingPercentage(jobSkills, applicantSkills) {
-    const totalSkills = jobSkills.length; 
+    // convert applicant skills to lowercase for case-insensitive comparison
+    const normalizedApplicantSkills = applicantSkills.map(skill => skill.toLowerCase());
+    
+    const totalSkills = jobSkills.length;
 
-    // if no skills required auto 100% match
+    // cf no skills required, automatically 100% match
     if (totalSkills === 0)
         return 100;
 
-    let matchingSkills = 0; 
+    let matchingSkills = 0;
 
     for (const skill of jobSkills) {
-        if (applicantSkills.includes(skill)) {
+        // convert each job skill to lowercase before comparison
+        if (normalizedApplicantSkills.includes(skill.toLowerCase())) {
             matchingSkills++;
         }
     }

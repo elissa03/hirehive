@@ -6,6 +6,14 @@ import JobCards from "./JobCards/JobCards";
 import styles from "./styles.module.css"
 import { FaPlus } from "react-icons/fa";
 import { TailSpin } from "react-loader-spinner"; 
+import { motion, AnimatePresence } from "framer-motion";
+
+
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
 
 function MyJobs() {
   const [jobs, setJobs] = useState([]);
@@ -40,7 +48,7 @@ function MyJobs() {
 
 
   const addJob = (newJob) => {
-    setJobs([...jobs, newJob]);
+    setJobs(...jobs, newJob);
     fetchJobs()
   }
 
@@ -64,15 +72,24 @@ function MyJobs() {
         >
           <FaPlus />
         </button>
-        {isModalOpen && (
-          <div className={styles.modalBackdrop}>
-            <JobUploadModal
-              isOpen={isModalOpen}
-              onClose={toggleModal}
-              addJob={addJob}
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {isModalOpen && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={backdropVariants}
+              transition={{ duration: 0.3 }}
+              className={styles.modalBackdrop}
+            >
+              <JobUploadModal
+                isOpen={isModalOpen}
+                onClose={toggleModal}
+                addJob={addJob}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

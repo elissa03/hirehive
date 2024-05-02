@@ -18,7 +18,6 @@ const createJob = async (data) => {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
   });
-  console.log("here", response);
   return response;
 };
 
@@ -48,7 +47,6 @@ const getAllJobs = async(userId) => {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
   });
-  console.log("rsp", response)
   return response;
 }
 

@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react'
-import styles from "./styles.module.css"
-import jobService from '../../services/jobService'
-import localStorageUtils from '../../utils/localStorageUtils'
-import JobCards from '../MyJobs/JobCards/JobCards';
-import { TailSpin } from "react-loader-spinner"; 
+import React, { useState, useEffect } from "react";
+import styles from "./styles.module.css";
+import jobService from "../../services/jobService";
+import localStorageUtils from "../../utils/localStorageUtils";
+import ExploreCards from "./ExploreCards/ExploreCards";
+import { TailSpin } from "react-loader-spinner";
 
 function ExploreJobs() {
   const [jobs, setJobs] = useState([]);
@@ -17,10 +17,8 @@ function ExploreJobs() {
         console.log("User ID is not available.");
         return;
       }
-
       const response = await jobService.getAllJobs(userId);
       setJobs(response.data);
-      console.log(jobs)
     } catch (error) {
       console.error("There was an error fetching the jobs:", error);
     }
@@ -38,7 +36,7 @@ function ExploreJobs() {
           <TailSpin color="#fbf07de1" height={70} width={70} />
         </div>
       ) : jobs.length > 0 ? (
-        <JobCards initialJobsData={jobs} />
+        <ExploreCards jobs={jobs} />
       ) : (
         <p>There are no jobs posted</p>
       )}
@@ -46,4 +44,4 @@ function ExploreJobs() {
   );
 }
 
-export default ExploreJobs
+export default ExploreJobs;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import localStorageUtils from "../utils/localStorageUtils.js";
 
 const API_URL = "http://localhost:3001/user/";
 
@@ -7,4 +8,11 @@ const signup = async (data) => {
   return response;
 };
 
-export default { signup };
+const getUserById = async (userId) => {
+  const config = {
+    headers: { Authorization: `Bearer ${localStorageUtils.getToken()}` },
+  };
+  const response = await axios.get(`${API_URL}${userId}`, config);
+  return response;
+};
+export default { signup, getUserById };

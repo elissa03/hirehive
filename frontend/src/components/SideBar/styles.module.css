@@ -90,3 +90,7 @@
 .greyedOut {
   background-color: var(--sidebar-active-color); 
 }
+
+.logo {
+  cursor: pointer;
+}

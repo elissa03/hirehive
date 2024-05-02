@@ -40,8 +40,10 @@ function Sidebar({ handleLogout, setActiveComponent }) {
       <p
         className={`d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none ${styles.brand}`}
       >
+        <div className={styles.logo} onClick={()=> window.location.reload(handleSetActive("dashboard"))}>
         <img src={logo} alt="Logo" style={{ height: "32px" }} />
         HireHive
+        </div>
       </p>
       <hr />
       <p className={styles.labels}>MENU</p>

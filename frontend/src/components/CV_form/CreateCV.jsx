@@ -13,9 +13,8 @@ import { useNavigate } from 'react-router-dom';
 
 function CreateCV() {
 
-  const navigate = useNavigate(); // Create an instance of useNavigate
-
-  // Function to handle back navigation
+  // arrow functionality to return to previous page
+  const navigate = useNavigate();   
   const goBack = () => {
     navigate(-1);
   };
@@ -39,6 +38,11 @@ function CreateCV() {
     setEducationFields([...educationFields, { title: '', since: '', till: '', details: '' }]);
   };
 
+  const [formData, setFormData] = useState({
+    title: '', firstName: '', lastName: '', phoneNumber: '', address: '',
+    email: '', education: [], experience: [], skills: []
+  });
+
   const removeEducation = (index) => {
     setEducationFields(educationFields.filter((_, i) => i !== index));
   }; 
@@ -54,6 +58,7 @@ function CreateCV() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, []);    
 
+  // code chunk needed to retrieve suggestions from api
   const [token, setToken] = useState('');
   
   const [apiSkills, setApiSkills] = useState([]); 
@@ -71,7 +76,6 @@ function CreateCV() {
   }, []);
 
   
-
   // get the skills from the extern al API if functional
   useEffect(() => { 
  
@@ -93,8 +97,9 @@ function CreateCV() {
       setApiSkills(totalSkills); 
     
   }, [token]); 
- 
+  // backend process + api data retrieval end  
   
+  // functions to add a skill to skills array, remove, and update selection
   const addSkill = () => {
     setSkills([...skills, '']);
   };
@@ -141,6 +146,50 @@ function CreateCV() {
     setSkills(skills.filter((_, i) => i !== index));
   };
 
+  const [projects, setProjects] = useState([]);
+
+const addProject = () => {
+  const newProject = { title: '', url: '' };
+  setProjects([...projects, newProject]);
+};
+
+const removeProject = (index) => {
+  const updatedProjects = projects.filter((_, i) => i !== index);
+  setProjects(updatedProjects);
+};
+
+const handleProjectChange = (index, field, value) => {
+  const updatedProjects = projects.map((project, i) => {
+    if (i === index) {
+      return { ...project, [field]: value };
+    }
+    return project;
+  });
+  setProjects(updatedProjects);
+};
+
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setFormData({ ...formData, [name]: value });
+};
+ 
+const handleSubmit = (e) => {
+  e.preventDefault();  
+  const cvData = {
+    title: formData.title || "Untitled",
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    phoneNumber: formData.phoneNumber,
+    address: formData.address,
+    email: formData.email,
+    education: educationFields,
+    experience: experiences,
+    skills: skills, 
+    projects: projects
+  };
+  console.log("CV Data to send:", cvData);
+  // Here you would typically send this data to your backend server
+};
 
   return (
     <>
@@ -152,34 +201,38 @@ function CreateCV() {
       </div></div>
       <div className={styles.wrapper}>
         <h4>CV</h4>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           
         <label>CV Title</label>
-          <input className={styles.formControl} name="title" placeholder="Default Untitled"/>
+          <input className={styles.formControl} onChange={handleInputChange} value={formData.title} name="title" placeholder="Default Untitled"/>
 
           <div className={styles.row}>
             <div className={styles.column}> 
               <label>First Name *</label>
-              <input className={styles.formControl} name="firstName" placeholder="John" autoComplete="off" required />
+              <input className={styles.formControl} onChange={handleInputChange} value={formData.firstName} name="firstName"
+               placeholder="John" autoComplete="off" required />
             </div>
             <div className={styles.column}>
               <label>Last Name *</label>
-              <input className={styles.formControl} name="lastName" placeholder="Doe" autoComplete="off" required />
+              <input className={styles.formControl} onChange={handleInputChange} value={formData.lastName} name="lastName" 
+              placeholder="Doe" autoComplete="off" required />
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.column}>
               <label>Email *</label>
-              <input className={styles.formControl} name="email" type="email" placeholder="j@gmail.com" autoComplete="off" required />
+              <input className={styles.formControl} name="email" onChange={handleInputChange} value={formData.email}
+               type="email" placeholder="j@gmail.com" autoComplete="off" required />
             </div>
             <div className={styles.column}>
               <label>Phone Number</label>
-              <input className={styles.formControl} name="phoneNumber" type="tel" autoComplete="off" />
+              <input className={styles.formControl} name="phoneNumber" onChange={handleInputChange} 
+              value={formData.phoneNumber} type="tel" autoComplete="off" />
             </div>
           </div>
           <hr />
           <label>Address</label>
-          <input className={styles.formControl} name="location" /> 
+          <input className={styles.formControl} onChange={handleInputChange} type="text" autoComplete='off' value={formData.address} name="address" /> 
  
         <div className={styles.row}>
           <div className={styles.column}>
@@ -254,6 +307,7 @@ function CreateCV() {
             ))}
           </div>
           <hr />
+
           <div className={styles.section}>
             <h5>Education</h5>
             <button type="button" className={styles.btnPrimary} onClick={addEducation}>Add Education</button>
@@ -287,7 +341,34 @@ function CreateCV() {
               </div>
             ))}
           </div>
-          <hr /><div className={styles.submitSection}>
+
+          <hr />
+          <div className={styles.section}>
+          <h5>Projects</h5>
+          <button type="button" className={styles.btnPrimary} onClick={addProject}>Add Project</button>
+          {projects.map((project, index) => (
+            <div key={index} className={styles.fieldset}>
+              <label>Title *</label>
+              <input
+                className={styles.formControl}
+                value={project.title}
+                onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+                placeholder="e.g., Personal Website"
+                required
+              />
+              <label>URL *</label>
+              <input
+                className={styles.formControl}
+                value={project.url}
+                onChange={(e) => handleProjectChange(index, 'url', e.target.value)}
+                placeholder="e.g., http://www.example.com" required
+              />
+              <button type="button" className={styles.btnDanger} onClick={() => removeProject(index)}>Remove</button>
+            </div>
+          ))}
+        </div>
+
+          <hr></hr><div className={styles.submitSection}>
           <input type='submit' value='Create CV' className={styles.submitButton} /> </div>
         </form>
       </div>

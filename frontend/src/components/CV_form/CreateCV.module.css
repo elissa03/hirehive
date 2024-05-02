@@ -79,16 +79,14 @@
 }
 
 .logoSection {
-	margin-left: 10px;
-	margin-top: -22px;
-	/* position: sticky;	 */
+	margin-left: 10px; 
 }
   
 .logo {
-	width: 120px;
+	width: 110px;
 	height: 100px; /* Larger logo */
-	margin-bottom: 0px;
-	border-radius: 32px; /* Circular if the logo is square */
+	margin-bottom: 0px;   
+	cursor: pointer;
 }
   
 body, html {
@@ -97,5 +95,88 @@ body, html {
 	font-size: 14px;  
 }
   
+.skillInput {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
   
+.skillInput input {
+	position: relative;
+	margin-left: 7%;
+	width: 70%; 
+	margin-right: 10px; /* Space between input and button */
+}
   
+.removeSkill {
+	background-color: #ff4d4f; /* Red color for the delete button */
+	color: white;
+	border: none;
+	cursor: pointer;
+	padding: 8px 10px;
+	margin-bottom: -5px;
+	width: 40px;
+	height: 40px;
+	border-radius: 200%;
+
+}
+
+.removeSkill:hover {
+	opacity: 0.8;
+}
+	
+  
+.skillsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 5px; 
+    margin-top: 5px;
+}
+
+
+.skillInput {
+    position: relative;  
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: calc(50% - 20px);  
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    left: 15%;  
+    top: 100%;  
+    z-index: 1000;
+    border-radius: 4px;
+    max-height: 200px; 
+    overflow-y: auto; 
+}
+
+.suggestions div {
+    padding: 8px;
+    cursor: pointer;
+} 
+.suggestions {
+	list-style-type: none; 
+    padding: 5px;
+}
+  
+.suggestions li {
+padding: 8px;
+cursor: pointer;
+}
+
+.suggestions li:hover, .activeSuggestion {
+background-color: #f0f0f0; /* Light gray background on hover or active */
+}
+
+.skillInput input:focus + .suggestions {
+display: block; /* Only show suggestions when input is focused */
+}
+
+.skillInput input {
+width: 100%;
+}

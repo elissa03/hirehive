@@ -14,8 +14,7 @@ import { User } from "../models/User.js";
  * @returns : status and message of creation
  */
 const createCv = async (data) => {
-  try {
-    console.log("data " + JSON.stringify(data));
+  try { 
 
     if (!data.userId) {
       return { status: 400, message: `The userId is required.` };
@@ -27,8 +26,6 @@ const createCv = async (data) => {
     const requiredFields = [
       "firstName",
       "lastName",
-      "phoneNumber",
-      "address",
       "email",
       "education",
     ];
@@ -44,6 +41,19 @@ const createCv = async (data) => {
     if (missingField) {
       return { status: 400, message: `The ${missingField} field is required.` };
     }
+
+    // filter out empty skills ""
+    if (data.skills) {
+
+      const filteredSkills = data.skills.filter(skill => skill.trim().length > 0);
+      if (filteredSkills.length > 0) {
+        data.skills = filteredSkills;
+      } else {
+        delete data.skills;
+      }
+
+    }
+    
 
     const requiredEdFields = ["school", "degree", "fieldOfStudy", "startDate"];
     data["education"].forEach((element) => {

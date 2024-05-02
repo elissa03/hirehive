@@ -19,13 +19,11 @@ const CvSchema = new mongoose.Schema({
     },
     
     phoneNumber: {
-        type: String,
-        required: true
+        type: String, 
     },
     
     address: {
-        type: String,
-        required: true
+        type: String, 
     },
     
     email: {
@@ -46,7 +44,7 @@ const CvSchema = new mongoose.Schema({
         title: { type: String, required: true },
         company: { type: String, required: true },
         location: { type: String },
-        startDate: { type: String, required: true },
+        startDate: { type: String, required: true }, // format: Month Year
         endDate: { type: String, default: "Present" },
         description: { type: String }
     }],

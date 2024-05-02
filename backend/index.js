@@ -8,11 +8,13 @@ import { FirebaseRouter } from "./routes/firebase.js";
 import { CvRouter } from "./routes/CV.js";
 import { JobRouter } from "./routes/job.js";
 import { JobAppRouter } from "./routes/jobApp.js";
-const app = express();
-connectDB(); // connect to database
+import { lightcastAPIRouter } from "./routes/lightcastAPI.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+
+const app = express();
+connectDB(); // connect to database
 
 const port = process.env.PORT;
 
@@ -28,13 +30,12 @@ app.use(cors({ origin: "*" }));
 app.use("/auth", AuthRouter);
 app.use("/user", UserRouter); 
 app.use("/firebase", FirebaseRouter);
-app.use("/cvs/", CvRouter) 
+app.use("/cvs/", CvRouter);
 app.use("/jobs/", JobRouter); 
 app.use("/jobApps/", JobAppRouter);
+app.use("/api/", lightcastAPIRouter)
 
 // npm run dev --to run
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-

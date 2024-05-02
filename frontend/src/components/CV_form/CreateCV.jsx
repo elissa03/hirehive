@@ -6,10 +6,20 @@ import { ToastContainer, toast } from "react-toastify";
 import { TailSpin } from 'react-loader-spinner';  
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import "react-toastify/dist/ReactToastify.css"; 
 import lightcastAPIService from '../../services/lightcastAPIService';  
+import { useNavigate } from 'react-router-dom'; 
 
 function CreateCV() {
+
+  const navigate = useNavigate(); // Create an instance of useNavigate
+
+  // Function to handle back navigation
+  const goBack = () => {
+    navigate(-1);
+  };
+
   const [experiences, setExperiences] = useState([]);
   const [educationFields, setEducationFields] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -59,6 +69,8 @@ function CreateCV() {
 
     fetchToken();
   }, []);
+
+  
 
   // get the skills from the extern al API if functional
   useEffect(() => { 
@@ -132,9 +144,12 @@ function CreateCV() {
 
   return (
     <>
+      <div className={styles.top}><div className={styles.backButton} onClick={goBack}>
+        <FontAwesomeIcon icon={faArrowLeft} /> {/* Back arrow icon */}
+      </div>
       <div className={styles.logoSection} onClick={()=> window.location.reload()}>
         <img src={logo} alt="Company Logo" className={styles.logo} />
-      </div>
+      </div></div>
       <div className={styles.wrapper}>
         <h4>CV</h4>
         <form className={styles.form}>

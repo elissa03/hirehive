@@ -1,0 +1,101 @@
+ 
+.wrapper {
+	max-width: 800px;
+	margin: auto;
+	padding: 20px;
+	overflow-y: auto;   
+	height: 90vh;  
+	scrollbar-width: none;  
+	-ms-overflow-style: none; 
+	background: white;  
+	box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 6px 20px rgba(0,0,0,0.19);  
+	border-radius: 8px; 
+}
+  
+.wrapper::-webkit-scrollbar {
+	display: none;  
+}
+  
+.form {
+	display: flex;
+	flex-direction: column;
+}
+  
+.formGroup {
+	margin-bottom: 20px;
+}
+  
+.formControl, .btnPrimary, .btnDanger, .submitButton {
+	width: 100%;
+	padding: 8px;
+	margin-top: 8px;
+	box-sizing: border-box;
+	border-radius: 8px; /* Rounded borders for inputs and buttons */
+}
+  
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+  
+.column {
+	flex: 1 1 45%;  /* Allow wrapping and flexible widths */
+	margin-right: 10px;
+}
+  
+.btnPrimary, .btnDanger, .submitButton {
+	display: block;  /* Make buttons block level so they fit the container width */
+	width: 25%;      /* Standard width to make them uniform */
+	margin: 10px auto; /* Center the button horizontally */
+	padding: 8px;    /* Uniform padding */
+	border: none;
+	border-radius: 8px; /* Rounded borders */
+	color: black;
+	font-size: 16px; /* Ensure text is easily readable */
+	cursor: pointer;
+	background-color: #00ff55ae; /* Primary color for primary button */
+	transition: background-color 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+.btnPrimary:hover, .btnDanger:hover, .submitButton:hover {
+	opacity: 0.8; /* Slight opacity change on hover */
+}
+  
+.btnDanger {
+	background-color: #dc3554ed; /* Danger color */
+}
+  
+.submitSection {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.submitButton {
+	background-color: #ffde59; 
+	color: black;
+	width: 20%; 
+}
+
+.logoSection {
+	margin-left: 10px;
+	margin-top: -22px;
+	/* position: sticky;	 */
+}
+  
+.logo {
+	width: 120px;
+	height: 100px; /* Larger logo */
+	margin-bottom: 0px;
+	border-radius: 32px; /* Circular if the logo is square */
+}
+  
+body, html {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;  
+}
+  
+  
+  

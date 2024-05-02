@@ -3,12 +3,22 @@ import jobService from "../../services/jobService";
 import localStorageUtils from "../../utils/localStorageUtils";
 import JobUploadModal from "./JobUpload/JobUploadModal";
 import JobCards from "./JobCards/JobCards";
-import styles from "./styles.module.css"
+import styles from "./styles.module.css";
 import { FaPlus } from "react-icons/fa";
+import { TailSpin } from "react-loader-spinner"; 
+import { motion, AnimatePresence } from "framer-motion";
+
+
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
 
 function MyJobs() {
   const [jobs, setJobs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -33,7 +43,7 @@ function MyJobs() {
   };
 
   useEffect(() => {
-    fetchJobs();
+    fetchJobs().then(() => setLoading(false));
   }, []);
 
 
@@ -45,7 +55,11 @@ function MyJobs() {
   return (
     <div>
       <h2>My Jobs</h2>
-      {jobs.length > 0 ? (
+      {loading ? (
+        <div className={styles.centeredLoader}>
+          <TailSpin color="#fbf07de1" height={70} width={70} />
+        </div>
+      ) : jobs.length > 0 ? (
         <JobCards initialJobsData={jobs} />
       ) : (
         <p>You have not posted any jobs.</p>
@@ -58,15 +72,24 @@ function MyJobs() {
         >
           <FaPlus />
         </button>
-        {isModalOpen && (
-          <div className={styles.modalBackdrop}>
-            <JobUploadModal
-              isOpen={isModalOpen}
-              onClose={toggleModal}
-              addJob={addJob}
-            />
-          </div>
-        )}
+        <AnimatePresence>
+          {isModalOpen && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={backdropVariants}
+              transition={{ duration: 0.3 }}
+              className={styles.modalBackdrop}
+            >
+              <JobUploadModal
+                isOpen={isModalOpen}
+                onClose={toggleModal}
+                addJob={addJob}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

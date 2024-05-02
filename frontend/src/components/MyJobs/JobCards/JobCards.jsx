@@ -32,14 +32,12 @@ function JobCards({ initialJobsData }) {
   const [editedJob, setEditedJob] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jobToDelete, setJobToDelete] = useState(null);
-
-  // Function to open delete modal and set jobToDelete state
+ 
   const openDeleteModal = (jobId) => {
     setJobToDelete(jobId);
     setShowDeleteModal(true);
   };
 
-  // Function to close delete modal
   const closeDeleteModal = () => {
     setJobToDelete(null);
     setShowDeleteModal(false);
@@ -73,6 +71,9 @@ function JobCards({ initialJobsData }) {
                 />
                 {activeMenuJobId === job._id && (
                   <div className={styles.cardMenu}>
+                    <button>
+                      Check Applicants
+                    </button>
                     <button
                       onClick={() =>
                         toggleEditMode(
@@ -162,10 +163,10 @@ function JobCards({ initialJobsData }) {
                   <label>
                     <input
                       type="checkbox"
-                      checked={editedJob.isCoverLetterNeeded || false} // Adjust this line according to how you store this value
+                      checked={editedJob.isCoverLetterNeeded || false}
                       onChange={(e) =>
                         handleChange(
-                          { target: { value: e.target.checked } }, // Make sure the handleChange can handle this structure
+                          { target: { value: e.target.checked } },
                           "isCoverLetterNeeded",
                           editedJob,
                           setEditedJob
@@ -200,6 +201,7 @@ function JobCards({ initialJobsData }) {
             <div>
               <FaRegClock /> Posted on {formatDate(job.createdAt)}
             </div>
+
             {editModeJobId === job._id && (
               <div>
                 <button
@@ -236,11 +238,11 @@ function JobCards({ initialJobsData }) {
         ))}
       </div>
       <DeleteModal
-        isOpen={showDeleteModal} 
+        isOpen={showDeleteModal}
         onCancel={closeDeleteModal}
         onConfirm={() => {
           deleteJob(jobToDelete, jobs, setJobs);
-          closeDeleteModal(); 
+          closeDeleteModal();
         }}
       />
     </>

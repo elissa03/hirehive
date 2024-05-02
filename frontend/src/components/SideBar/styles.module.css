@@ -15,7 +15,7 @@
   margin-right: auto;
   font-size: 1rem;
   font-weight: bold;
-  margin-top: 0; /* remove top margin */
+  margin-top: 0; 
   margin-bottom: 0;
 }
 
@@ -33,7 +33,7 @@
   font-family: var(--font-family-poppins);
   color: var(--sidebar-text-color);
   font-size: var(--sidebar-font-size);
-  padding-top: 0; /* adjust as needed */
+  padding-top: 0;
   padding-bottom: 0;
 }
 
@@ -85,4 +85,12 @@
 
 .dropdownIcon {
   margin-left: 120px;
+}
+
+.greyedOut {
+  background-color: var(--sidebar-active-color); 
+}
+
+.logo {
+  cursor: pointer;
 }

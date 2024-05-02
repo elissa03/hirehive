@@ -4,9 +4,17 @@
 }
 
 .sidebar {
-  flex: 0 0 250px;
-  height: 100%;
-  background-color: #f0f0f0;
+  width: 250px;
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+}
+
+.open {
+  width: 280px;
+}
+
+.closed {
+  width: 0px;
 }
 
 .content {
@@ -14,6 +22,11 @@
   padding: 20px;
   margin-left: 50px;
   overflow-y: auto;
+  transition: margin-left 0.3s ease;
+}
+
+.contentClosed {
+  margin-left: 100px;
 }
 
 .burgerIcon {
@@ -27,4 +40,3 @@
 .burgerIcon:hover {
   cursor: pointer;
 }
-

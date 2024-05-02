@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styles from './CVs.module.css';
 import cvService from '../../services/cvService'; 
 import cvsUtils from './cvsUtils';
+import { useNavigate } from 'react-router-dom'; 
 import { ToastContainer, toast } from "react-toastify";
 import { TailSpin } from 'react-loader-spinner'; 
 import "react-toastify/dist/ReactToastify.css";
+import { FaPlus } from "react-icons/fa";
 
 const CVs = () => { 
   
@@ -13,6 +15,7 @@ const CVs = () => {
   const [editTitle, setEditTitle] = useState('');
   const [contextMenu, setContextMenu] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); 
 
   // use effect to render the user's cvs by default
   useEffect(() => {
@@ -207,6 +210,15 @@ const CVs = () => {
       ) : (
         <p>You have not created any CVs yet.</p>
       )}
+      
+      <div className="d-flex justify-content-center col-12 mb-4">
+        <button
+          className={`btn fab ${styles.bottomRightButton}`} 
+          onClick={() => navigate('/create-cv')}
+        >
+          <FaPlus />
+        </button> 
+      </div>
     </div>
   );
   

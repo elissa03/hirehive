@@ -18,6 +18,7 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
     postedBy: "",
     requirements: [],
     title: "",
+    type: ""
   });
 
   if (!isOpen) return null;
@@ -37,30 +38,42 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
                 style={{ marginLeft: "auto" }}
               ></button>
             </div>
-            <div className="modal-body">
+            <div className={`${styles.modalBody}`}>
               <form
                 onSubmit={(e) =>
                   handleSubmit(e, formData, setFormData, onClose, addJob)
                 }
               >
-                <input
-                  type="text"
-                  name="title"
-                  value={formData.title}
-                  onChange={(e) => handleChange(e, formData, setFormData)}
-                  placeholder="Title"
-                  className="form-control mb-3"
-                />
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={(e) => handleChange(e, formData, setFormData)}
-                  placeholder="Description"
-                  className="form-control mb-3"
-                />
-                <div className="mb-3">
+                <div className="mb-2">
+                  <label htmlFor="title" className="form-label">
+                    Job Title*
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={(e) => handleChange(e, formData, setFormData)}
+                    placeholder="Title"
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  <label htmlFor="description" className="form-label">
+                    Job Description*
+                  </label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={(e) => handleChange(e, formData, setFormData)}
+                    placeholder="Description"
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
                   <label htmlFor="type" className="form-label">
-                    Job Type
+                    Job Type*
                   </label>
                   <select
                     id="type"
@@ -68,6 +81,7 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
                     value={formData.type}
                     onChange={(e) => handleChange(e, formData, setFormData)}
                     className="form-select"
+                    required
                   >
                     <option value="">Select job type</option>
                     <option value="full-time">Full-time</option>
@@ -77,14 +91,20 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
                     <option value="internship">Internship</option>
                   </select>
                 </div>
-                <input
-                  type="date"
-                  name="deadline"
-                  value={formData.deadline}
-                  onChange={(e) => handleChange(e, formData, setFormData)}
-                  className="form-control mb-3"
-                />
-                <div className="form-check mb-3">
+                <div className="mb-2">
+                  <label htmlFor="deadline" className="form-label">
+                    Deadline*
+                  </label>
+                  <input
+                    type="date"
+                    name="deadline"
+                    value={formData.deadline}
+                    onChange={(e) => handleChange(e, formData, setFormData)}
+                    className="form-control"
+                    required
+                  />
+                </div>
+                <div className="form-check mb-2">
                   <input
                     type="checkbox"
                     name="isCoverLetterNeeded"
@@ -100,6 +120,10 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
                     Is Cover Letter Needed?
                   </label>
                 </div>
+                <label className="form-label">
+                    Required Skills*
+                  </label>
+                  <br></br>
                 {formData.requirements.map((requirement, index) => (
                   <input
                     key={index}
@@ -113,14 +137,14 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
                         setFormData
                       )
                     }
-                    placeholder="Requirement"
+                    placeholder="i.e. Python"
                     className="form-control mb-1"
                   />
                 ))}
                 <button
                   type="button"
                   onClick={() => addRequirement(formData, setFormData)}
-                  className="btn btn-secondary mb-3"
+                  className="btn btn-secondary mb-2"
                 >
                   <FaPlus /> Add Requirement
                 </button>

@@ -120,6 +120,10 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
                     Is Cover Letter Needed?
                   </label>
                 </div>
+                <label className="form-label">
+                    Required Skills*
+                  </label>
+                  <br></br>
                 {formData.requirements.map((requirement, index) => (
                   <input
                     key={index}
@@ -133,7 +137,7 @@ const JobUploadModal = ({ isOpen, onClose, addJob }) => {
                         setFormData
                       )
                     }
-                    placeholder="Requirement"
+                    placeholder="i.e. Python"
                     className="form-control mb-1"
                   />
                 ))}

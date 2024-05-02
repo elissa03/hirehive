@@ -33,6 +33,11 @@ const createJob = async (data) => {
       return { status: 400, message: `The ${missingField} field is required.` };
     }
 
+    // filter requirements to make sure its not empty ""
+    const filteredRequirements = data.requirements.filter(requirement => requirement.length !== 0);
+    data.requirements = filteredRequirements;
+
+
     if ("deadline" in data) {
       if (data["deadline"]) {
         if (!isValidDate(data["deadline"]))

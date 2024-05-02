@@ -6,64 +6,55 @@ import { isValidDate } from "./utils/utils.js";
  *
  * This request expects the following data upon creating a job offer:
  * 'userId': to add new Job to user model & postedBy in Job,
-<<<<<<< HEAD
- * 'title', 'description', 'requirements': [], 'deadline' (optional), type, 'isCoverLetterNeeded' (optional): Job details 
-=======
  * 'title', 'description', 'requirements': [], 'type': ('Part-time', 'Full-time', 'Internship', 'Project'),
- * 'deadline' (optional), 'isCoverLetterNeeded' (optional): Job details 
->>>>>>> d4ae63d24dd6152081bc2b71f554975b48bcf4e7
- * 
- * @param {*} data: req body 
+ * 'deadline' (optional), 'isCoverLetterNeeded' (optional): Job details
+ *
+ * @param {*} data: req body
  * @returns : status and message of creation
  */
-const createJob = async (data) => { 
+const createJob = async (data) => {
   try {
-      console.log("data " + JSON.stringify(data));
+    console.log("data " + JSON.stringify(data));
 
-      if (!data.userId) {
-          return { status: 400, message: `The userId is required.` };
+    if (!data.userId) {
+      return { status: 400, message: `The userId is required.` };
+    }
+
+    const userId = data.userId;
+    delete data.userId;
+
+    const requiredFields = ["title", "description", "requirements", "type"];
+
+    let missingField = requiredFields.find(
+      (field) => !data[field] || data[field].length === 0
+    );
+
+    if (missingField) {
+      return { status: 400, message: `The ${missingField} field is required.` };
+    }
+
+    if ("deadline" in data) {
+      if (data["deadline"]) {
+        if (!isValidDate(data["deadline"]))
+          return { status: 400, message: "The deadline is not a valid date." };
+      } else {
+        delete data["deadline"];
       }
+    }
 
-      const userId = data.userId;
-      delete data.userId;
+    data["postedBy"] = userId;
 
-      const requiredFields = ['title', 'description', 'requirements', 'type'];
+    const newJob = new Job({ ...data });
 
-      let missingField = requiredFields.find(field => (!data[field] || data[field].length === 0));
+    await newJob.save();
 
-      if (missingField) {
-          
-          return { status: 400, message: `The ${missingField} field is required.` };
+    await User.findByIdAndUpdate(userId, { $push: { jobs: newJob._id } });
 
-      }  
-
-      if ('deadline' in data) {
-          if (data['deadline']) { 
-              if (!isValidDate(data['deadline'])) 
-              return { status: 400, message: "The deadline is not a valid date." };
-          }
-          else {
-              delete data['deadline'];
-          }
-      }
-      
-      data['postedBy'] = userId;
-
-      const newJob =  new Job({...data});
-
-      await newJob.save();
-
-      await User.findByIdAndUpdate(userId, { $push: { jobs: newJob._id } });
-
-      return { status: 201, message: "Job created!" };
-
+    return { status: 201, message: "Job created!" };
   } catch (error) {
-
-      console.log(error);
-      return { status: 500, message: "Internal error" };
-
+    console.log(error);
+    return { status: 500, message: "Internal error" };
   }
-     
 };
 
 /**
@@ -194,70 +185,6 @@ const deleteJob = async (jobId, data) => {
  * @returns
  */
 const updateJob = async (jobId, data) => {
-
-  try {  
-      
-      if (!data.userId) {
-          return { status: 400, message: 'The field userId is missing from req body' }; 
-      }
-
-      const job =  await Job.findById(jobId);
-      
-      if (!job) {
-          return { status: 404, message: 'Job not found!' }; 
-      }
-        
-      const user = await User.findById(data.userId);
-
-      if (!user) {
-          return { status: 404, message: 'Requested user does not exist!' }; 
-      }
-
-      if (data.userId !== job.postedBy.toString()) {
-          return { status: 403, message: 'Forbidden: Job does not correspond to user!' }; 
-      }        
-
-      if (!data['newData'] || typeof data['newData'] !== 'object' || Object.keys(data['newData']).length === 0) {
-          return { status: 400, message: 'The new data is missing from req body or wrong format!' }; 
-      }
-
-      const newData = data.newData;
-
-        if ('deadline' in newData) {
-          if(newData.deadline) {
-              if (!isValidDate(newData.deadline)) 
-              return { status: 400, message: "The deadline is not a valid date." };
-          }
-
-          // if the deadline is empty delete it from data
-          else {
-              delete newData['deadline'];
-          }
-        }
-      
-      await Job.updateOne({ _id: jobId }, {$set: {
-          ...newData
-      }});          
-
-      return { status: 200, message: "Job updated successfully."};
-
-  } catch (error) {
-
-      console.log(error);
-      return { status: 500, message: "Internal error" };
-
-  }
-
-};
-
-/**
- * The request expects userId in req.body, makes sure the user is existent,
- * and gets the jobs excluding the ones created by the person
- *
- * @param {*} data : req.body
- * @returns {jobId1: jobData1, ...}
- */
-const getAllJobs = async (data) => {
   try {
     if (!data.userId) {
       return {
@@ -266,7 +193,82 @@ const getAllJobs = async (data) => {
       };
     }
 
-    const userId = data.userId;
+    const job = await Job.findById(jobId);
+
+    if (!job) {
+      return { status: 404, message: "Job not found!" };
+    }
+
+    const user = await User.findById(data.userId);
+
+    if (!user) {
+      return { status: 404, message: "Requested user does not exist!" };
+    }
+
+    if (data.userId !== job.postedBy.toString()) {
+      return {
+        status: 403,
+        message: "Forbidden: Job does not correspond to user!",
+      };
+    }
+
+    if (
+      !data["newData"] ||
+      typeof data["newData"] !== "object" ||
+      Object.keys(data["newData"]).length === 0
+    ) {
+      return {
+        status: 400,
+        message: "The new data is missing from req body or wrong format!",
+      };
+    }
+
+    const newData = data.newData;
+
+    if ("deadline" in newData) {
+      if (newData.deadline) {
+        if (!isValidDate(newData.deadline))
+          return { status: 400, message: "The deadline is not a valid date." };
+      }
+
+      // if the deadline is empty delete it from data
+      else {
+        delete newData["deadline"];
+      }
+    }
+
+    await Job.updateOne(
+      { _id: jobId },
+      {
+        $set: {
+          ...newData,
+        },
+      }
+    );
+
+    return { status: 200, message: "Job updated successfully." };
+  } catch (error) {
+    console.log(error);
+    return { status: 500, message: "Internal error" };
+  }
+};
+
+/**
+ * This function expects a userId passed as a query parameter, makes sure the user is existent,
+ * and gets the jobs excluding the ones created by the person
+ *
+ * @param {string} userId - The user ID from req.query used to exclude jobs posted by this user.
+ * @returns {jobId1: jobData1, ...}
+ */
+const getAllJobs = async (userId) => {
+  try {
+    if (!userId) {
+      return {
+        status: 400,
+        message: "The field userId is missing from req body",
+      };
+    }
+
     const user = await User.findById(userId);
 
     if (!user) {

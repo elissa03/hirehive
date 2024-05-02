@@ -1,7 +1,18 @@
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .jobCardsContainer {
   display: flex;
   flex-wrap: wrap;
-   gap: 15px; 
+  gap: 30px;
   padding: 20px;
 }
 
@@ -12,6 +23,13 @@
   width: 300px;
   background-color: #f6eabe;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  animation: slideInFromLeft 0.8s ease-out;
+  font-size: 15px;
+}
+
+.jobCard:hover {
+  box-shadow: 0 0 15px 5px #f6e6ae;
 }
 
 .cardHeader {
@@ -19,7 +37,7 @@
 }
 
 .cardHeader h3 {
-  font-size: 1rem; 
+  font-size: 0.8rem;
 }
 
 .menuContainer {
@@ -71,17 +89,17 @@ textarea,
 select,
 input[type="date"] {
   padding: 6px;
-  font-size: 0.8rem; 
+  font-size: 0.8rem;
   margin-bottom: 10px;
 }
 
 .editInput,
 textarea {
-  background-color: #fff3e0; 
-  border: 1px solid #ffab40; 
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); 
+  background-color: #fff3e0;
+  border: 1px solid #ffab40;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
   padding: 8px;
-  border-radius: 4px; 
+  border-radius: 4px;
 }
 
 select {
@@ -104,60 +122,75 @@ input[type="date"] {
   color: white;
   padding: 6px 15px;
   font-size: 0.8rem;
-  margin: 5px 0; 
+  margin: 5px 0;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .fa {
-  font-size: 0.8rem; 
+  font-size: 0.8rem;
 }
 
 .saveButton {
-  background-color: #4caf50; 
+  background-color: #4caf50;
   margin-right: 5px;
 }
 
 .cancelButton {
-  background-color: #f44336; 
+  background-color: #f44336;
 }
 
 .addButton {
-  background-color: #2196f3; 
+  background-color: #2196f3;
 }
 
 .minusButton {
-  font-size: 0.75rem; 
-  background-color: #f44336; 
-  font-size: 0.6rem;  
+  font-size: 0.75rem;
+  background-color: #f44336;
+  font-size: 0.6rem;
   height: 30px;
-  display: flex; 
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
 .minusButton .fa {
-  font-size: 0.75rem; 
-  vertical-align: middle; 
+  font-size: 0.75rem;
+  vertical-align: middle;
 }
-
 
 .requirementField {
   display: flex;
-  align-items: center; 
-  margin-bottom: 10px; 
+  align-items: center;
+  margin-bottom: 10px;
   gap: 5px;
 }
 
 .requirementInput {
-  border: 1px solid #ccc; 
+  border: 1px solid #ccc;
   border-radius: 5px;
   padding: 8px;
   margin-bottom: 4px;
-  width: calc(100% - 22px); /* Adjust based on padding and margin if needed */
+  width: calc(100% - 22px);
   font-size: 14px;
 }
 
+.viewApplicantsButton {
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px; /* Rounded corners */
+}
+
+.viewApplicantsButton:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
 

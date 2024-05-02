@@ -54,15 +54,23 @@ function Dashboard({ handleLogout }) {
         className={styles.burgerIcon}
         onClick={toggleSidebar}
       />
-      {isSidebarOpen && (
-        <div className={styles.sidebar}>
-          <Sidebar
-            handleLogout={handleLogout}
-            setActiveComponent={setActiveComponent}
-          />
-        </div>
-      )}
-      <div className={styles.content}>{renderComponent()}</div>
+      <div
+        className={`${styles.sidebar} ${
+          isSidebarOpen ? styles.open : styles.closed
+        }`}
+      >
+        <Sidebar
+          handleLogout={handleLogout}
+          setActiveComponent={setActiveComponent}
+        />
+      </div>
+      <div
+        className={`${styles.content} ${
+          isSidebarOpen ? "" : styles.contentClosed
+        }`}
+      >
+        {renderComponent()}
+      </div>
     </div>
   );
 }

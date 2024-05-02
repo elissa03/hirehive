@@ -18,7 +18,7 @@ const createUser = async (data) => {
       const hashedPassword = await bcrypt.hash(password, 8);
       console.log(hashedPassword);
 
-      const newUser =  new User({
+      const newUser = new User({
         username,
         email,
         password: hashedPassword,
@@ -32,4 +32,22 @@ const createUser = async (data) => {
   }
 };
 
-export { createUser };
+/**
+ * Fetches a user by their ID from the MongoDB database.
+ * @param {string} id - The MongoDB ObjectId of the user to retrieve.
+ * @returns {Promise<Object>} The user object if found, otherwise an error object.
+ */
+const getUserById = async (id) => {
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return { status: 404, message: "User not found" };
+    }
+    return { status: 200, data: user };
+  } catch (error) {
+    console.log(error);
+    return { status: 500, message: "Internal error" };
+  }
+};
+
+export { createUser, getUserById };

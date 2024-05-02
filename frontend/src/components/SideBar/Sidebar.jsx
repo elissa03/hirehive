@@ -82,7 +82,9 @@ function Sidebar({ handleLogout, setActiveComponent }) {
               <li>
                 <a
                   onClick={() => handleSetActive("myjobs")}
-                  className={`nav-link ${styles.navLinkDropdown}`}
+                  className={`nav-link ${styles.navLinkDropdown} ${
+                    active === "myjobs" ? styles.greyedOut : ""
+                  }`}
                 >
                   My Jobs
                 </a>
@@ -90,7 +92,9 @@ function Sidebar({ handleLogout, setActiveComponent }) {
               <li>
                 <a
                   onClick={() => handleSetActive("explorejobs")}
-                  className={`nav-link ${styles.navLinkDropdown}`}
+                  className={`nav-link ${styles.navLinkDropdown} ${
+                    active === "explorejobs" ? styles.greyedOut : ""
+                  }`}
                 >
                   Explore Jobs
                 </a>

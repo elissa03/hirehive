@@ -1,10 +1,17 @@
+.modalBody {
+  max-height: 85vh; 
+  overflow-y: auto;
+  padding-right: 10px; 
+  padding-left: 10px;
+}
+
 .modalBackground {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Darker backdrop to make the modal pop */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,18 +19,17 @@
 }
 
 .modalContainer {
-  background-color: #fffbee; /* Light bee-yellow background */
+  background-color: #fffbee;
   padding: 20px;
   border-radius: 5px;
-  border: 2px solid #ffc107; /* Yellow border */
+  border: 2px solid #ffc107;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   width: 100%;
 }
 
-/* Updating button styles to fit the bee theme */
 .btn-primary {
-  background-color: #ffc107; /* Bee-yellow background */
+  background-color: #ffc107;
   border-color: #ffc107;
 }
 
@@ -33,20 +39,21 @@
 }
 
 .btn-secondary {
-  background-color: #000; /* Black for contrast */
+  background-color: #000;
   border-color: #000;
 }
 
 .btn-secondary:hover {
-  background-color: #444; /* Lighter black on hover */
+  background-color: #444;
   border-color: #444;
 }
 
 .btn-close {
-  filter: invert(1); /* Makes the close button white for better visibility */
+  filter: invert(1);
 }
 
 .form-control:focus {
   border-color: #ffc107;
   box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
 }
+

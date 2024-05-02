@@ -18,7 +18,6 @@ const createJob = async (data) => {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
   });
-  console.log("here", response);
   return response;
 };
 
@@ -38,13 +37,23 @@ const updateJob = async (id, data) => {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
   });
-  console.log("here", response);
   return response;
 };
+
+const getAllJobs = async(userId) => {
+  const response = await axios.get(API_URL, {
+    params: { userId }, // Pass userId as a query parameter
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+  });
+  return response;
+}
 
 export default {
   getMyJobs,
   createJob,
   deleteJob,
   updateJob,
+  getAllJobs
 };

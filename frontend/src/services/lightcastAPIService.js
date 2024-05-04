@@ -34,7 +34,7 @@ const fetchSkills = async (token) => {
             url: 'https://emsiservices.com/skills/versions/latest/skills', params: {
             q: 'programming',  
             fields: 'id,name,type,infoUrl',
-            limit: '50'
+            limit: '150'
             }, 
             headers: {
             'Authorization': `Bearer ${token}`

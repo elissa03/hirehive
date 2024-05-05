@@ -3,13 +3,12 @@ import styles from './CreateCV.module.css';
 import logo from '/images/logo.png';    
 import cvFormUtils from './cvFormUtils';
 import { ToastContainer, toast } from "react-toastify";
-import { TailSpin } from 'react-loader-spinner';  
+import "react-toastify/dist/ReactToastify.css";
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import "react-toastify/dist/ReactToastify.css"; 
-import lightcastAPIService from '../../services/lightcastAPIService';  
-import { useNavigate } from 'react-router-dom'; 
+import lightcastAPIService from '../../services/lightcastAPIService';
+import { useNavigate } from 'react-router-dom';
 
 function CreateCV() {
 
@@ -27,7 +26,7 @@ function CreateCV() {
   const [activeInputIndex, setActiveInputIndex] = useState(-1); 
 
   const addExperience = () => {
-    setExperiences([...experiences, { title: '', since: '', till: '', details: '' }]);
+    setExperiences([...experiences, { title: '', company: '', location: '', startDate: '', endDate: '', description: '' }]);
   };
 
   const removeExperience = (index) => {
@@ -35,7 +34,7 @@ function CreateCV() {
   };
 
   const addEducation = () => {
-    setEducationFields([...educationFields, { title: '', since: '', till: '', details: '' }]);
+    setEducationFields([...educationFields, { school: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', description: '' }]);
   };
 
   const [formData, setFormData] = useState({
@@ -148,51 +147,107 @@ function CreateCV() {
 
   const [projects, setProjects] = useState([]);
 
-const addProject = () => {
-  const newProject = { title: '', url: '' };
-  setProjects([...projects, newProject]);
-};
-
-const removeProject = (index) => {
-  const updatedProjects = projects.filter((_, i) => i !== index);
-  setProjects(updatedProjects);
-};
-
-const handleProjectChange = (index, field, value) => {
-  const updatedProjects = projects.map((project, i) => {
-    if (i === index) {
-      return { ...project, [field]: value };
-    }
-    return project;
-  });
-  setProjects(updatedProjects);
-};
-
-const handleInputChange = (e) => {
-  const { name, value } = e.target;
-  setFormData({ ...formData, [name]: value });
-};
- 
-const handleSubmit = (e) => {
-  e.preventDefault();  
-  const cvData = {
-    title: formData.title || "Untitled",
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    phoneNumber: formData.phoneNumber,
-    address: formData.address,
-    email: formData.email,
-    education: educationFields,
-    experience: experiences,
-    skills: skills, 
-    projects: projects
+  const addProject = () => {
+    const newProject = { title: '', url: '' };
+    setProjects([...projects, newProject]);
   };
-  console.log("CV Data to send:", cvData);
-  // Here you would typically send this data to your backend server
-};
+
+  const removeProject = (index) => {
+    const updatedProjects = projects.filter((_, i) => i !== index);
+    setProjects(updatedProjects);
+  };
+
+  const handleProjectChange = (index, field, value) => {
+    const updatedProjects = projects.map((project, i) => {
+      if (i === index) {
+        return { ...project, [field]: value };
+      }
+      return project;
+    });
+    setProjects(updatedProjects);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+   
+    const trimmedFormData = {
+      title: (formData.title || "Untitled").trim(),
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
+      phoneNumber: formData.phoneNumber.trim(),
+      address: formData.address.trim(),
+      email: formData.email.trim(),
+      education: educationFields,
+      experience: experiences,
+      skills: skills
+    };
+   
+    if (!trimmedFormData.firstName || !trimmedFormData.lastName || !trimmedFormData.email) {
+      toast.error("Please fill out all required fields", {
+        position: "top-right",
+        autoClose: 2000, 
+      });
+      return;
+    }
+   
+    console.log("CV Data to send:", trimmedFormData);
+   
+    submitCv(trimmedFormData);
+  };  
+
+  const submitCv = async (cvData) => {
+
+    const response = await cvFormUtils.createCv(cvData);
+
+    if(response.status === 201) {
+      toast.success("CV created successfully", {
+        position: "top-right",
+        autoClose: 2000, 
+      });
+
+      clearForm();
+ 
+    // setTimeout(() => {
+    //   navigate('/desired-page');  
+    // }, 2000);
+
+    }
+    else {
+      toast.error(response.message, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+
+  }
+
+  const clearForm = () => { 
+    setFormData({
+      title: '',
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      address: '',
+      email: '',
+      education: [],
+      experience: [],
+      skills: [],
+    });
+    setEducationFields([]);
+    setExperiences([]);
+    setSkills([]);
+    setProjects([]);
+  };
 
   return (
     <>
+    
+      <ToastContainer />
       <div className={styles.top}><div className={styles.backButton} onClick={goBack}>
         <FontAwesomeIcon icon={faArrowLeft} /> {/* Back arrow icon */}
       </div>
@@ -248,7 +303,7 @@ const handleSubmit = (e) => {
                 onKeyDown={(e) => handleKeyDown(e)}
                 onFocus={() => setActiveInputIndex(index)}
                 onBlur={() => setActiveInputIndex(-1)}
-                placeholder="i.e. Python"
+                placeholder="e.g. Python"
               />
               {activeInputIndex === index && suggestions.length > 0 && (
                 <ul className={styles.suggestions}>
@@ -278,28 +333,44 @@ const handleSubmit = (e) => {
             <button type="button" className={styles.btnPrimary} onClick={addExperience}>Add Experience</button>
             {experiences.map((experience, index) => (
               <div key={index} className={styles.fieldset}>
+
                 <label>Role *</label>
                 <input className={styles.formControl} value={experience.title} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].title = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="Job title" required />
-                <label>From *</label>
-                <input className={styles.formControl} value={experience.since} onChange={e => {
+
+                <label>Company *</label>
+                <input className={styles.formControl} value={experience.company} onChange={e => {
                   const newExperiences = [...experiences];
-                  newExperiences[index].since = e.target.value;
+                  newExperiences[index].company = e.target.value;
                   setExperiences(newExperiences);
-                }} placeholder="i.e. May 2021" required />
-                <label>Till</label>
-                <input className={styles.formControl} value={experience.till} onChange={e => {
+                }} placeholder="University of Balamand" required />
+
+                <label>Location *</label>
+                <input className={styles.formControl} value={experience.location} onChange={e => {
                   const newExperiences = [...experiences];
-                  newExperiences[index].till = e.target.value;
+                  newExperiences[index].location = e.target.value;
+                  setExperiences(newExperiences);
+                }} placeholder="Remote" required />
+
+                <label>From *</label>
+                <input className={styles.formControl} value={experience.startDate} onChange={e => {
+                  const newExperiences = [...experiences];
+                  newExperiences[index].startDate = e.target.value;
+                  setExperiences(newExperiences);
+                }} placeholder="e.g. May 2021" required />
+                <label>Till</label>
+                <input className={styles.formControl} value={experience.endDate} onChange={e => {
+                  const newExperiences = [...experiences];
+                  newExperiences[index].endDate = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="Present" />
                 <label>Details * </label>
-                <textarea className={styles.formControl} value={experience.details} onChange={e => {
+                <textarea className={styles.formControl} value={experience.description} onChange={e => {
                   const newExperiences = [...experiences];
-                  newExperiences[index].details = e.target.value;
+                  newExperiences[index].description = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="Explain your role" required ></textarea>
                 <button type="button" className={styles.btnDanger} onClick={() => removeExperience(index)}>Remove</button>
@@ -313,28 +384,46 @@ const handleSubmit = (e) => {
             <button type="button" className={styles.btnPrimary} onClick={addEducation}>Add Education</button>
             {educationFields.map((education, index) => (
               <div key={index} className={styles.fieldset}>
+
                 <label> School *</label>
-                <input className={styles.formControl} value={education.title} onChange={e => {
+                <input className={styles.formControl} value={education.school} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].title = e.target.value;
+                  newEducationFields[index].school = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="i.e. University of Balamand" required />
+                }} placeholder="e.g. University of Balamand" required />
+ 
+                <label> Degree *</label>
+                <input className={styles.formControl} value={education.degree} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].degree = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="e.g. Bachelor of Science" required /> 
+
+                <label> Field of Study *</label>
+                <input className={styles.formControl} value={education.fieldOfStudy} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].fieldOfStudy = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="e.g. Computer Science" required /> 
+                
                 <label>From * </label>
-                <input className={styles.formControl} value={education.since} onChange={e => {
+                <input className={styles.formControl} value={education.startDate} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].since = e.target.value;
+                  newEducationFields[index].startDate = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="i.e. September 2021" required/>
+                }} placeholder="e.g. September 2021" required/>
+
                 <label>Till</label>
-                <input className={styles.formControl} value={education.till} onChange={e => {
+                <input className={styles.formControl} value={education.endDate} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].till = e.target.value;
+                  newEducationFields[index].endDate = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder="(Expected) Graduation Month and Year" />
+
                 <label>Details * </label>
-                <textarea className={styles.formControl} value={education.details} onChange={e => {
+                <textarea className={styles.formControl} value={education.description} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].details = e.target.value;
+                  newEducationFields[index].description = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder="Enter Description"></textarea>
                 <button type="button" className={styles.btnDanger} onClick={() => removeEducation(index)}>Remove</button>
@@ -353,15 +442,15 @@ const handleSubmit = (e) => {
                 className={styles.formControl}
                 value={project.title}
                 onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
-                placeholder="e.g., Personal Website"
+                placeholder="e.g. Personal Website"
                 required
               />
-              <label>URL *</label>
+              <label>URL</label>
               <input
                 className={styles.formControl}
                 value={project.url}
                 onChange={(e) => handleProjectChange(index, 'url', e.target.value)}
-                placeholder="e.g., http://www.example.com" required
+                placeholder="e.g. http://www.example.com"
               />
               <button type="button" className={styles.btnDanger} onClick={() => removeProject(index)}>Remove</button>
             </div>

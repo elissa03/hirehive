@@ -24,15 +24,17 @@ const getCv = async (cvId) => {
 
 };
 
-
 const createCv = async (data) => {
+
   const response = await axios.post(`${API_URL}`, data, {
     headers: {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
   });
+
   console.log("here", response);
   return response;
+  
 };
 
 const deleteCv = async (cvId, userId) => {

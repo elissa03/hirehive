@@ -24,6 +24,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteModal from "../../ConfirmDelete/DeleteModal.jsx";
+import ApplicantsModal from "../Applicants/ApplicantsModal.jsx";
 
 function JobCards({ initialJobsData }) {
   const [jobs, setJobs] = useState(initialJobsData);
@@ -32,7 +33,8 @@ function JobCards({ initialJobsData }) {
   const [editedJob, setEditedJob] = useState({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jobToDelete, setJobToDelete] = useState(null);
- 
+  const [selectedApplicantsJobId, setSelectedApplicantsJobId] = useState(null);
+
   const openDeleteModal = (jobId) => {
     setJobToDelete(jobId);
     setShowDeleteModal(true);
@@ -71,7 +73,7 @@ function JobCards({ initialJobsData }) {
                 />
                 {activeMenuJobId === job._id && (
                   <div className={styles.cardMenu}>
-                    <button>
+                    <button onClick={() => setSelectedApplicantsJobId(job._id)}>
                       Check Applicants
                     </button>
                     <button
@@ -135,7 +137,7 @@ function JobCards({ initialJobsData }) {
                   <FaPlus /> Add Requirement
                 </button>
                 <div>
-                  <label>Job Type:</label>
+                  <label className="label">Job Type:</label>
                   <select
                     value={editedJob.type || ""}
                     onChange={(e) =>
@@ -150,7 +152,7 @@ function JobCards({ initialJobsData }) {
                   </select>
                 </div>
                 <div>
-                  <label>Deadline:</label>
+                  <label className="label">Deadline:</label>
                   <input
                     type="date"
                     value={editedJob.deadline || ""}
@@ -160,7 +162,7 @@ function JobCards({ initialJobsData }) {
                   />
                 </div>
                 <div>
-                  <label>
+                  <label className="label">
                     <input
                       type="checkbox"
                       checked={editedJob.isCoverLetterNeeded || false}
@@ -233,6 +235,12 @@ function JobCards({ initialJobsData }) {
                   <FaTimes /> Cancel
                 </button>
               </div>
+            )}
+            {selectedApplicantsJobId === job._id && (
+              <ApplicantsModal
+                jobId={job._id}
+                onClose={() => setSelectedApplicantsJobId(null)}
+              />
             )}
           </div>
         ))}

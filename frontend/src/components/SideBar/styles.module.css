@@ -6,14 +6,14 @@
   --sidebar-text-color: #333;
   --sidebar-menu-title-color: #555;
   --sidebar-active-color: rgba(254, 234, 0, 0.5);
-  --sidebar-font-size: 0.7rem;
+  --sidebar-font-size: 1rem;
   --sidebar-menu-title-font-size: 0.85rem;
 }
 
 .brand {
   margin-left: auto;
   margin-right: auto;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-top: 0; 
   margin-bottom: 0;

@@ -71,7 +71,7 @@
   transition: background-color 0.3s;
 }
 
-label {
+.label {
   font-size: 0.8rem;
   margin-right: 7px;
 }
@@ -193,4 +193,36 @@ input[type="date"] {
 .viewApplicantsButton:hover {
   background-color: #45a049; /* Darker green on hover */
 }
+
+/* styles.module.css (or any other CSS file you're using) */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+}
+
+.modalAnimationEnter {
+  animation: fadeIn 0.3s forwards;
+}
+
+.modalAnimationExit {
+  animation: fadeOut 0.3s forwards;
+}
+
 

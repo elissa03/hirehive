@@ -145,40 +145,49 @@ const deleteJobApp = async (jobAppId, data) => {
  * @returns 
  */
 const shortlistJobApp = async (jobAppId, data) => {
-
-    try {  
-        
-        if (!data.userId) {
-            return { status: 400, message: 'The field userId is missing from req body' }; 
-        }
-
-        const jobApp =  await JobApp.findById(jobAppId);
-        
-        if (!jobApp) {
-            return { status: 404, message: 'Job App not found!' }; 
-        }
-            
-        const user = await User.findById(data.userId);
-
-        if (!user) {
-            return { status: 404, message: 'Requested user does not exist!' }; 
-        }
-        
-        if (!(await isHirer(jobApp.jobId, data.userId))) {
-            return { status: 403, message: 'Forbidden: Only hirer can update job App!' }; 
-        }        
-        
-        await JobApp.findByIdAndUpdate(jobAppId, {'isShortListed': true }, { new: true });         
-
-        return { status: 200, message: "JobApp shortlisted successfully."};
-
-    } catch (error) {
-
-        console.log(error);
-        return { status: 500, message: "Internal error" };
-
+  try {
+    // check if userId is provided
+    if (!data.userId) {
+      return {
+        status: 400,
+        message: "The field userId is missing from req body",
+      };
     }
+
+    // find the job application
+    const jobApp = await JobApp.findById(jobAppId);
+    if (!jobApp) {
+      return { status: 404, message: "Job App not found!" };
+    }
+
+    // find the user
+    const user = await User.findById(data.userId);
+    if (!user) {
+      return { status: 404, message: "Requested user does not exist!" };
+    }
+
+    // verify if the user has permission to shortlist
+    if (!(await isHirer(jobApp.jobId, data.userId))) {
+      return {
+        status: 403,
+        message: "Forbidden: Only hirer can update job App!",
+      };
+    }
+
+    // update the job application with the desired shortlist status
+    const updatedJobApp = await JobApp.findByIdAndUpdate(
+      jobAppId,
+      { isShortListed: data.shortlisted },
+      { new: true }
+    );
+
+    return { status: 200, message: "JobApp status updated successfully." };
+  } catch (error) {
+    console.log(error);
+    return { status: 500, message: "Internal error" };
+  }
 };
+
 
 /**
  * The request expects userId in req.body, and jobAppId, makes sure the requested job is existent,
@@ -233,10 +242,10 @@ const getJobAppDetails = async (jobAppId, data) => {
  * @param {*} data : req.body 
  * @returns { status, jobApps: [{jobApp1, jobApp2, ...}]}
  */
-const getJobApps = async(jobId, data) => {
+const getJobApps = async(jobId, userId) => {
     try {  
          
-        const result = getAppsForJob(jobId, data);
+        const result = getAppsForJob(jobId, userId);
 
         if (result.status === 200) {
 

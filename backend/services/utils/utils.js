@@ -74,13 +74,12 @@ async function findTopMatchingApplicants(job, applicants, threshold=10) {
 }
 
 
-async function getAppsForJob(jobId, data) {
+async function getAppsForJob(jobId, userId) {
 
-    if (!data.userId) {
+    if (!userId) {
         return { status: 400, message: 'The field userId is missing from req body' }; 
     }
-
-    const userId = data.userId;
+    
     const user = await User.findById(userId); 
 
     if (!user) {

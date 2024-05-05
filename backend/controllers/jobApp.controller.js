@@ -52,7 +52,11 @@ const getJobAppDetailsController = async (req, res) => {
 
 const getApplicantsController = async (req, res) => {
     try {
-        const result = await getJobApps(req.params.jobId, req.body);
+
+        const { jobId } = req.params;
+        const { userId } = req.query;
+       
+        const result = await getJobApps(jobId, userId);
 
         if (result.status === 200) 
             return res.status(200).json(result.jobApps);

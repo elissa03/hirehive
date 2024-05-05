@@ -37,6 +37,8 @@ const CvSchema = new mongoose.Schema({
         fieldOfStudy: { type: String, required: true },
         startDate: { type: String, required: true }, // format: Month Year
         endDate: { type: String, default: "Present" },
+        GPA: { type: String },
+        location: { type: String, required: true },
         description: { type: String }
     }],
     

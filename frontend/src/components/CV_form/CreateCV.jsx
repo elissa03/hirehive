@@ -23,7 +23,8 @@ function CreateCV() {
   const [skills, setSkills] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
-  const [activeInputIndex, setActiveInputIndex] = useState(-1); 
+  const [activeInputIndex, setActiveInputIndex] = useState(-1);  
+  const [languages, setLanguages] = useState([]);
 
   const addExperience = () => {
     setExperiences([...experiences, { title: '', company: '', location: '', startDate: '', endDate: '', description: '' }]);
@@ -34,7 +35,8 @@ function CreateCV() {
   };
 
   const addEducation = () => {
-    setEducationFields([...educationFields, { school: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', description: '' }]);
+    setEducationFields([...educationFields, { school: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', GPA: '',
+                                              location: '', description: '' }]);
   };
 
   const [formData, setFormData] = useState({
@@ -167,6 +169,26 @@ function CreateCV() {
     setProjects(updatedProjects);
   };
 
+  const addLanguage = () => {
+    setLanguages([...languages, { language: '', proficiency: '' }]);
+  };
+
+  const removeLanguage = (index) => {
+    setLanguages(languages.filter((_, i) => i !== index));
+  };
+
+  const handleLanguageChange = (index, field, value) => {
+    const updatedLanguages = languages.map((language, i) => {
+      if (i === index) {
+        return { ...language, [field]: value };
+      }
+      return language;
+    });
+    setLanguages(updatedLanguages);
+  };
+
+  const proficiencyOptions = ['Native', 'Fluent', 'Proficient', 'Intermediate', 'Elementary', 'Beginner'];
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -184,7 +206,9 @@ function CreateCV() {
       email: formData.email.trim(),
       education: educationFields,
       experience: experiences,
-      skills: skills
+      skills: skills,
+      projects: projects,
+      languages: languages
     };
    
     if (!trimmedFormData.firstName || !trimmedFormData.lastName || !trimmedFormData.email) {
@@ -237,11 +261,14 @@ function CreateCV() {
       education: [],
       experience: [],
       skills: [],
+      projects: [],
+      languages: []
     });
     setEducationFields([]);
     setExperiences([]);
     setSkills([]);
     setProjects([]);
+    setLanguages([]);
   };
 
   return (
@@ -277,7 +304,7 @@ function CreateCV() {
             <div className={styles.column}>
               <label>Email *</label>
               <input className={styles.formControl} name="email" onChange={handleInputChange} value={formData.email}
-               type="email" placeholder="j@gmail.com" autoComplete="off" required />
+               type="email" placeholder="john.doe@gmail.com" autoComplete="off" required />
             </div>
             <div className={styles.column}>
               <label>Phone Number</label>
@@ -303,7 +330,7 @@ function CreateCV() {
                 onKeyDown={(e) => handleKeyDown(e)}
                 onFocus={() => setActiveInputIndex(index)}
                 onBlur={() => setActiveInputIndex(-1)}
-                placeholder="e.g. Python"
+                placeholder=" Python"
               />
               {activeInputIndex === index && suggestions.length > 0 && (
                 <ul className={styles.suggestions}>
@@ -360,7 +387,7 @@ function CreateCV() {
                   const newExperiences = [...experiences];
                   newExperiences[index].startDate = e.target.value;
                   setExperiences(newExperiences);
-                }} placeholder="e.g. May 2021" required />
+                }} placeholder=" May 2021" required />
                 <label>Till</label>
                 <input className={styles.formControl} value={experience.endDate} onChange={e => {
                   const newExperiences = [...experiences];
@@ -390,28 +417,42 @@ function CreateCV() {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].school = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="e.g. University of Balamand" required />
+                }} placeholder=" University of Balamand" required />
  
                 <label> Degree *</label>
                 <input className={styles.formControl} value={education.degree} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].degree = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="e.g. Bachelor of Science" required /> 
+                }} placeholder=" Bachelor of Science or B.S." required /> 
 
                 <label> Field of Study *</label>
                 <input className={styles.formControl} value={education.fieldOfStudy} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].fieldOfStudy = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="e.g. Computer Science" required /> 
+                }} placeholder=" Computer Science" required /> 
                 
+                <label> Location *</label>
+                <input className={styles.formControl} value={education.location} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].location = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="Lebanon" required /> 
+
+                <label> GPA </label>
+                <input className={styles.formControl} value={education.GPA} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].GPA = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="3.75/4 or 85/100" /> 
+
                 <label>From * </label>
                 <input className={styles.formControl} value={education.startDate} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].startDate = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="e.g. September 2021" required/>
+                }} placeholder=" September 2021" required/>
 
                 <label>Till</label>
                 <input className={styles.formControl} value={education.endDate} onChange={e => {
@@ -442,7 +483,7 @@ function CreateCV() {
                 className={styles.formControl}
                 value={project.title}
                 onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
-                placeholder="e.g. Personal Website"
+                placeholder=" Personal Website"
                 required
               />
               <label>URL</label>
@@ -450,12 +491,45 @@ function CreateCV() {
                 className={styles.formControl}
                 value={project.url}
                 onChange={(e) => handleProjectChange(index, 'url', e.target.value)}
-                placeholder="e.g. http://www.example.com"
+                placeholder=" http://www.example.com"
               />
+
               <button type="button" className={styles.btnDanger} onClick={() => removeProject(index)}>Remove</button>
             </div>
           ))}
         </div>
+        <hr />
+        <div className={styles.section}>
+            <h5>Languages</h5>
+            <button type="button" className={styles.btnPrimary} onClick={addLanguage}>Add Language</button>
+            {languages.map((language, index) => (
+              <div key={index} className={styles.fieldset}>
+                <label>Language *</label>
+                <input
+                  className={styles.formControl}
+                  value={language.language}
+                  onChange={(e) => handleLanguageChange(index, 'language', e.target.value)}
+                  placeholder="English"
+                  required
+                />
+                <label>Proficiency *</label>
+                <select
+                  className={styles.formControl}
+                  value={language.proficiency}
+                  onChange={(e) => handleLanguageChange(index, 'proficiency', e.target.value)}
+                  required
+                >
+                  <option value="">Select Proficiency</option>
+                  {proficiencyOptions.map((level, i) => (
+                    <option key={i} value={level}>{level}</option>
+                  ))}
+                </select>
+                <button type="button" className={styles.btnDanger} onClick={() => removeLanguage(index)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
 
           <hr></hr><div className={styles.submitSection}>
           <input type='submit' value='Create CV' className={styles.submitButton} /> </div>

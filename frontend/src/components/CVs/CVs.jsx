@@ -125,7 +125,7 @@ const CVs = () => {
         const cvsArray = []
         cvs.forEach(currCv => {
             if (currCv.id !== cv.id)
-              cvsArray.push({id: cv.id, title: cv.title, updatedAt: cv.updatedAt})
+              cvsArray.push({id: currCv.id, title: currCv.title, updatedAt: currCv.updatedAt})
         })
 
         setCvs(cvsArray);

@@ -60,7 +60,7 @@ const createCv = async (data) => {
     
     if ('education' in data && data.education) {
       
-      const educationRequiredEdFields = ["school", "degree", "fieldOfStudy", "startDate"];
+      const educationRequiredEdFields = ["school", "degree", "fieldOfStudy", "startDate", "location"];
 
       // validate every education in the array
       data["education"].forEach((element) => {

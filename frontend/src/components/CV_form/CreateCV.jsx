@@ -1,159 +1,33 @@
-// import React, { useState, useEffect } from 'react';
-// import "./CreateCV.module.css";  
-// import { ToastContainer, toast } from "react-toastify";
-// import { TailSpin } from 'react-loader-spinner'; 
-// import "react-toastify/dist/ReactToastify.css"; 
-// function CreateCV() {
-
-//   const [experiences, setExperiences] = useState([]);
-//   const [educationFields, setEducationFields] = useState([]);
-
-//   const addExperience = () => {
-//     setExperiences([...experiences, { title: '', since: '', till: '', details: '' }]);
-//   };
-
-//   const removeExperience = (index) => {
-//     setExperiences(experiences.filter((_, i) => i !== index));
-//   };
-
-//   const addEducation = () => {
-//     setEducationFields([...educationFields, { title: '', since: '', till: '', details: '' }]);
-//   };
-
-//   const removeEducation = (index) => {
-//     setEducationFields(educationFields.filter((_, i) => i !== index));
-//   };
-
-
-//   return (
-//     <>
-//       <div id="wrapper">
-//         <div id="left-wrapper" className="container">
-//           <h4> CV </h4>
-//           <form id="inputData" way-data="inputData" way-persistent className="form-group">
-//             <fieldset className="form-group">
-//               <label>Full Name</label>
-//               <input className="form-control" name="fullName" />
-//               <label>Email</label>
-//               <input className="form-control" name="email" /> 
-//             </fieldset>
-//             <hr />
-//             <fieldset className="form-group">
-//               <label>Title</label><input className="form-control" name="title" />
-//               <label>Location</label><input className="form-control" name="location" /> 
-//               <label>Skills</label><input className="form-control" name="tech" />
-//             </fieldset>
-//             <hr />
-//             <fieldset className="form-group">
-//               <label>About</label>
-//               <textarea className="form-control" name="about" rows="4"></textarea>
-//             </fieldset>
-//             <hr />
-//             <fieldset className="form-group">
-//             <h5>Experience</h5>
-//               <button type="button" className="btn btn-primary" onClick={addExperience}>Add Experience</button>
-//               {experiences.map((experience, index) => (
-//                 <fieldset key={index} className="form-group">
-//                   <label>Title</label>
-//                   <input className="form-control" value={experience.title} onChange={e => {
-//                     const newExperiences = [...experiences];
-//                     newExperiences[index].title = e.target.value;
-//                     setExperiences(newExperiences);
-//                   }} placeholder="Job title" />
-                  
-//                   <div className="form-inline">
-//                     <label>From</label>
-//                     <input className="form-control" value={experience.since} onChange={e => {
-//                       const newExperiences = [...experiences];
-//                       newExperiences[index].since = e.target.value;
-//                       setExperiences(newExperiences);
-//                     }} placeholder="Month & Year" />
-//                     <label>Till</label>
-//                     <input className="form-control" value={experience.till} onChange={e => {
-//                       const newExperiences = [...experiences];
-//                       newExperiences[index].till = e.target.value;
-//                       setExperiences(newExperiences);
-//                     }} placeholder="Default: Present" />
-//                   </div>
-                  
-//                   <label>Details</label>
-//                   <textarea className="form-control" value={experience.details} onChange={e => {
-//                     const newExperiences = [...experiences];
-//                     newExperiences[index].details = e.target.value;
-//                     setExperiences(newExperiences);
-//                   }} placeholder="Explain your role"></textarea>
-                  
-//                   <button type="button" className="btn btn-danger" onClick={() => removeExperience(index)}>Remove</button>
-//               </fieldset>
-//               ))}
-//             </fieldset>
-//             <hr />
-//             <h5>Education</h5>
-//             <button type="button" className="btn btn-primary" onClick={addEducation}>Add Education</button>
-//             {educationFields.map((education, index) => (
-//               <fieldset key={index} className="form-group">
-//                 <label>Title</label>
-//                 <input className="form-control" value={education.title} onChange={e => {
-//                   const newEducationFields = [...educationFields];
-//                   newEducationFields[index].title = e.target.value;
-//                   setEducationFields(newEducationFields);
-//                 }} placeholder="Your course name?" />
-//                 <div className="form-group">
-//                   <label>From</label>
-//                   <input className="form-control" value={education.since} onChange={e => {
-//                     const newEducationFields = [...educationFields];
-//                     newEducationFields[index].since = e.target.value;
-//                     setEducationFields(newEducationFields);
-//                   }} placeholder="Year admitted in" />
-//                   <label>Till</label>
-//                   <input className="form-control" value={education.till} onChange={e => {
-//                     const newEducationFields = [...educationFields];
-//                     newEducationFields[index].till = e.target.value;
-//                     setEducationFields(newEducationFields);
-//                   }} placeholder="Graduate(d) at" />
-//                 </div>
-//                 <label>Details</label>
-//                 <textarea className="form-control" value={education.details} onChange={e => {
-//                   const newEducationFields = [...educationFields];
-//                   newEducationFields[index].details = e.target.value;
-//                   setEducationFields(newEducationFields);
-//                 }} placeholder="Enter Description"></textarea>
-//                 <button type="button" className="btn btn-danger" onClick={() => removeEducation(index)}>Remove</button>
-//               </fieldset>
-//             ))}
-//             <hr />
-//             <fieldset className="form-group">
-//               <h5>Projects</h5>
-//               <button way-action-push="inputData.projects" className="btn btn-primary">Add project</button>
-//               <fieldset className="form-group" way-repeat="inputData.projects">
-//                 <label>Title</label><input className="form-control" way-persistent way-data="title" placeholder="Title" />
-//                 <label>URL</label><input className="form-control" way-persistent way-data="url" placeholder="https://github.com/username/project" /> 
-//                 <button way-action-remove="inputData.projects.$$key" way-persistent className="btn btn-danger">Remove</button>
-//               </fieldset>
-//             </fieldset> 
-//             <input type='submit' label='submit' className='submit' />
-//           </form>
-//         </div>
-        
-//       </div>
-//     </>
-//   );
-// }
-
-// export default CreateCV;
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './CreateCV.module.css';  
-import logo from '/images/logo.png'; // Adjust the path to your logo as needed
+import logo from '/images/logo.png';    
+import cvFormUtils from './cvFormUtils';
 import { ToastContainer, toast } from "react-toastify";
-import { TailSpin } from 'react-loader-spinner'; 
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import lightcastAPIService from '../../services/lightcastAPIService';
+import { useNavigate } from 'react-router-dom';
 
 function CreateCV() {
+
+  // arrow functionality to return to previous page
+  const navigate = useNavigate();   
+  const goBack = () => {
+    navigate(-1);
+  };
+
   const [experiences, setExperiences] = useState([]);
   const [educationFields, setEducationFields] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0);
+  const [activeInputIndex, setActiveInputIndex] = useState(-1);  
+  const [languages, setLanguages] = useState([]);
 
   const addExperience = () => {
-    setExperiences([...experiences, { title: '', since: '', till: '', details: '' }]);
+    setExperiences([...experiences, { title: '', company: '', location: '', startDate: '', endDate: '', description: '' }]);
   };
 
   const removeExperience = (index) => {
@@ -161,116 +35,503 @@ function CreateCV() {
   };
 
   const addEducation = () => {
-    setEducationFields([...educationFields, { title: '', since: '', till: '', details: '' }]);
+    setEducationFields([...educationFields, { school: '', degree: '', fieldOfStudy: '', startDate: '', endDate: '', GPA: '',
+                                              location: '', description: '' }]);
   };
+
+  const [formData, setFormData] = useState({
+    title: '', firstName: '', lastName: '', phoneNumber: '', address: '',
+    email: '', education: [], experience: [], skills: []
+  });
 
   const removeEducation = (index) => {
     setEducationFields(educationFields.filter((_, i) => i !== index));
+  }; 
+
+  useEffect(() => {
+    const handleBeforeUnload = event => { 
+      event.preventDefault(); 
+      event.returnValue = '';
+    };
+ 
+    window.addEventListener('beforeunload', handleBeforeUnload);
+ 
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, []);    
+
+  // code chunk needed to retrieve suggestions from api
+  const [token, setToken] = useState('');
+  
+  const [apiSkills, setApiSkills] = useState([]); 
+  
+  // get the token to be able to communicate with external API
+  useEffect(() => { 
+
+    const fetchToken = async ()=> {
+      const token = await lightcastAPIService.fetchToken();
+      
+      setToken(token);
+    }  
+
+    fetchToken();
+  }, []);
+
+  
+  // get the skills from the extern al API if functional
+  useEffect(() => { 
+ 
+    const softSkills = cvFormUtils.SOFT_SKILLS, staticSkills = cvFormUtils.STATIC_SKILLS;
+    var totalSkills = [... softSkills, ...staticSkills];
+
+    if (token) {
+      
+      const fetchApiSkills = async() => {
+         
+        totalSkills = await lightcastAPIService.fetchSkills(token);
+        setApiSkills(totalSkills);
+
+      }
+
+      fetchApiSkills(); 
+    }
+    else
+      setApiSkills(totalSkills); 
+    
+  }, [token]); 
+  // backend process + api data retrieval end  
+  
+  // functions to add a skill to skills array, remove, and update selection
+  const addSkill = () => {
+    setSkills([...skills, '']);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 40 && activeSuggestionIndex < suggestions.length - 1) {
+      e.preventDefault();  // Prevent page scrolling
+      setActiveSuggestionIndex(activeSuggestionIndex + 1);
+    } else if (e.keyCode === 38 && activeSuggestionIndex > 0) {
+      e.preventDefault();  // Prevent page scrolling
+      setActiveSuggestionIndex(activeSuggestionIndex - 1);
+    } else if (e.keyCode === 13) {
+      e.preventDefault();  // Prevent form submission
+      if (suggestions.length > 0) {
+        selectSuggestion(suggestions[activeSuggestionIndex]);
+      }
+    }
+  };
+
+  const updateSkill = (index, value) => {
+    setActiveInputIndex(index);   
+    const trimmedValue = value.trim();
+    const newSkills = [...skills];
+    newSkills[index] = trimmedValue;
+    setSkills(newSkills);
+    if (trimmedValue) {
+      setSuggestions(apiSkills.filter(skill => skill.toLowerCase().includes(trimmedValue.toLowerCase()))); 
+    } else {
+      setSuggestions([]);
+    }
+    setActiveSuggestionIndex(0);
+  };
+
+  const selectSuggestion = (skill) => {
+    const newSkills = [...skills];
+    newSkills[activeInputIndex] = skill.trim();
+    setSkills(newSkills);
+    setSuggestions([]);
+    setActiveSuggestionIndex(0);
+    setActiveInputIndex(-1);  // Reset active input index
+  };
+  
+  const removeSkill = (index) => {
+    setSkills(skills.filter((_, i) => i !== index));
+  };
+
+  const [projects, setProjects] = useState([]);
+
+  const addProject = () => {
+    const newProject = { title: '', url: '' };
+    setProjects([...projects, newProject]);
+  };
+
+  const removeProject = (index) => {
+    const updatedProjects = projects.filter((_, i) => i !== index);
+    setProjects(updatedProjects);
+  };
+
+  const handleProjectChange = (index, field, value) => {
+    const updatedProjects = projects.map((project, i) => {
+      if (i === index) {
+        return { ...project, [field]: value };
+      }
+      return project;
+    });
+    setProjects(updatedProjects);
+  };
+
+  const addLanguage = () => {
+    setLanguages([...languages, { language: '', proficiency: '' }]);
+  };
+
+  const removeLanguage = (index) => {
+    setLanguages(languages.filter((_, i) => i !== index));
+  };
+
+  const handleLanguageChange = (index, field, value) => {
+    const updatedLanguages = languages.map((language, i) => {
+      if (i === index) {
+        return { ...language, [field]: value };
+      }
+      return language;
+    });
+    setLanguages(updatedLanguages);
+  };
+
+  const proficiencyOptions = ['Native', 'Fluent', 'Proficient', 'Intermediate', 'Elementary', 'Beginner'];
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+   
+    const trimmedFormData = {
+      title: (formData.title || "Untitled").trim(),
+      firstName: formData.firstName.trim(),
+      lastName: formData.lastName.trim(),
+      phoneNumber: formData.phoneNumber.trim(),
+      address: formData.address.trim(),
+      email: formData.email.trim(),
+      education: educationFields,
+      experience: experiences,
+      skills: skills,
+      projects: projects,
+      languages: languages
+    };
+   
+    if (!trimmedFormData.firstName || !trimmedFormData.lastName || !trimmedFormData.email) {
+      toast.error("Please fill out all required fields", {
+        position: "top-right",
+        autoClose: 2000, 
+      });
+      return;
+    }
+   
+    console.log("CV Data to send:", trimmedFormData);
+   
+    submitCv(trimmedFormData);
+  };  
+
+  const submitCv = async (cvData) => {
+
+    const response = await cvFormUtils.createCv(cvData);
+
+    if(response.status === 201) {
+      toast.success("CV created successfully", {
+        position: "top-right",
+        autoClose: 2000, 
+      });
+
+      clearForm();
+ 
+    // setTimeout(() => {
+    //   navigate('/desired-page');  
+    // }, 2000);
+
+    }
+    else {
+      toast.error(response.message, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+
+  }
+
+  const clearForm = () => { 
+    setFormData({
+      title: '',
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      address: '',
+      email: '',
+      education: [],
+      experience: [],
+      skills: [],
+      projects: [],
+      languages: []
+    });
+    setEducationFields([]);
+    setExperiences([]);
+    setSkills([]);
+    setProjects([]);
+    setLanguages([]);
   };
 
   return (
     <>
-      <div className={styles.logoSection}>
-        <img src={logo} alt="Company Logo" className={styles.logo} /></div>
+    
+      <ToastContainer />
+      <div className={styles.top}><div className={styles.backButton} onClick={goBack}>
+        <FontAwesomeIcon icon={faArrowLeft} /> {/* Back arrow icon */}
+      </div>
+      <div className={styles.logoSection} onClick={()=> window.location.reload()}>
+        <img src={logo} alt="Company Logo" className={styles.logo} />
+      </div></div>
       <div className={styles.wrapper}>
         <h4>CV</h4>
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          
+        <label>CV Title</label>
+          <input className={styles.formControl} onChange={handleInputChange} value={formData.title} name="title" placeholder="Default Untitled"/>
+
           <div className={styles.row}>
             <div className={styles.column}> 
-              <label>First Name</label>
-              <input className={styles.formControl} name="firstName" autoComplete="off" />
+              <label>First Name *</label>
+              <input className={styles.formControl} onChange={handleInputChange} value={formData.firstName} name="firstName"
+               placeholder="John" autoComplete="off" required />
             </div>
             <div className={styles.column}>
-              <label>Last Name</label>
-              <input className={styles.formControl} name="lastName" autoComplete="off" />
+              <label>Last Name *</label>
+              <input className={styles.formControl} onChange={handleInputChange} value={formData.lastName} name="lastName" 
+              placeholder="Doe" autoComplete="off" required />
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.column}>
-              <label>Email</label>
-              <input className={styles.formControl} name="email" type="email" autoComplete="off" />
+              <label>Email *</label>
+              <input className={styles.formControl} name="email" onChange={handleInputChange} value={formData.email}
+               type="email" placeholder="john.doe@gmail.com" autoComplete="off" required />
             </div>
             <div className={styles.column}>
               <label>Phone Number</label>
-              <input className={styles.formControl} name="phoneNumber" type="tel" autoComplete="off" />
+              <input className={styles.formControl} name="phoneNumber" onChange={handleInputChange} 
+              value={formData.phoneNumber} type="tel" autoComplete="off" />
             </div>
           </div>
           <hr />
-          <label>CV Title</label>
-          <input className={styles.formControl} name="title" />
           <label>Address</label>
-          <input className={styles.formControl} name="location" />
-          <label>Skills</label>
-          <input className={styles.formControl} name="tech" /> 
+          <input className={styles.formControl} onChange={handleInputChange} type="text" autoComplete='off' value={formData.address} name="address" /> 
+ 
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <label>Skills</label>
+            <div className={styles.skillsGrid}> 
+            
+            {skills.map((skill, index) => (
+            <div key={index} className={styles.skillInput}>
+              <input
+                className={styles.formControl}
+                value={skill}
+                onChange={(e) => updateSkill(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e)}
+                onFocus={() => setActiveInputIndex(index)}
+                onBlur={() => setActiveInputIndex(-1)}
+                placeholder=" Python"
+              />
+              {activeInputIndex === index && suggestions.length > 0 && (
+                <ul className={styles.suggestions}>
+                  {suggestions.map((suggestion, i) => (
+                    <li
+                      key={i}
+                      onClick={() => selectSuggestion(suggestion)}
+                      className={i === activeSuggestionIndex ? styles.activeSuggestion : ""}
+                    >
+                      {suggestion}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <button type="button" className={styles.removeSkill} onClick={() => removeSkill(index)}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+          ))}
+            </div>
+            <button type="button" className={styles.btnPrimary} onClick={addSkill}>Add Skill</button> 
+            </div></div>
+
           <hr />
           <div className={styles.section}>
             <h5>Experience</h5>
             <button type="button" className={styles.btnPrimary} onClick={addExperience}>Add Experience</button>
             {experiences.map((experience, index) => (
               <div key={index} className={styles.fieldset}>
-                <label>Title</label>
+
+                <label>Role *</label>
                 <input className={styles.formControl} value={experience.title} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].title = e.target.value;
                   setExperiences(newExperiences);
-                }} placeholder="Job title" />
-                <label>From</label>
-                <input className={styles.formControl} value={experience.since} onChange={e => {
+                }} placeholder="Job title" required />
+
+                <label>Company *</label>
+                <input className={styles.formControl} value={experience.company} onChange={e => {
                   const newExperiences = [...experiences];
-                  newExperiences[index].since = e.target.value;
+                  newExperiences[index].company = e.target.value;
                   setExperiences(newExperiences);
-                }} placeholder="Month & Year" />
-                <label>Till</label>
-                <input className={styles.formControl} value={experience.till} onChange={e => {
+                }} placeholder="University of Balamand" required />
+
+                <label>Location *</label>
+                <input className={styles.formControl} value={experience.location} onChange={e => {
                   const newExperiences = [...experiences];
-                  newExperiences[index].till = e.target.value;
+                  newExperiences[index].location = e.target.value;
+                  setExperiences(newExperiences);
+                }} placeholder="Remote" required />
+
+                <label>From *</label>
+                <input className={styles.formControl} value={experience.startDate} onChange={e => {
+                  const newExperiences = [...experiences];
+                  newExperiences[index].startDate = e.target.value;
+                  setExperiences(newExperiences);
+                }} placeholder=" May 2021" required />
+                <label>Till</label>
+                <input className={styles.formControl} value={experience.endDate} onChange={e => {
+                  const newExperiences = [...experiences];
+                  newExperiences[index].endDate = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="Present" />
-                <label>Details</label>
-                <textarea className={styles.formControl} value={experience.details} onChange={e => {
+                <label>Details * </label>
+                <textarea className={styles.formControl} value={experience.description} onChange={e => {
                   const newExperiences = [...experiences];
-                  newExperiences[index].details = e.target.value;
+                  newExperiences[index].description = e.target.value;
                   setExperiences(newExperiences);
-                }} placeholder="Explain your role"></textarea>
+                }} placeholder="Explain your role" required ></textarea>
                 <button type="button" className={styles.btnDanger} onClick={() => removeExperience(index)}>Remove</button>
               </div>
             ))}
           </div>
           <hr />
+
           <div className={styles.section}>
             <h5>Education</h5>
             <button type="button" className={styles.btnPrimary} onClick={addEducation}>Add Education</button>
             {educationFields.map((education, index) => (
               <div key={index} className={styles.fieldset}>
-                <label>Title</label>
-                <input className={styles.formControl} value={education.title} onChange={e => {
+
+                <label> School *</label>
+                <input className={styles.formControl} value={education.school} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].title = e.target.value;
+                  newEducationFields[index].school = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="Your course name?" />
-                <label>From</label>
-                <input className={styles.formControl} value={education.since} onChange={e => {
+                }} placeholder=" University of Balamand" required />
+ 
+                <label> Degree *</label>
+                <input className={styles.formControl} value={education.degree} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].since = e.target.value;
+                  newEducationFields[index].degree = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="Year admitted in" />
+                }} placeholder=" Bachelor of Science or B.S." required /> 
+
+                <label> Field of Study *</label>
+                <input className={styles.formControl} value={education.fieldOfStudy} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].fieldOfStudy = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder=" Computer Science" required /> 
+                
+                <label> Location *</label>
+                <input className={styles.formControl} value={education.location} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].location = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="Lebanon" required /> 
+
+                <label> GPA </label>
+                <input className={styles.formControl} value={education.GPA} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].GPA = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder="3.75/4 or 85/100" /> 
+
+                <label>From * </label>
+                <input className={styles.formControl} value={education.startDate} onChange={e => {
+                  const newEducationFields = [...educationFields];
+                  newEducationFields[index].startDate = e.target.value;
+                  setEducationFields(newEducationFields);
+                }} placeholder=" September 2021" required/>
+
                 <label>Till</label>
-                <input className={styles.formControl} value={education.till} onChange={e => {
+                <input className={styles.formControl} value={education.endDate} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].till = e.target.value;
+                  newEducationFields[index].endDate = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder="Graduated at" />
-                <label>Details</label>
-                <textarea className={styles.formControl} value={education.details} onChange={e => {
+                }} placeholder="(Expected) Graduation Month and Year" />
+
+                <label>Details * </label>
+                <textarea className={styles.formControl} value={education.description} onChange={e => {
                   const newEducationFields = [...educationFields];
-                  newEducationFields[index].details = e.target.value;
+                  newEducationFields[index].description = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder="Enter Description"></textarea>
                 <button type="button" className={styles.btnDanger} onClick={() => removeEducation(index)}>Remove</button>
               </div>
             ))}
           </div>
-          <hr /><div className={styles.submitSection}>
+
+          <hr />
+          <div className={styles.section}>
+          <h5>Projects</h5>
+          <button type="button" className={styles.btnPrimary} onClick={addProject}>Add Project</button>
+          {projects.map((project, index) => (
+            <div key={index} className={styles.fieldset}>
+              <label>Title *</label>
+              <input
+                className={styles.formControl}
+                value={project.title}
+                onChange={(e) => handleProjectChange(index, 'title', e.target.value)}
+                placeholder=" Personal Website"
+                required
+              />
+              <label>URL</label>
+              <input
+                className={styles.formControl}
+                value={project.url}
+                onChange={(e) => handleProjectChange(index, 'url', e.target.value)}
+                placeholder=" http://www.example.com"
+              />
+
+              <button type="button" className={styles.btnDanger} onClick={() => removeProject(index)}>Remove</button>
+            </div>
+          ))}
+        </div>
+        <hr />
+        <div className={styles.section}>
+            <h5>Languages</h5>
+            <button type="button" className={styles.btnPrimary} onClick={addLanguage}>Add Language</button>
+            {languages.map((language, index) => (
+              <div key={index} className={styles.fieldset}>
+                <label>Language *</label>
+                <input
+                  className={styles.formControl}
+                  value={language.language}
+                  onChange={(e) => handleLanguageChange(index, 'language', e.target.value)}
+                  placeholder="English"
+                  required
+                />
+                <label>Proficiency *</label>
+                <select
+                  className={styles.formControl}
+                  value={language.proficiency}
+                  onChange={(e) => handleLanguageChange(index, 'proficiency', e.target.value)}
+                  required
+                >
+                  <option value="">Select Proficiency</option>
+                  {proficiencyOptions.map((level, i) => (
+                    <option key={i} value={level}>{level}</option>
+                  ))}
+                </select>
+                <button type="button" className={styles.btnDanger} onClick={() => removeLanguage(index)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <hr></hr><div className={styles.submitSection}>
           <input type='submit' value='Create CV' className={styles.submitButton} /> </div>
         </form>
       </div>

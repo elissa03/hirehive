@@ -77,18 +77,28 @@
 	color: black;
 	width: 20%; 
 }
-
-.logoSection {
-	margin-left: 10px;
-	margin-top: -22px;
-	/* position: sticky;	 */
-}
   
 .logo {
-	width: 120px;
-	height: 100px; /* Larger logo */
-	margin-bottom: 0px;
-	border-radius: 32px; /* Circular if the logo is square */
+	width: 125px;
+	height: 125px;  
+	margin-bottom: 0px;  
+	margin-top: -30px; 
+	cursor: pointer;
+}
+
+.top {
+	flex-direction: row;
+	margin-left: 10px; 
+	display: flex; padding-top: 5px;
+}
+
+.backButton {
+	cursor: pointer;
+	margin-top: 20px; 
+}
+
+.backButton:hover {
+	color: #ffde59ad;
 }
   
 body, html {
@@ -97,5 +107,88 @@ body, html {
 	font-size: 14px;  
 }
   
+.skillInput {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
   
+.skillInput input {
+	position: relative;
+	margin-left: 7%;
+	width: 70%; 
+	margin-right: 10px; /* Space between input and button */
+}
   
+.removeSkill {
+	background-color: #ff4d4f; /* Red color for the delete button */
+	color: white;
+	border: none;
+	cursor: pointer;
+	padding: 3px 5px;
+	margin-bottom: -5px;
+	width: 30px;
+	height: 25px;
+	border-radius: 100%;
+
+}
+
+.removeSkill:hover {
+	opacity: 0.8;
+}
+	
+  
+.skillsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 5px; 
+    margin-top: 5px;
+}
+
+
+.skillInput {
+    position: relative;  
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: calc(50% - 20px);  
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    left: 15%;  
+    top: 100%;  
+    z-index: 1000;
+    border-radius: 4px;
+    max-height: 200px; 
+    overflow-y: auto; 
+}
+
+.suggestions div {
+    padding: 8px;
+    cursor: pointer;
+} 
+.suggestions {
+	list-style-type: none; 
+    padding: 5px;
+}
+  
+.suggestions li {
+padding: 8px;
+cursor: pointer;
+}
+
+.suggestions li:hover, .activeSuggestion {
+background-color: #f0f0f0; /* Light gray background on hover or active */
+}
+
+.skillInput input:focus + .suggestions {
+display: block; /* Only show suggestions when input is focused */
+}
+
+.skillInput input {
+width: 100%;
+}

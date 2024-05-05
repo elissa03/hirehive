@@ -27,10 +27,22 @@ const isUserLoggedIn = () => {
   return true;
 };
 
+const getLocalUserId = () => {
+  const user = getLocalStorageUser();
+  const userId = user._id;
+  if (!userId) {
+      console.log("User ID is not available.");
+      return null;
+  }
+
+  return userId;
+}
+
 
 export default {
   getLocalStorageUser,
   setLocalStorageUser,
   getToken,
-  isUserLoggedIn
+  isUserLoggedIn,
+  getLocalUserId
 };

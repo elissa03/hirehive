@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { TailSpin } from 'react-loader-spinner'; 
 import "react-toastify/dist/ReactToastify.css";
 import { FaPlus } from "react-icons/fa";
+import localStorageUtils from '../../utils/localStorageUtils';
 
 const CVs = () => { 
   
@@ -32,10 +33,11 @@ const CVs = () => {
   }, []);
 
   // fetches the cvs from backend
-  const fetchCvs = async () => {
+  const fetchCvs = async () => { 
+
     try { 
 
-      const userId = cvsUtils.getLocalUserId();
+      const userId = localStorageUtils.getLocalUserId();
       
       if (!userId)
         return;
@@ -59,8 +61,8 @@ const CVs = () => {
   // handles opening the cv 
   const handleCVClick = (cvId) => {
     console.log(`CV with id ${cvId} was clicked`);
+    navigate('/cvs-panel')
   };
-
 
   // opens the menu to choose what to do with cv
   const handleRightClick = (event, cv) => {
@@ -84,7 +86,7 @@ const CVs = () => {
 
   const handleUpdateTitle = async () => { 
     try {
-      const userId = cvsUtils.getLocalUserId();
+      const userId = localStorageUtils.getLocalUserId();
       if (!userId) return;
 
       await cvService.updateCv(editCVId, { newData: { title: editTitle }, userId }); 
@@ -110,11 +112,10 @@ const CVs = () => {
     setContextMenu(null);  
   };
 
-  // to-do: test this when user is correct
   const handleDelete = async(cv) => {
     try { 
 
-      const userId = cvsUtils.getLocalUserId();
+      const userId = localStorageUtils.getLocalUserId();
       
       if (!userId)
         return;
@@ -125,7 +126,7 @@ const CVs = () => {
         const cvsArray = []
         cvs.forEach(currCv => {
             if (currCv.id !== cv.id)
-              cvsArray.push({id: cv.id, title: cv.title, updatedAt: cv.updatedAt})
+              cvsArray.push({id: currCv.id, title: currCv.title, updatedAt: currCv.updatedAt})
         })
 
         setCvs(cvsArray);

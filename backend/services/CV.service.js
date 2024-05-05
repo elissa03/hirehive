@@ -14,8 +14,7 @@ import { User } from "../models/User.js";
  * @returns : status and message of creation
  */
 const createCv = async (data) => {
-  try {
-    console.log("data " + JSON.stringify(data));
+  try { 
 
     if (!data.userId) {
       return { status: 400, message: `The userId is required.` };
@@ -27,10 +26,7 @@ const createCv = async (data) => {
     const requiredFields = [
       "firstName",
       "lastName",
-      "phoneNumber",
-      "address",
-      "email",
-      "education",
+      "email" 
     ];
 
     let missingField = null;
@@ -45,14 +41,52 @@ const createCv = async (data) => {
       return { status: 400, message: `The ${missingField} field is required.` };
     }
 
-    const requiredEdFields = ["school", "degree", "fieldOfStudy", "startDate"];
-    data["education"].forEach((element) => {
-      requiredEdFields.forEach((field) => {
-        if (!element[field]) {
-          missingField = field;
+    // filter out empty skills "" 
+    if (data.skills) {
+
+      const filteredSkills = data.skills.filter(skill => skill.trim().length > 0);
+      if (filteredSkills.length > 0) {
+        data.skills = filteredSkills;
+      } else {
+        delete data.skills;
+      }
+
+      if (filteredSkills.length > 0) {
+        data.skills = filteredSkills;
+      } else {
+        delete data.skills;
+      }
+    }
+    
+    if ('education' in data && data.education) {
+      
+      const educationRequiredEdFields = ["school", "degree", "fieldOfStudy", "startDate", "location"];
+
+      // validate every education in the array
+      data["education"].forEach((element) => {
+        
+        // make sure it includes the required fields
+        educationRequiredEdFields.forEach((field) => {
+          if (!element[field] || element[field].trim().length === 0) {
+            missingField = field;
+          }
+        });
+
+        // in case the endDate is included in the education make sure it's empty
+        if ('endDate' in element && element.endDate.trim().length === 0) {
+          delete element.endDate;
         }
-      });
-    });
+
+      }); 
+    }   
+
+    if ('experience' in data && data.experience) {
+      data['experience'].forEach((element) => {
+        if ('endDate' in element && element.endDate.trim().length === 0) {
+          delete element.endDate;
+        }
+      })
+    }
 
     if (missingField) {
       return {
@@ -70,10 +104,12 @@ const createCv = async (data) => {
     await User.findByIdAndUpdate(userId, { $push: { cvIds: newCv._id } });
 
     return { status: 201, message: "CV created!" };
+
   } catch (error) {
     console.log(error);
     return { status: 500, message: "Internal error" };
   }
+
 };
 
 /**

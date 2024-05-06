@@ -40,7 +40,7 @@ function CreateCV() {
   };
 
   const [formData, setFormData] = useState({
-    title: '', firstName: '', lastName: '', phoneNumber: '', address: '',
+    title: '', firstName: '', lastName: '', phoneNumber: '', linkedin: '', github: '', address: '',
     email: '', education: [], experience: [], skills: []
   });
 
@@ -204,6 +204,8 @@ function CreateCV() {
       phoneNumber: formData.phoneNumber.trim(),
       address: formData.address.trim(),
       email: formData.email.trim(),
+      github: formData.github.trim(), 
+      linkedin: formData.linkedin.trim(),
       education: educationFields,
       experience: experiences,
       skills: skills,
@@ -258,6 +260,8 @@ function CreateCV() {
       phoneNumber: '',
       address: '',
       email: '',
+      github: '',
+      linkedin: '',
       education: [],
       experience: [],
       skills: [],
@@ -312,9 +316,22 @@ function CreateCV() {
               value={formData.phoneNumber} type="tel" autoComplete="off" />
             </div>
           </div>
+          <div className={styles.row}>
+            <div className={styles.column}>
+              <label>LinkedIn </label>
+              <input className={styles.formControl} name="linkedin" onChange={handleInputChange} value={formData.linkedin}
+               type="text" placeholder="URL" autoComplete="off"/>
+            </div>
+            <div className={styles.column}>
+              <label>Github</label>
+              <input className={styles.formControl} name="github" onChange={handleInputChange} 
+              value={formData.github} placeholder='URL' type="text" autoComplete="off" />
+            </div>
+          </div>
           <hr />
           <label>Address</label>
-          <input className={styles.formControl} onChange={handleInputChange} type="text" autoComplete='off' value={formData.address} name="address" /> 
+          <input className={styles.formControl} onChange={handleInputChange} type="text" autoComplete='off' value={formData.address}
+           placeholder='Beirut, Lebanon' name="address" /> 
  
         <div className={styles.row}>
           <div className={styles.column}>

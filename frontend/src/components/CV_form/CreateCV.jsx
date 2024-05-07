@@ -289,53 +289,53 @@ function CreateCV() {
         <h4>CV</h4>
         <form className={styles.form} onSubmit={handleSubmit}>
           
-        <label>CV Title</label>
+        <label className={styles.label}>CV Title</label>
           <input className={styles.formControl} onChange={handleInputChange} value={formData.title} name="title" placeholder="Default Untitled"/>
 
           <div className={styles.row}>
             <div className={styles.column}> 
-              <label>First Name *</label>
+              <label className={styles.label}>First Name *</label>
               <input className={styles.formControl} onChange={handleInputChange} value={formData.firstName} name="firstName"
                placeholder="John" autoComplete="off" required />
             </div>
             <div className={styles.column}>
-              <label>Last Name *</label>
+              <label className={styles.label}>Last Name *</label>
               <input className={styles.formControl} onChange={handleInputChange} value={formData.lastName} name="lastName" 
               placeholder="Doe" autoComplete="off" required />
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.column}>
-              <label>Email *</label>
+              <label className={styles.label}>Email *</label>
               <input className={styles.formControl} name="email" onChange={handleInputChange} value={formData.email}
                type="email" placeholder="john.doe@gmail.com" autoComplete="off" required />
             </div>
             <div className={styles.column}>
-              <label>Phone Number</label>
+              <label className={styles.label}>Phone Number</label>
               <input className={styles.formControl} name="phoneNumber" onChange={handleInputChange} 
               value={formData.phoneNumber} type="tel" autoComplete="off" />
             </div>
           </div>
           <div className={styles.row}>
             <div className={styles.column}>
-              <label>LinkedIn </label>
+              <label className={styles.label}>LinkedIn </label>
               <input className={styles.formControl} name="linkedin" onChange={handleInputChange} value={formData.linkedin}
                type="text" placeholder="URL" autoComplete="off"/>
             </div>
             <div className={styles.column}>
-              <label>Github</label>
+              <label className={styles.label}>Github</label>
               <input className={styles.formControl} name="github" onChange={handleInputChange} 
               value={formData.github} placeholder='URL' type="text" autoComplete="off" />
             </div>
           </div>
           <hr />
-          <label>Address</label>
+          <label className={styles.label}>Address</label>
           <input className={styles.formControl} onChange={handleInputChange} type="text" autoComplete='off' value={formData.address}
            placeholder='Beirut, Lebanon' name="address" /> 
  
         <div className={styles.row}>
           <div className={styles.column}>
-            <label>Skills</label>
+            <label className={styles.label}>Skills</label>
             <div className={styles.skillsGrid}> 
             
             {skills.map((skill, index) => (
@@ -368,7 +368,7 @@ function CreateCV() {
             </div>
           ))}
             </div>
-            <button type="button" className={styles.btnPrimary} onClick={addSkill}>Add Skill</button> 
+            <button type="button" className={`${styles.btnPrimary} ${styles.addSkill}`} onClick={addSkill}>Add Skill</button> 
             </div></div>
 
           <hr />
@@ -378,40 +378,40 @@ function CreateCV() {
             {experiences.map((experience, index) => (
               <div key={index} className={styles.fieldset}>
 
-                <label>Role *</label>
+                <label className={styles.label}>Role *</label>
                 <input className={styles.formControl} value={experience.title} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].title = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="Job title" required />
 
-                <label>Company *</label>
+                <label className={styles.label}>Company *</label>
                 <input className={styles.formControl} value={experience.company} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].company = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="University of Balamand" required />
 
-                <label>Location *</label>
+                <label className={styles.label}>Location *</label>
                 <input className={styles.formControl} value={experience.location} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].location = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="Remote" required />
 
-                <label>From *</label>
+                <label className={styles.label}>From *</label>
                 <input className={styles.formControl} value={experience.startDate} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].startDate = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder=" May 2021" required />
-                <label>Till</label>
+                <label className={styles.label}>Till</label>
                 <input className={styles.formControl} value={experience.endDate} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].endDate = e.target.value;
                   setExperiences(newExperiences);
                 }} placeholder="Present" />
-                <label>Details * </label>
+                <label className={styles.label}>Details * </label>
                 <textarea className={styles.formControl} value={experience.description} onChange={e => {
                   const newExperiences = [...experiences];
                   newExperiences[index].description = e.target.value;
@@ -429,56 +429,56 @@ function CreateCV() {
             {educationFields.map((education, index) => (
               <div key={index} className={styles.fieldset}>
 
-                <label> School *</label>
+                <label className={styles.label}> School *</label>
                 <input className={styles.formControl} value={education.school} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].school = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder=" University of Balamand" required />
  
-                <label> Degree *</label>
+                <label className={styles.label}> Degree *</label>
                 <input className={styles.formControl} value={education.degree} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].degree = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder=" Bachelor of Science or B.S." required /> 
 
-                <label> Field of Study *</label>
+                <label className={styles.label}> Field of Study *</label>
                 <input className={styles.formControl} value={education.fieldOfStudy} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].fieldOfStudy = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder=" Computer Science" required /> 
                 
-                <label> Location *</label>
+                <label className={styles.label}> Location *</label>
                 <input className={styles.formControl} value={education.location} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].location = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder="Lebanon" required /> 
 
-                <label> GPA </label>
+                <label className={styles.label}> GPA </label>
                 <input className={styles.formControl} value={education.GPA} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].GPA = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder="3.75/4 or 85/100" /> 
 
-                <label>From * </label>
+                <label className={styles.label}>From * </label>
                 <input className={styles.formControl} value={education.startDate} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].startDate = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder=" September 2021" required/>
 
-                <label>Till</label>
+                <label className={styles.label}>Till</label>
                 <input className={styles.formControl} value={education.endDate} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].endDate = e.target.value;
                   setEducationFields(newEducationFields);
                 }} placeholder="(Expected) Graduation Month and Year" />
 
-                <label>Details * </label>
+                <label className={styles.label}>Details * </label>
                 <textarea className={styles.formControl} value={education.description} onChange={e => {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].description = e.target.value;
@@ -495,7 +495,7 @@ function CreateCV() {
           <button type="button" className={styles.btnPrimary} onClick={addProject}>Add Project</button>
           {projects.map((project, index) => (
             <div key={index} className={styles.fieldset}>
-              <label>Title *</label>
+              <label className={styles.label}>Title *</label>
               <input
                 className={styles.formControl}
                 value={project.title}
@@ -503,7 +503,7 @@ function CreateCV() {
                 placeholder=" Personal Website"
                 required
               />
-              <label>URL</label>
+              <label className={styles.label}>URL</label>
               <input
                 className={styles.formControl}
                 value={project.url}
@@ -521,7 +521,7 @@ function CreateCV() {
             <button type="button" className={styles.btnPrimary} onClick={addLanguage}>Add Language</button>
             {languages.map((language, index) => (
               <div key={index} className={styles.fieldset}>
-                <label>Language *</label>
+                <label className={styles.label}>Language *</label>
                 <input
                   className={styles.formControl}
                   value={language.language}
@@ -529,7 +529,7 @@ function CreateCV() {
                   placeholder="English"
                   required
                 />
-                <label>Proficiency *</label>
+                <label className={styles.label}>Proficiency *</label>
                 <select
                   className={styles.formControl}
                   value={language.proficiency}

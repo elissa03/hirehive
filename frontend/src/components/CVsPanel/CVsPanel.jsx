@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../CVs/CVs.module.css';
-import cvService from '../../services/cvService';
-import localStorageUtils from '../../utils/localStorageUtils';
+import React, { useEffect, useState } from "react";
+import styles from "./CVsPanel.module.css";
+import cvService from "../../services/cvService";
+import localStorageUtils from "../../utils/localStorageUtils";
 
 const CVsPanel = ({ onSelect, onClose }) => {
   const [cvs, setCvs] = useState([]);
@@ -15,7 +15,7 @@ const CVsPanel = ({ onSelect, onClose }) => {
         if (!userId) return;
 
         const response = await cvService.getAllCvs(userId);
-        const fetchedCvs = Object.values(response.data).map(cv => ({
+        const fetchedCvs = Object.values(response.data).map((cv) => ({
           id: cv._id,
           title: cv.title,
           updatedAt: cv.updatedAt,
@@ -32,12 +32,10 @@ const CVsPanel = ({ onSelect, onClose }) => {
     fetchCvs();
   }, []);
 
-  // Function to handle the selection of a CV
   const handleCVClick = (cvId) => {
     setSelectedCV(cvId);
   };
 
-  // Function to confirm the selected CV
   const confirmSelection = () => {
     if (selectedCV) {
       onSelect(selectedCV);
@@ -47,36 +45,46 @@ const CVsPanel = ({ onSelect, onClose }) => {
   return (
     <div className={styles.panelWrapper}>
       <div className={styles.panelContent}>
-        <div className={styles.cvHeader}>
+        <div className={styles.header}>
           <h2>Choose a CV</h2>
-          <button className={styles.closeButton} onClick={onClose}>✖</button>
+          <button className={styles.closeButton} onClick={onClose}>
+            ✖
+          </button>
         </div>
         {loading ? (
           <div className={styles.centeredLoader}>
-            <div className={styles.loader} />
+            <div className={styles.loader}></div>
           </div>
         ) : cvs.length > 0 ? (
           <>
-            <div className={styles.cvContainer} style={{ maxHeight: '600px', overflowY: 'auto' }}>
-              {cvs.map(cv => (
+            <div className={styles.cvContainer}>
+              {cvs.map((cv) => (
                 <div
                   key={cv.id}
-                  className={`${styles.cvBox} ${selectedCV === cv.id ? styles.selectedCV : ''}`}
+                  className={`${styles.cvBox} ${
+                    selectedCV === cv.id ? styles.selectedCV : ""
+                  }`}
                   onClick={() => handleCVClick(cv.id)}
                 >
-                  <div className={styles.cvHeader}>{cv.title}</div>
-                  <div className={styles.cvFooter}>{new Date(cv.updatedAt).toLocaleString()}</div>
+                  <div className={styles.cvTitle}>{cv.title}</div>
+                  <div className={styles.cvFooter}>
+                    Last updated: {new Date(cv.updatedAt).toLocaleString()}
+                  </div>
                 </div>
               ))}
             </div>
             <div className={styles.panelFooter}>
-              <button onClick={confirmSelection} className={styles.okButton} disabled={!selectedCV}>
+              <button
+                onClick={confirmSelection}
+                className={styles.okButton}
+                disabled={!selectedCV}
+              >
                 OK
               </button>
             </div>
           </>
         ) : (
-          <p>You have no existing CVs.</p>
+          <p>No existing CVs available.</p>
         )}
       </div>
     </div>

@@ -23,8 +23,18 @@ const shortlistApplicant = async (jobAppId, userId, shortlisted) => {
       },
     }
   );
-  console.log("API response:", response);
-  return response; // Return the API response data
+  return response; 
 };
 
-export default { getJobApps, shortlistApplicant };
+const createApplication = async (jobId, data) => {
+  console.log("here", data);
+  const response = await axios.post(`${API_URL}apply/${jobId}`, data, {
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`
+    },
+  });
+  return response
+
+}
+
+export default { getJobApps, shortlistApplicant, createApplication };

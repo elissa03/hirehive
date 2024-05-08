@@ -32,8 +32,6 @@ const createCv = async(data) => {
 
     data['userId'] = userId;
     const response = await cvService.createCv(data);
-  
-    console.log(Object.values(response.data));
 
     return response;
 

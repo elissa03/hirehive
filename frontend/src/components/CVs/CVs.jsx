@@ -176,16 +176,24 @@ const CVs = () => {
           />
         </div> // loading indicator
       ) : cvs.length > 0 ? (
-        <div className={styles.cvContainer}>
+        <div className={styles.cvContainer}> 
           {cvs.map(cv => (
-            <div key={cv.id} className={styles.cvBox} onClick={() => handleCVClick(cv.id)} onContextMenu={(e) => handleRightClick(e, cv)}>
-              <div className={styles.cvHeader}>
+            <div
+              key={cv.id}
+              className={styles.cvBox}
+              style={{ position: 'relative' }}  
+              onClick={() => handleCVClick(cv.id)}
+              onContextMenu={(e) => handleRightClick(e, cv)}
+            >
+              <div className={styles.cvHeader}> 
+                {/* stop propagation in order to stop it from firing get-cv */}
+                <span className={styles.dots} onClick={(e) => {e.stopPropagation(); handleRightClick(e, cv)}}>&#x22EE;</span>  
                 {editCVId === cv.id ? (
-                  <input 
+                  <input
                     type="text"
                     value={editTitle}
                     onChange={handleTitleChange}
-                    onBlur={handleBlur} 
+                    onBlur={handleBlur}
                     onKeyPress={handleKeyPress}
                     autoFocus
                     className={styles.editInput}
@@ -200,6 +208,7 @@ const CVs = () => {
               </div>
             </div>
           ))}
+
           {contextMenu && (
             <ContextMenu
               position={contextMenu.position}

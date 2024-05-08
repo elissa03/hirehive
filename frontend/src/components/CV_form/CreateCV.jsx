@@ -230,6 +230,7 @@ function CreateCV() {
 
     const response = await cvFormUtils.createCv(cvData);
 
+    console.log(JSON.stringify(response))
     if(response.status === 201) {
       toast.success("CV created successfully", {
         position: "top-right",
@@ -237,10 +238,13 @@ function CreateCV() {
       });
 
       clearForm();
- 
-    // setTimeout(() => {
-    //   navigate('/desired-page');  
-    // }, 2000);
+       
+      const newCvId = response.data.cvId;
+
+      if (newCvId)
+        setTimeout(() => {
+          navigate(`/get-cv/${newCvId}`);  
+        }, 2000);
 
     }
     else {

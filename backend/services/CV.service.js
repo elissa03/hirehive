@@ -100,12 +100,11 @@ const createCv = async (data) => {
     data["user"] = userId;
 
     const newCv = new CV({ ...data });
-
     await newCv.save();
-
+ 
     await User.findByIdAndUpdate(userId, { $push: { cvIds: newCv._id } });
 
-    return { status: 201, message: "CV created!" };
+    return { status: 201, message: "Successful!", cvId: newCv._id.toString() };
 
   } catch (error) {
     console.log(error);

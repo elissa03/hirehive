@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const JobAppSchema = new mongoose.Schema({
 
-    
     firstName: {
         type: String,
         required: true

@@ -61,7 +61,7 @@ const CVs = () => {
   // handles opening the cv 
   const handleCVClick = (cvId) => {
     console.log(`CV with id ${cvId} was clicked`);
-    navigate('/cvs-panel')
+    navigate(`/get-cv/${cvId}`)
   };
 
   // opens the menu to choose what to do with cv

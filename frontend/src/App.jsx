@@ -42,7 +42,7 @@ function App() {
         ></Route>        
         <Route path="/create-cv" element={<PrivateRoute isLoggedIn={isLoggedIn}> <CreateCV/> </PrivateRoute>} />
         <Route path="/cvs-panel" element={<PrivateRoute isLoggedIn={isLoggedIn}> <CVsPanel/> </PrivateRoute>} /> 
-        <Route path="/get-cv" element={<PrivateRoute isLoggedIn={isLoggedIn}> <IndividualCV/> </PrivateRoute>} />
+        <Route path="/get-cv/:cvId" element={<PrivateRoute isLoggedIn={isLoggedIn}> <IndividualCV/> </PrivateRoute>} />
         <Route path="/" element={<Login onLogin={handleLogin} />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/forgotpass" element={<ForgotPass />}></Route>

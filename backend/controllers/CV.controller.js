@@ -12,7 +12,7 @@ const createCvController = async (req, res) => {
 
 const getCvController = async (req, res) => {
     try {
-        const result = await getCv(req.params.cvId, req.body);
+        const result = await getCv(req.params.cvId, req.query.userId);
 
         if (result.status === 200) 
             return res.status(200).json(result.cv);

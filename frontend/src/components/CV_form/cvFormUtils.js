@@ -6,12 +6,20 @@ const STATIC_SKILLS = [
 ]; 
 
 const SOFT_SKILLS = [
-    "Communication skills", "Teamwork", "Problem-solving", "Time management", "Leadership",
-    "Adaptability", "Creativity", "Critical thinking", "Emotional intelligence", "Conflict resolution",
-    "Decision-making", "Stress management", "Networking", "Negotiation", "Empathy", "Resilience",
-    "Attention to detail", "Organization", "Open-mindedness", "Self-motivation", "Work ethic",
-    "Active listening", "Presentation skills", "Interpersonal skills", "Conflict management"
+  "Communication skills", "Teamwork", "Problem-solving", "Time management", "Leadership",
+  "Adaptability", "Creativity", "Critical thinking", "Emotional intelligence", "Conflict resolution",
+  "Decision-making", "Stress management", "Networking", "Negotiation", "Empathy", "Resilience",
+  "Attention to detail", "Organization", "Open-mindedness", "Self-motivation", "Work ethic",
+  "Active listening", "Presentation skills", "Interpersonal skills", "Conflict management",
+  "Collaboration", "Flexibility", "Mentoring/Coaching", "Persuasion/Influence", "Facilitation",
+  "Customer service", "Cultural awareness", "Initiative", "Patience", "Problem analysis",
+  "Trustworthiness", "Curiosity", "Storytelling", "Delegation", "Public speaking", "Positive attitude",
+  "Resourcefulness", "Strategic thinking", "Goal setting", "Self-awareness", "Gratitude", "Vision",
+  "Enthusiasm", "Diplomacy", "Risk management", "Writing skills", "Decision analysis", "Follow-up",
+  "Non-verbal communication", "Assertiveness", "Relationship building", "Respect", "Humor",
+  "Conflict prevention", "Self-care", "Grit"
 ];
+
 
 const createCv = async(data) => {
 

@@ -150,7 +150,7 @@ function CreateCV() {
   const [projects, setProjects] = useState([]);
 
   const addProject = () => {
-    const newProject = { title: '', url: '' };
+    const newProject = { title: '', URL: '' };
     setProjects([...projects, newProject]);
   };
 
@@ -320,12 +320,12 @@ function CreateCV() {
             <div className={styles.column}>
               <label className={styles.label}>LinkedIn </label>
               <input className={styles.formControl} name="linkedin" onChange={handleInputChange} value={formData.linkedin}
-               type="text" placeholder="URL" autoComplete="off"/>
+               type="text" placeholder="linkedin.com/in/your-username" autoComplete="off"/>
             </div>
             <div className={styles.column}>
               <label className={styles.label}>Github</label>
               <input className={styles.formControl} name="github" onChange={handleInputChange} 
-              value={formData.github} placeholder='URL' type="text" autoComplete="off" />
+              value={formData.github} placeholder='github.com/your-username' type="text" autoComplete="off" />
             </div>
           </div>
           <hr />
@@ -441,7 +441,7 @@ function CreateCV() {
                   const newEducationFields = [...educationFields];
                   newEducationFields[index].degree = e.target.value;
                   setEducationFields(newEducationFields);
-                }} placeholder=" Bachelor of Science or B.S." required /> 
+                }} placeholder="B.S. / B.E." required /> 
 
                 <label className={styles.label}> Field of Study *</label>
                 <input className={styles.formControl} value={education.fieldOfStudy} onChange={e => {
@@ -506,8 +506,8 @@ function CreateCV() {
               <label className={styles.label}>URL</label>
               <input
                 className={styles.formControl}
-                value={project.url}
-                onChange={(e) => handleProjectChange(index, 'url', e.target.value)}
+                value={project.URL}
+                onChange={(e) => handleProjectChange(index, 'URL', e.target.value)}
                 placeholder=" http://www.example.com"
               />
 

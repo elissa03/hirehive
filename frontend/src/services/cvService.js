@@ -13,12 +13,15 @@ const getAllCvs = async (userId) => {
     return response;
 };
 
-const getCv = async (cvId) => {
+const getCv = async (cvId, userId) => {
      
     const response = await axios.get(`${API_URL}${cvId}`, {
     headers: {
         Authorization: `Bearer ${localStorageUtils.getToken()}`,
-    },
+    }, 
+    params: {
+      userId: userId
+    }
     });
     return response;
 

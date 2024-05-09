@@ -44,7 +44,9 @@ const createCv = async (data) => {
     // filter out empty skills "" 
     if (data.skills) {
 
-      const filteredSkills = data.skills.filter(skill => skill.trim().length > 0);
+      const filteredSkills = data.skills.filter(skill => 
+        skill.trim().length > 0).map(skill => skill.trim().charAt(0).toUpperCase() + skill.trim().slice(1));
+
       if (filteredSkills.length > 0) {
         data.skills = filteredSkills;
       } else {
@@ -98,12 +100,11 @@ const createCv = async (data) => {
     data["user"] = userId;
 
     const newCv = new CV({ ...data });
-
     await newCv.save();
-
+ 
     await User.findByIdAndUpdate(userId, { $push: { cvIds: newCv._id } });
 
-    return { status: 201, message: "CV created!" };
+    return { status: 201, message: "Successful!", cvId: newCv._id.toString() };
 
   } catch (error) {
     console.log(error);
@@ -116,16 +117,22 @@ const createCv = async (data) => {
  * The request expects userId in req.body, and cvId, makes sure the requested CV is existent,
  * the user exists, and whether he/she has permission to open this CV
  * @param {*} cvId : from req.params
- * @param {*} data : req.body
+ * @param {*} userId : req.query 
  * @returns
  */
-const getCv = async (cvId, data) => {
+const getCv = async (cvId, userId) => {
   try {
-    if (!data.userId) {
+    if (!userId) {
       return {
         status: 400,
-        message: "The field userId is missing from req body",
+        message: "The field userId is missing from req query params",
       };
+    }
+ 
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return { status: 404, message: "Requested user does not exist!" };
     }
 
     const cv = await CV.findById(cvId);
@@ -134,15 +141,8 @@ const getCv = async (cvId, data) => {
       return { status: 404, message: "CV not found!" };
     }
 
-    const user = await User.findById(data.userId);
-
-    if (!user) {
-      return { status: 404, message: "Requested user does not exist!" };
-    }
-
-    console.log("success " + JSON.stringify(cv));
-
     return { status: 200, cv };
+    
   } catch (error) {
     console.log(error);
     return { status: 500, message: "Internal error" };

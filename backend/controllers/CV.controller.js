@@ -3,7 +3,11 @@ import { createCv, getCv, deleteCv, getAllCvs, updateCv } from "../services/CV.s
 const createCvController = async (req, res) => {
     try {
         const result = await createCv(req.body);
-        res.status(result.status).json({ message: result.message });
+        if (result.status === 201)
+            res.status(201).json({ message: result.message, cvId: result.cvId});
+        else
+            return res.status(result.status).json({message: result.message});
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal server error" });
@@ -12,7 +16,7 @@ const createCvController = async (req, res) => {
 
 const getCvController = async (req, res) => {
     try {
-        const result = await getCv(req.params.cvId, req.body);
+        const result = await getCv(req.params.cvId, req.query.userId);
 
         if (result.status === 200) 
             return res.status(200).json(result.cv);

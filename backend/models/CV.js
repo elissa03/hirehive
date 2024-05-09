@@ -30,6 +30,14 @@ const CvSchema = new mongoose.Schema({
         type: String,
         required: true, 
     },
+
+    linkedin: {
+        type: String 
+    },
+
+    github: {
+        type: String  
+    },
     
     education: [{
         school: { type: String, required: true },

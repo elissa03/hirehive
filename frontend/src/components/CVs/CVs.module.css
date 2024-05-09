@@ -181,7 +181,16 @@
 
 .closeButton:hover {
 	color: #ffde59;
+} 
+ 
+.dots {
+	position: absolute;
+	top: 2px;
+	right: 10px;
+	cursor: pointer;
+	color: #fbf07de1;
+	font-size: 22px; 
+	z-index: 10;
 }
-
-
+  
   

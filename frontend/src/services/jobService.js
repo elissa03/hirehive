@@ -12,6 +12,16 @@ const getMyJobs = async (id) => {
   return response;
 };
 
+const getJobDetails = async (jobId, userId) => {
+  const response = await axios.get(`${API_URL}details/${jobId}`, {
+    params: { userId },
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+  });
+  return response;
+};
+
 const createJob = async (data) => {
   const response = await axios.post(`${API_URL}`, data, {
     headers: {
@@ -40,7 +50,7 @@ const updateJob = async (id, data) => {
   return response;
 };
 
-const getAllJobs = async(userId) => {
+const getAllJobs = async (userId) => {
   const response = await axios.get(API_URL, {
     params: { userId }, // Pass userId as a query parameter
     headers: {
@@ -48,12 +58,13 @@ const getAllJobs = async(userId) => {
     },
   });
   return response;
-}
+};
 
 export default {
   getMyJobs,
   createJob,
   deleteJob,
   updateJob,
-  getAllJobs
+  getAllJobs,
+  getJobDetails,
 };

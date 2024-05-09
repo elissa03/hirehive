@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FaRegClock,
   FaRegListAlt,
@@ -34,6 +34,8 @@ function JobCards({ initialJobsData }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [jobToDelete, setJobToDelete] = useState(null);
   const [selectedApplicantsJobId, setSelectedApplicantsJobId] = useState(null);
+  const menuRef = useRef(null);
+
 
   const openDeleteModal = (jobId) => {
     setJobToDelete(jobId);
@@ -44,6 +46,20 @@ function JobCards({ initialJobsData }) {
     setJobToDelete(null);
     setShowDeleteModal(false);
   };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setActiveMenuJobId(null); // Close the menu if click outside
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []); 
 
   return (
     <>
@@ -72,7 +88,7 @@ function JobCards({ initialJobsData }) {
                   }
                 />
                 {activeMenuJobId === job._id && (
-                  <div className={styles.cardMenu}>
+                  <div ref={menuRef} className={styles.cardMenu}>
                     <button onClick={() => setSelectedApplicantsJobId(job._id)}>
                       Check Applicants
                     </button>
@@ -258,3 +274,6 @@ function JobCards({ initialJobsData }) {
 }
 
 export default JobCards;
+
+
+// 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

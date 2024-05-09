@@ -69,9 +69,9 @@ const createJob = async (data) => {
  * @param {*} data : req.body
  * @returns
  */
-const getJobDetails = async (jobId, data) => {
+const getJobDetails = async (jobId, userId) => {
   try {
-    if (!data.userId) {
+    if (userId) {
       return {
         status: 400,
         message: "The field userId is missing from req body",
@@ -84,7 +84,7 @@ const getJobDetails = async (jobId, data) => {
       return { status: 404, message: "Job not found!" };
     }
 
-    const user = await User.findById(data.userId);
+    const user = await User.findById(userId);
 
     if (!user) {
       return { status: 404, message: "Requested user does not exist!" };

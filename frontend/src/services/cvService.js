@@ -14,12 +14,12 @@ const getAllCvs = async (userId) => {
 };
 
 const getCv = async (cvId) => {
-     
     const response = await axios.get(`${API_URL}${cvId}`, {
     headers: {
         Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
     });
+    console.log("cv res", response)
     return response;
 
 };

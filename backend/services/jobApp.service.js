@@ -196,11 +196,11 @@ const shortlistJobApp = async (jobAppId, data) => {
  * @param {*} data : req.body
  * @returns 
  */
-const getJobAppDetails = async (jobAppId, data) => {
+const getJobAppDetails = async (jobAppId, userId) => {
 
     try {  
         
-        if (!data.userId) {
+        if (!userId) {
             return { status: 400, message: 'The field userId is missing from req body' }; 
         }
 
@@ -210,13 +210,13 @@ const getJobAppDetails = async (jobAppId, data) => {
             return { status: 404, message: 'Job App not found!' }; 
         }
          
-        const user = await User.findById(data.userId);
+        const user = await User.findById(userId);
 
         if (!user) {
             return { status: 404, message: 'Requested user does not exist!' }; 
         }
           
-        if (!(await isHirer(jobApp.jobId, data.userId))) {
+        if (!(await isHirer(jobApp.jobId, userId))) {
             console.log('here')
             return { status: 403, message: 'Forbidden: Only hirer can view Job App!' }; 
         }   

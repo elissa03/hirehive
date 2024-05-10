@@ -23,7 +23,6 @@ const getCv = async (cvId, userId) => {
       userId: userId
     }
     });
-    console.log("cv res", response)
     return response;
 
 };

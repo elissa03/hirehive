@@ -105,7 +105,7 @@
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;
-	background-color:#ffde59; 
+	background-color:#fbf07de1; 
 	display: flex;
 	align-items: center; 
 	justify-content: center;
@@ -116,7 +116,7 @@
   
 .bottomRightButton:hover{
 	box-shadow: 0 0 15px 5px rgba(255, 235, 59, 0.6);
-	background-color:#ffde59;
+	background-color:#f7e84de1;
 }
   
 .panelWrapper {

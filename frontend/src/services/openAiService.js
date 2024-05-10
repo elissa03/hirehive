@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "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";
+const API_KEY = "sk-proj-VMsNahZ1XqzJPWyVvu5jT3BlbkFJVkCX8F3zquyodSdF9YMU";
 
 const generateInterviewQuestions = async (
   applicantData,
@@ -15,7 +15,7 @@ const generateInterviewQuestions = async (
     },
     {
       role: "user",
-      content: `Generate 10 interview questions for an applicant named ${applicantData.firstName} ${applicantData.lastName}, who has applied for the position: ${jobString}. The applicant's qualifications are: ${cvString}, and their cover letter says: ${applicantData.coverLetter}.`,
+      content: `Generate only 10 interview questions for an applicant named ${applicantData.firstName} ${applicantData.lastName}, who has applied for the position: ${jobString}. The applicant's qualifications are: ${cvString}, and their cover letter says: ${applicantData.coverLetter}. Do not answer with any introductory statement just provide a list of questions directly`,
     },
   ];
 
@@ -25,7 +25,7 @@ const generateInterviewQuestions = async (
       {
         model: "gpt-3.5-turbo",
         messages: apiMessages,
-        max_tokens: 500, // Adjust if needed
+        max_tokens: 250, 
       },
       {
         headers: {
@@ -34,12 +34,10 @@ const generateInterviewQuestions = async (
         },
       }
     );
-
-    // Extract and return the generated questions
     const questions = response.data.choices[0].message.content
       .split("\n")
       .filter((q) => q.trim() !== "");
-    return questions.slice(0, 10); // Ensure only 10 questions
+    return questions;
   } catch (error) {
     console.error("Error generating interview questions:", error);
     return [];

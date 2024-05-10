@@ -71,7 +71,7 @@ const createJob = async (data) => {
  */
 const getJobDetails = async (jobId, userId) => {
   try {
-    if (userId) {
+    if (!userId) {
       return {
         status: 400,
         message: "The field userId is missing from req body",

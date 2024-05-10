@@ -37,7 +37,8 @@ const shortlistJobAppController = async(req, res) => {
 
 const getJobAppDetailsController = async (req, res) => {
     try {
-        const result = await getJobAppDetails(req.params.jobAppId, req.body);
+        const { userId } = req.query;
+        const result = await getJobAppDetails(req.params.jobAppId, userId);
 
         if (result.status === 200) 
             return res.status(200).json(result.jobApp);

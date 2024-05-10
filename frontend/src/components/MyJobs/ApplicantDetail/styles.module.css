@@ -1,0 +1,38 @@
+.modalHeader {
+  background-color: #fbf07de1; /* Bee yellow */
+  color: #333; /* Dark text */
+  border-bottom: none; /* No border at the bottom of the header */
+}
+
+
+.beeIcon {
+  color: #000; /* Black color for the bee icon */
+  margin-right: 10px; /* Add some space between the icon and the title */
+}
+
+.modalBody {
+  background-color: #fff; /* White background */
+  color: #333; /* Dark text */
+}
+
+.detail {
+  margin-bottom: 10px; /* Add space between details */
+}
+
+.cvLink {
+  color: #007bff; /* Blue color for the CV link */
+}
+
+.modalFooter {
+  background-color: #fbf07de1; /* Bee yellow */
+  border-top: none; /* No border at the top of the footer */
+}
+
+.closeButton {
+  background-color: #000; /* Black button background */
+  color: #fff; /* White button text */
+}
+
+.closeButton:hover {
+  background-color: #333; /* Darken button color on hover */
+}

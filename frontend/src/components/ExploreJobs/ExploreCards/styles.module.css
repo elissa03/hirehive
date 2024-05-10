@@ -56,15 +56,16 @@
 }
 
 .btnApply {
-  background-color: #ffcc00;
+  background-color: #fbf07de1;
   color: #333;
   align-self: center;
   width: 80%;
   margin-top: auto;
+  border: none;
 }
 
 .btnApply:hover {
-  background-color: #e6b800;
+  background-color: #f7e84de1;
   transform: scale(1.05);
 }
 .cvsPanelOverlay {

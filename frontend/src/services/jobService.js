@@ -14,9 +14,11 @@ const getMyJobs = async (id) => {
 
 const getJobDetails = async (jobId, userId) => {
   const response = await axios.get(`${API_URL}details/${jobId}`, {
-    params: { userId },
     headers: {
       Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+    params: {
+      userId: userId,
     },
   });
   return response;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import jobAppService from "../../../services/jobAppService";
 import cvService from "../../../services/cvService";
 import jobService from "../../../services/jobService";
@@ -6,9 +6,20 @@ import styles from "../Applicants/styles.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import localStorageUtils from "../../../utils/localStorageUtils";
 import openAiService from "../../../services/openAiService";
+import InterviewQuestionsModal from "../InterviewQuestions/InterviewQuestionsModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import ApplicantDetailModal from "../ApplicantDetail/ApplicantDetailModal";
 
 function ApplicantsModal({ jobId, onClose }) {
   const [applicants, setApplicants] = useState([]);
+  const [showQuestions, setShowQuestions] = useState(false); 
+  const [selectedApplicant, setSelectedApplicant] = useState(null); 
+  const [interviewQuestions, setInterviewQuestions] = useState([]);
+  const [showApplicantDetailsModal, setShowApplicantDetailsModal] =
+    useState(false);
+  const [selectedApplicantDetails, setSelectedApplicantDetails] =
+    useState(null);
   const user = localStorageUtils.getLocalStorageUser();
   const userId = user._id;
 
@@ -25,17 +36,18 @@ function ApplicantsModal({ jobId, onClose }) {
     if (jobId && userId) {
       fetchApplicants();
     }
+
+    
   }, [jobId, userId]);
 
   const handleGenerateQuestions = async (applicant) => {
-    console.log(applicant)
-    const cvResponse = cvService.getCv(applicant.cvId);
-    const jobResponse = jobService.getJobDetails(applicant.jobId, applicant.userId);
+    const cvResponse = await cvService.getCv(applicant.cvId, userId);
+    const jobResponse = await jobService.getJobDetails(applicant.jobId, userId);
 
-    // if (cvResponse.status !== 200 || jobResponse.status !== 200) {
-    //   console.error("Failed to fetch CV or job details");
-    //   return;
-    // }
+    if (cvResponse.status !== 200 || jobResponse.status !== 200) {
+      console.error("Failed to fetch CV or job details");
+      return;
+    }
     const cvString = JSON.stringify(cvResponse.data);
     const jobString = JSON.stringify(jobResponse.data);
 
@@ -44,35 +56,14 @@ function ApplicantsModal({ jobId, onClose }) {
       cvString,
       jobString
     );
-    console.log("Generated questions:", questions);
-    // Display the questions to the user (e.g., in a modal)
+    setInterviewQuestions(questions);
+    
   };
-
-  const handleContextMenu = (event, applicant) => {
-    event.preventDefault(); // Prevent default right-click behavior
-
-    // Show context menu with "Generate Interview Questions" option
-    const menu = document.getElementById("contextMenu");
-    menu.style.top = `${event.clientY}px`;
-    menu.style.left = `${event.clientX}px`;
-    menu.style.display = "block";
-
-    // Add event listener to "Generate Interview Questions" option
-    const generateQuestionsOption = document.getElementById(
-      "generateQuestionsOption"
-    );
-    generateQuestionsOption.onclick = () => {
-      handleGenerateQuestions(applicant);
-      menu.style.display = "none"; // Hide context menu after clicking
-    };
-  };
-
-  // Toggle shortlisted status for a specific applicant
+  
   const handleShortlistToggle = async (index) => {
     const applicantToUpdate = applicants[index];
     const updatedShortlistedStatus = !applicantToUpdate.isShortListed;
 
-    // Optimistically update the state
     setApplicants((prevApplicants) => {
       const updatedApplicants = [...prevApplicants];
       updatedApplicants[index].isShortListed = updatedShortlistedStatus;
@@ -80,7 +71,6 @@ function ApplicantsModal({ jobId, onClose }) {
     });
 
     try {
-      // Call the API to update the shortlist status
       await jobAppService.shortlistApplicant(
         applicantToUpdate._id,
         userId,
@@ -89,7 +79,6 @@ function ApplicantsModal({ jobId, onClose }) {
     } catch (error) {
       console.error("Error updating shortlist status:", error);
 
-      // Revert the optimistic update in case of an error
       setApplicants((prevApplicants) => {
         const revertedApplicants = [...prevApplicants];
         revertedApplicants[index].isShortListed = !updatedShortlistedStatus;
@@ -97,6 +86,36 @@ function ApplicantsModal({ jobId, onClose }) {
       });
     }
   };
+
+  const handleToggleQuestions = async (applicant) => {
+    setShowQuestions(!showQuestions);
+    setSelectedApplicant(applicant);
+    if (!showQuestions) {
+      await handleGenerateQuestions(applicant);
+    }
+  };
+
+  const handleViewApplication = async (applicant) => {
+    try {
+      console.log(applicant)
+      const response = await jobAppService.getJobAppDetails(
+        applicant._id,
+        userId
+      );
+      setSelectedApplicantDetails(response.data);
+      setShowApplicantDetailsModal(true);
+    } catch (error) {
+      console.error("Error fetching job application details:", error);
+    }
+  };
+
+  const handleCloseApplicantDetailsModal = () => {
+    setShowApplicantDetailsModal(false);
+    setSelectedApplicantDetails(null);
+  };
+
+
+  
 
   return (
     <div className={styles.modal}>
@@ -110,31 +129,61 @@ function ApplicantsModal({ jobId, onClose }) {
             <tr>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Shortlist Applicant</th>
+              <th style={{ width: "50px" }}>Shortlist</th>
               <th>Submission Date</th>
-              <th>Matching Percentage</th>
+              <th style={{ width: "50px" }}>Matching Percentage</th>
+              <th>Interview Questions</th>
             </tr>
           </thead>
           <tbody>
             {applicants.map((applicant, index) => (
-              <tr key={index} onClick={() => handleGenerateQuestions(applicant)}>
+              <tr key={index}>
                 <td>{applicant.firstName}</td>
                 <td>{applicant.lastName}</td>
                 <td>
                   <input
                     type="checkbox"
-                    checked={applicant.isShortListed} // Ensure this field is used directly for the checkbox
-                    onChange={() => handleShortlistToggle(index)} // Toggle shortlist status
+                    checked={applicant.isShortListed}
+                    onChange={() => handleShortlistToggle(index)}
                   />
                 </td>
                 <td>
                   {new Date(applicant.submissionDate).toLocaleDateString()}
                 </td>
                 <td>95%</td>
+                <td>
+                  <button
+                    className={styles.showQuestionsButton}
+                    onClick={() => handleToggleQuestions(applicant)}
+                  >
+                    {showQuestions && selectedApplicant === applicant
+                      ? "Hide Questions"
+                      : "Show Questions"}
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className={styles.viewButton}
+                    onClick={() => handleViewApplication(applicant)}
+                  >
+                    <FontAwesomeIcon icon={faEye} />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+        {showQuestions && (
+          <InterviewQuestionsModal
+            questions={interviewQuestions}
+            onClose={() => setShowQuestions(false)}
+          />
+        )}
+        <ApplicantDetailModal
+          applicant={selectedApplicantDetails}
+          show={showApplicantDetailsModal}
+          onClose={handleCloseApplicantDetailsModal}
+        />
       </div>
     </div>
   );

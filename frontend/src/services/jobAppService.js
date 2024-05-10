@@ -27,7 +27,6 @@ const shortlistApplicant = async (jobAppId, userId, shortlisted) => {
 };
 
 const createApplication = async (jobId, data) => {
-  console.log("here", data);
   const response = await axios.post(`${API_URL}apply/${jobId}`, data, {
     headers: {
       Authorization: `Bearer ${localStorageUtils.getToken()}`
@@ -37,4 +36,14 @@ const createApplication = async (jobId, data) => {
 
 }
 
-export default { getJobApps, shortlistApplicant, createApplication };
+const getJobAppDetails = async (jobAppId, userId) => {
+  const response = await axios.get(`${API_URL}${jobAppId}`, {
+    params: { userId },
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+  });
+  return response;
+}
+
+export default { getJobApps, shortlistApplicant, createApplication, getJobAppDetails };

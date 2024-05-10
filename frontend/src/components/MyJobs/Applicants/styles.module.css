@@ -27,7 +27,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #fdd835; /* Bright yellow */
+  background: #fbf07de1; /* Bright yellow */
   border: none;
   border-radius: 50%;
   width: 30px;
@@ -57,3 +57,32 @@ table thead {
 table tbody tr:nth-child(even) {
   background: #fffbee; /* Alternating light yellow rows */
 }
+
+.showQuestionsButton {
+  background-color: #fbf07de1;
+  color: #333;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.showQuestionsButton:hover {
+  background-color: #f7e84de1;
+}
+
+.viewButton {
+  background-color: grey;
+  color: #fbf07de1; /* Adjust as needed */
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.viewButton:hover {
+  color: #f7e84de1;  /* Adjust as needed */
+}
+

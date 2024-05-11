@@ -26,31 +26,28 @@ function ApplicantsModal({ jobId, onClose }) {
   
   useEffect(() => {
     const fetchApplicants = async () => {
-      try {
-        const applicantsResponse = await jobAppService.getJobApps(
-          jobId,
-          userId
-        );
+      try { 
+
         const matchingResponse = await jobAppService.getMatchingApps(
           jobId,
           userId
         );
-
        
-        console.log(matchingResponse)
+        console.log('matchingResponse ', matchingResponse)
 
-        // Map matching percentages to the corresponding applicants
-       const applicantsWithMatching = applicantsResponse.data.map(
-         (applicant) => {
-           const match = matchingResponse.data[applicant._id];
-           console.log("Match for Applicant ID:", applicant._id, match); // Logs the match object for each applicant
-           return {
-             ...applicant,
-             matchingPercentage: match ? match.matchingPercentage : "N/A", // Use 'N/A' if undefined
-           };
-         }
-       );
+        const applicantsWithMatching = matchingResponse.data.map(applicantInfo => {
+          console.log('app info ', applicantInfo);
+            const match = applicantInfo.matchingPercentage;
+            const applicant = applicantInfo.applicant;
+            return {
+              ...applicant,
+              matchingPercentage: match ? match : 'N/A'
+            }
+        })
+ 
+        console.log(applicantsWithMatching)
         setApplicants(applicantsWithMatching);
+
       } catch (error) {
         console.error("Error fetching job applicants:", error);
       }

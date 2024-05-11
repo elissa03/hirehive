@@ -269,7 +269,7 @@ const getJobApps = async(jobId, userId) => {
  * and gets the jobs created by the person
  * 
  * @param {*} userId : Id of user from params 
- * @returns {status: status, jobApps: [{jobId1: jobData1, matchingPercentage: matching}, ]}
+ * @returns {status: status, jobApps: [{applicant: aplicantData, matchingPercentage: matching}, ]}
  */
 const getMatchingJobApps = async(jobId, userId) => {
     try {  

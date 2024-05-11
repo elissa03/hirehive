@@ -63,7 +63,7 @@ async function findTopMatchingApplicants(job, applicants, threshold=10) {
         
         if (matchingPercentage >= threshold) {
 
-            var applicantEntry = { [applicant.userId]: applicant, 'matchingPercentage': matchingPercentage };
+            var applicantEntry = { 'applicant': applicant, 'matchingPercentage': matchingPercentage };
 
             matchingApplicants.push(applicantEntry);
         }

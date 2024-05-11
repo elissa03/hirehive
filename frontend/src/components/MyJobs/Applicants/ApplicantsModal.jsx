@@ -23,22 +23,46 @@ function ApplicantsModal({ jobId, onClose }) {
   const user = localStorageUtils.getLocalStorageUser();
   const userId = user._id;
 
+  
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const response = await jobAppService.getJobApps(jobId, userId);
-        console.log("im here", response);
-        setApplicants(response.data);
+        const applicantsResponse = await jobAppService.getJobApps(
+          jobId,
+          userId
+        );
+        const matchingResponse = await jobAppService.getMatchingApps(
+          jobId,
+          userId
+        );
+
+       
+        console.log(matchingResponse)
+
+        // Map matching percentages to the corresponding applicants
+       const applicantsWithMatching = applicantsResponse.data.map(
+         (applicant) => {
+           const match = matchingResponse.data[applicant._id];
+           console.log("Match for Applicant ID:", applicant._id, match); // Logs the match object for each applicant
+           return {
+             ...applicant,
+             matchingPercentage: match ? match.matchingPercentage : "N/A", // Use 'N/A' if undefined
+           };
+         }
+       );
+        setApplicants(applicantsWithMatching);
       } catch (error) {
         console.error("Error fetching job applicants:", error);
       }
     };
+
     if (jobId && userId) {
       fetchApplicants();
     }
 
     
   }, [jobId, userId]);
+
 
   const handleGenerateQuestions = async (applicant) => {
     const cvResponse = await cvService.getCv(applicant.cvId, userId);
@@ -150,7 +174,11 @@ function ApplicantsModal({ jobId, onClose }) {
                 <td>
                   {new Date(applicant.submissionDate).toLocaleDateString()}
                 </td>
-                <td>95%</td>
+                <td>
+                  {applicant.matchingPercentage
+                    ? `${applicant.matchingPercentage}%`
+                    : "N/A"}
+                </td>
                 <td>
                   <button
                     className={styles.showQuestionsButton}

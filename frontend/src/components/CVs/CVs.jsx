@@ -153,11 +153,17 @@ const CVs = () => {
     }
   }
 
-  const ContextMenu = ({ position, onRename, onDelete }) => {
+  // handles opening update cv form
+  const handleEdit = (cv) => {
+    console.log('Navigating to edit page for CV:', cv.id);
+    navigate(`/update-cv/${cv.id}`); 
+  };
+
+  const ContextMenu = ({ position, onRename, onDelete, onEdit }) => {
     return (
       <ul className={styles.contextMenu} style={{ top: position.y, left: position.x }}>
         <li onClick={onRename}>Rename</li>
-        <li onClick={() => console.log('Edit clicked')}>Edit</li>
+        <li onClick={onEdit}>Edit</li>
         <li onClick={onDelete}>Delete</li>
       </ul>
     );
@@ -214,6 +220,7 @@ const CVs = () => {
               position={contextMenu.position}
               onRename={() => handleRename(contextMenu.cv)}
               onDelete={() => handleDelete(contextMenu.cv)}
+              onEdit={() => handleEdit(contextMenu.cv)}
             />
           )}
         </div>

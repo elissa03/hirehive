@@ -8,8 +8,9 @@ import Signup from "./Pages/Signup/Signup";
 import localStorageUtils from "./utils/localStorageUtils";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateCV from "./components/CV_form/CreateCV";
-import CVsPanel from "./components/CVsPanel/CVsPanel";
-import IndividualCV from "./components/IndividualCV/IndividualCV";
+import CVsPanel from "./components/CVsPanel/CVsPanel"; 
+import IndividualCV from "./components/CV_get/IndividualCV";
+import UpdateCV from "./components/CV_update/UpdateCV";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorageUtils.isUserLoggedIn());
@@ -42,7 +43,8 @@ function App() {
         ></Route>        
         <Route path="/create-cv" element={<PrivateRoute isLoggedIn={isLoggedIn}> <CreateCV/> </PrivateRoute>} />
         <Route path="/cvs-panel" element={<PrivateRoute isLoggedIn={isLoggedIn}> <CVsPanel/> </PrivateRoute>} /> 
-        <Route path="/get-cv/:cvId" element={<PrivateRoute isLoggedIn={isLoggedIn}> <IndividualCV/> </PrivateRoute>} />
+        <Route path="/get-cv/:cvId" element={<PrivateRoute isLoggedIn={isLoggedIn}> <IndividualCV/> </PrivateRoute>} /> 
+        <Route path="/update-cv/:cvId" element={<PrivateRoute isLoggedIn={isLoggedIn}> <UpdateCV/> </PrivateRoute>} />
         <Route path="/" element={<Login onLogin={handleLogin} />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/forgotpass" element={<ForgotPass />}></Route>

@@ -181,9 +181,7 @@ function ApplicantsModal({ jobId, onClose }) {
                     className={styles.showQuestionsButton}
                     onClick={() => handleToggleQuestions(applicant)}
                   >
-                    {showQuestions && selectedApplicant === applicant
-                      ? "Hide Questions"
-                      : "Show Questions"}
+                    Generate
                   </button>
                 </td>
                 <td>

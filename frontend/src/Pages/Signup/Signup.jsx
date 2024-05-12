@@ -6,6 +6,7 @@ import googleIcon from "../../assets/google.png";
 import { useNavigate } from "react-router-dom";
 import userService from "../../services/userService";
 import { ToastContainer, toast } from "react-toastify";
+import rocket from '/images/rocket.png';
 
 function Signup() {
   const [data, setData] = useState({
@@ -87,7 +88,7 @@ function Signup() {
           <div className={`card ${styles.cardNoBorder}`}>
             <div className={`card-body ${styles.formPadding}`}>
               <h3 className={`mb-3 ${styles.leftAlignText}`}>
-                Join HireHive 🚀
+                Join HireHive <img src={rocket} width={'45px'} height={'55px'}/>
               </h3>
               <p className={`text-secondary ${styles.leftAlignText}`}>
                 Begin your journey to a fulfilling career with opportunities for

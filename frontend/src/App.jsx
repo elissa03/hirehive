@@ -7,9 +7,10 @@ import Login from "./Pages/Login/Login";
 import Signup from "./Pages/Signup/Signup";
 import localStorageUtils from "./utils/localStorageUtils";
 import PrivateRoute from "./components/PrivateRoute";
-import CreateCV from "./components/CV_form/CreateCV";
-import CVsPanel from "./components/CVsPanel/CVsPanel";
-import IndividualCV from "./components/IndividualCV/IndividualCV";
+import CreateCV from "./components/CV_form/CreateCV"; 
+import IndividualCV from "./components/CV_get/IndividualCV";
+import UpdateCV from "./components/CV_update/UpdateCV";
+import { ToastContainer, toast } from "react-toastify";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorageUtils.isUserLoggedIn());
@@ -24,13 +25,22 @@ function App() {
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.clear();
-    navigate("/");
+    
+    toast.success("Logging Out...", {
+      position: "top-right",
+      autoClose: 2000,  
+    });
+   
+    setTimeout(() => {
+      setIsLoggedIn(false);
+      localStorage.clear();
+      navigate("/");   
+    }, 3000); 
   };
 
   return (
     <div>
+      <ToastContainer />
       <Routes>
         <Route
           path="/dashboard"
@@ -40,9 +50,9 @@ function App() {
             </PrivateRoute>
           }
         ></Route>        
-        <Route path="/create-cv" element={<PrivateRoute isLoggedIn={isLoggedIn}> <CreateCV/> </PrivateRoute>} />
-        <Route path="/cvs-panel" element={<PrivateRoute isLoggedIn={isLoggedIn}> <CVsPanel/> </PrivateRoute>} /> 
-        <Route path="/get-cv/:cvId" element={<PrivateRoute isLoggedIn={isLoggedIn}> <IndividualCV/> </PrivateRoute>} />
+        <Route path="/create-cv" element={<PrivateRoute isLoggedIn={isLoggedIn}> <CreateCV/> </PrivateRoute>} /> 
+        <Route path="/get-cv/:cvId" element={<PrivateRoute isLoggedIn={isLoggedIn}> <IndividualCV/> </PrivateRoute>} /> 
+        <Route path="/update-cv/:cvId" element={<PrivateRoute isLoggedIn={isLoggedIn}> <UpdateCV/> </PrivateRoute>} />
         <Route path="/" element={<Login onLogin={handleLogin} />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
         <Route path="/forgotpass" element={<ForgotPass />}></Route>

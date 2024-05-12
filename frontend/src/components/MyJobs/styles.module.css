@@ -56,3 +56,6 @@
 	width: 90%;  
 }
 
+.threeDots {
+  cursor: pointer; /* Set cursor to pointer */
+}

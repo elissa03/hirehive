@@ -10,12 +10,15 @@ import InterviewQuestionsModal from "../InterviewQuestions/InterviewQuestionsMod
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import ApplicantDetailModal from "../ApplicantDetail/ApplicantDetailModal";
+import { TailSpin } from "react-loader-spinner";
+
 
 function ApplicantsModal({ jobId, onClose }) {
   const [applicants, setApplicants] = useState([]);
   const [showQuestions, setShowQuestions] = useState(false); 
   const [selectedApplicant, setSelectedApplicant] = useState(null); 
   const [interviewQuestions, setInterviewQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [showApplicantDetailsModal, setShowApplicantDetailsModal] =
     useState(false);
   const [selectedApplicantDetails, setSelectedApplicantDetails] =
@@ -47,9 +50,11 @@ function ApplicantsModal({ jobId, onClose }) {
  
         console.log(applicantsWithMatching)
         setApplicants(applicantsWithMatching);
+        setIsLoading(false);
 
       } catch (error) {
         console.error("Error fetching job applicants:", error);
+        setIsLoading(false);
       }
     };
 
@@ -146,56 +151,55 @@ function ApplicantsModal({ jobId, onClose }) {
         </button>
         <h2>Applicants</h2>
         <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th style={{ width: "50px" }}>Shortlist</th>
-              <th>Submission Date</th>
-              <th style={{ width: "50px" }}>Matching Percentage</th>
-              <th>Interview Questions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {applicants.map((applicant, index) => (
-              <tr key={index}>
-                <td>{applicant.firstName}</td>
-                <td>{applicant.lastName}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={applicant.isShortListed}
-                    onChange={() => handleShortlistToggle(index)}
-                  />
-                </td>
-                <td>
-                  {new Date(applicant.submissionDate).toLocaleDateString()}
-                </td>
-                <td>
-                  {applicant.matchingPercentage
-                    ? `${applicant.matchingPercentage}%`
-                    : "N/A"}
-                </td>
-                <td>
-                  <button
-                    className={styles.showQuestionsButton}
-                    onClick={() => handleToggleQuestions(applicant)}
-                  >
-                    Generate
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className={styles.viewButton}
-                    onClick={() => handleViewApplication(applicant)}
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th style={{ width: "50px" }}>Shortlist</th>
+                    <th>Submission Date</th>
+                    <th style={{ width: "50px" }}>Matching Percentage</th>
+                    <th>Interview Questions</th>
+                </tr>
+            </thead> 
+            <tbody>
+                {applicants.map((applicant, index) => (
+                    <tr key={index}>
+                        <td>{applicant.firstName}</td>
+                        <td>{applicant.lastName}</td>
+                        <td>
+                            <input
+                                type="checkbox"
+                                checked={applicant.isShortListed}
+                                onChange={() => handleShortlistToggle(index)}
+                            />
+                        </td>
+                        <td>{new Date(applicant.submissionDate).toLocaleDateString()}</td>
+                        <td>{applicant.matchingPercentage ? `${applicant.matchingPercentage}%` : "N/A"}</td>
+                        <td>
+                            <button
+                                className={styles.showQuestionsButton}
+                                onClick={() => handleToggleQuestions(applicant)}
+                            >
+                                Generate
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                className={styles.viewButton}
+                                onClick={() => handleViewApplication(applicant)}
+                            >
+                                <FontAwesomeIcon icon={faEye} />
+                            </button>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
         </table>
+        {isLoading && (
+            <div className={styles.loaderContainer}>
+                <TailSpin color="#fbf07de1" height={50} width={50} />
+            </div>
+        )}
         {showQuestions && (
           <InterviewQuestionsModal
             questions={interviewQuestions}

@@ -23,8 +23,7 @@
   color: #007bff; /* Blue color for the CV link */
 }
 
-.modalFooter {
-  background-color: #fbf07de1; /* Bee yellow */
+.modalFooter {  /* Bee yellow */
   border-top: none; /* No border at the top of the footer */
 }
 
@@ -35,4 +34,14 @@
 
 .closeButton:hover {
   background-color: #333; /* Darken button color on hover */
+}
+
+.modalFooter {
+  display: flex; /* Enable flexbox */
+  justify-content: center; /* Center the button horizontally */
+  border-top: none; /* No border at the top of the footer */
+}
+
+.detail label {
+  font-weight: bold;
 }

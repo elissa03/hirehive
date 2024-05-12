@@ -226,4 +226,6 @@ input[type="date"] {
   animation: fadeOut 0.3s forwards;
 }
 
-
+.menuIcon {
+  cursor: pointer;  /* Ensures the cursor changes to a pointer */
+}

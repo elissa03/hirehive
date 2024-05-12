@@ -4,6 +4,11 @@ import Button from "react-bootstrap/Button";
 import styles from "../ApplicantDetail/styles.module.css";
 
 function ApplicantDetailModal({ applicant, show, onClose }) {
+  
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton className={styles.modalHeader}>
@@ -14,16 +19,16 @@ function ApplicantDetailModal({ applicant, show, onClose }) {
       <Modal.Body>
         {applicant && (
           <>
-            <p className={styles.detail}>First Name: {applicant.firstName}</p>
-            <p className={styles.detail}>Last Name: {applicant.lastName}</p>
+            <p className={styles.detail}><label>First Name:</label> {capitalize(applicant.firstName)}</p>
+            <p className={styles.detail}><label>Last Name:</label> {capitalize(applicant.lastName)}</p>
             {applicant.coverLetter && (
               <p className={styles.detail}>
-                Cover Letter: {applicant.coverLetter}
+                <label>Cover Letter:</label> {applicant.coverLetter}
               </p>
             )}
-            <p className={styles.detail}>Status: {applicant.status}</p>
+            <p className={styles.detail}><label> Status:</label> {applicant.status}</p>
             <p className={styles.detail}>
-              Submission Date:{" "}
+              <label>Submission Date:</label>{" "}
               {new Date(applicant.submissionDate).toLocaleDateString()}
             </p>
             <a href={`/get-cv/${applicant.cvId}`} className={styles.cvLink}>

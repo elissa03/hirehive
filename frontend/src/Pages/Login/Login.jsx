@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import authService from "../../services/authService";
 import localStorageUtils from "../../utils/localStorageUtils";
 import { useNavigate } from "react-router-dom";
+import wave from '/images/wave.png';
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -71,7 +72,7 @@ function Login({ onLogin }) {
           <div className={`card ${styles.cardNoBorder}`}>
             <div className={`card-body ${styles.formPadding}`}>
               <h3 className={`mb-3 ${styles.leftAlignText}`}>
-                Welcome Back 👋
+                Welcome Back <img src={wave} width={'50px'} height={'60px'}/>
               </h3>
               <p className={`text-secondary ${styles.leftAlignText}`}>
                 Craft your professional story and discover new career

@@ -50,9 +50,9 @@ function MainDash() {
 
   return (
     <div>
-      <h2 className={styles.heading}>Dashboard</h2>
+      <h3 className={styles.heading}>Dashboard</h3>
       <div className={styles.section}>
-        <h3>Applications Overview</h3>
+        <h5>Applications Overview</h5>
         <canvas ref={chartContainer}></canvas>
       </div>
       <div className={styles.section}>

@@ -86,3 +86,101 @@ table tbody tr:nth-child(even) {
   color: #f7e84de1;  /* Adjust as needed */
 }
 
+
+/* styles.module.css */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Bootstrap modals typically use 1050 */
+}
+
+.modalContent {
+  background: #fffbee; /* Light yellow */
+  border: 2px solid #000000; /* Black border */
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 90%;
+  max-width: 900px;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #fbf07de1; /* Bright yellow */
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: #000000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  padding: 8px 12px;
+  border: 1px solid #000000; /* Black border */
+  text-align: left;
+}
+
+table thead {
+  background: #f9a825; /* Golden yellow */
+  color: #000000;
+}
+
+table tbody tr:nth-child(even) {
+  background: #fffbee; /* Alternating light yellow rows */
+}
+
+.showQuestionsButton {
+  background-color: #fbf07de1;
+  color: #333;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.showQuestionsButton:hover {
+  background-color: #f7e84de1;
+}
+
+.viewButton {
+  background-color: grey;
+  color: #fbf07de1; /* Adjust as needed */
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.viewButton:hover {
+  color: #f7e84de1;  /* Adjust as needed */
+}
+
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75px; /* Adjust this height as needed */
+  width: 90%; /* Ensures the loader is centered across the full width */
+}
+

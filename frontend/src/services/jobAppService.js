@@ -46,4 +46,14 @@ const getJobAppDetails = async (jobAppId, userId) => {
   return response;
 }
 
-export default { getJobApps, shortlistApplicant, createApplication, getJobAppDetails };
+const getMatchingApps = async (jobId, userId) => {
+  const response = await axios.get(`${API_URL}getMatchingApplicants/${jobId}`, {
+    params: { userId },
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+  });
+  return response;
+}
+
+export default { getJobApps, shortlistApplicant, createApplication, getJobAppDetails, getMatchingApps };

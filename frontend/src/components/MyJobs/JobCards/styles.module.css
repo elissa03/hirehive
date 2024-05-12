@@ -17,11 +17,11 @@
 }
 
 .jobCard {
-  border: 2px solid #ffcc00;
+  border: 2px solid #f6eabe;
   border-radius: 8px;
   padding: 20px;
   width: 300px;
-  background-color: #f6eabe;
+  background-color:#f9f4b9e1;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out;
   animation: slideInFromLeft 0.8s ease-out;

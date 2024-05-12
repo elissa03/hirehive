@@ -19,7 +19,7 @@
 .jobCard {
   border: 2px solid #ffcc00;
   border-radius: 8px;
-  padding: 10px;
+  padding: 20px;
   width: 300px;
   background-color: #f6eabe;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -37,8 +37,9 @@
 }
 
 .cardHeader h3 {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
+
 
 .menuContainer {
   position: absolute;
@@ -62,8 +63,8 @@
 .cardMenu button {
   display: block;
   width: 100%;
-  padding: 6px 10px;
-  font-size: 0.8rem;
+  padding: 8px 10px;
+  font-size: 0.9rem;
   text-align: left;
   border: none;
   background-color: transparent;

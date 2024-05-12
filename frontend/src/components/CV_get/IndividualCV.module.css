@@ -164,18 +164,21 @@
 }
   
 .editButton {
-    background-color: #4aa0fde3;
-	/* background-color: #00ff55ae; */
+    background-color: #4aa0fde3; 
 }
 
 .deleteButton {
     background-color: #dc3554ed;
 }
 
-.customizeButton {
-    /* background-color: #ffde59ad;
-     */
+.customizeButton { 
      background-color: #ffde59;
+}
+
+.editButton:hover, .deleteButton:hover, .customizeButton:hover {
+    filter: brightness(85%);   
+    transform: scale(1.025);   
+    transition: all 0.3s ease;
 }
   
 
@@ -280,6 +283,6 @@
 }
   
 .submitButton:hover {
-    background-color: #0056b3; /* Darken button on hover */
+    background-color: #f9d545; /* Darken button on hover */
 }
   

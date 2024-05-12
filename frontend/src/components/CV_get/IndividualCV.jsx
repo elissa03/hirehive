@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react';
 import styles from './IndividualCV.module.css';  
 import { TailSpin } from 'react-loader-spinner'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faEdit, faTrash, faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons';  
+import { faArrowLeft, faEdit, faTrash, faMagicWandSparkles, faTimes } from '@fortawesome/free-solid-svg-icons';  
 import logo from '/images/logo.png';  
 import { useNavigate, useParams } from 'react-router-dom'; 
 import cvService from '../../services/cvService';
@@ -19,6 +19,8 @@ const IndividualCV = () => {
   const [cvData, setCvData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+  const [jobDescription, setJobDescription] = useState('');
 
   const { cvId } = useParams();
   console.log(cvId);
@@ -72,9 +74,9 @@ const IndividualCV = () => {
   
   const stripHttp = (url) => url.replace(/^https?:\/\//, '');
   const splitDescriptionIntoList = (description) => {
-    if (!description) return []; // Return an empty array if the description is missing
+    if (!description) return []; 
     return description
-      .split('.') // Split by period
+      .split('.')  
       .filter(Boolean) // Remove empty strings
       .map(item => item.trim().replace(/^[*-\s]+/, '')); // Remove leading special characters
   };
@@ -132,6 +134,35 @@ const IndividualCV = () => {
       });
     }
   };
+
+  const CustomizeModal = () => {
+    const handleSubmit = () => {
+      console.log("Submitted Job Description:", jobDescription); 
+      setJobDescription('');  
+      setShowCustomizeModal(false);  
+    };
+  
+    return (
+      <div className={styles.modalOverlay}>
+        <div className={styles.modalContent}>
+          <button className={styles.closeButton} onClick={() => setShowCustomizeModal(false)}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+          <h5>Enter Job Description</h5>
+          <textarea
+            className={styles.textArea}
+            placeholder="Paste the job description here..."
+            rows="10"
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
+          ></textarea>
+          <button onClick={handleSubmit} className={styles.submitButton}>Customize</button>
+        </div>
+      </div>
+    );
+  };
+  
+  
   
   const renderControlButtons = () => {
     const userId = localStorageUtils.getLocalUserId();
@@ -139,7 +170,7 @@ const IndividualCV = () => {
       return (
         <div className={styles.controlButtons}>
 
-          <button onClick={()=> {}} className={`${styles.button} ${styles.customizeButton}`}>
+          <button onClick={() => setShowCustomizeModal(true)} className={`${styles.button} ${styles.customizeButton}`}>
             <FontAwesomeIcon icon={faMagicWandSparkles} /> Customize
           </button>
 
@@ -185,6 +216,7 @@ const IndividualCV = () => {
           <>
             {renderControlButtons()}
             {showDeleteModal && <DeleteConfirmationModal />}
+            {showCustomizeModal && <CustomizeModal />}
 
             <div className={styles.cvContent}>
               <div className={styles.heading}>

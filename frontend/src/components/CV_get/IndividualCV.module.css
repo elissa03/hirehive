@@ -226,3 +226,60 @@
     cursor: pointer;
 }
   
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.modalContent {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: center;
+}
+  
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+  
+.closeButton:hover {
+    color: #ffde59;
+}
+  
+.textArea {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+  
+.submitButton {
+    margin-top: 20px;
+    padding: 10px 10px;
+    background-color: #ffde59; /* Bootstrap primary color for consistency */
+    color: black;
+    border: none;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.submitButton:hover {
+    background-color: #0056b3; /* Darken button on hover */
+}
+  

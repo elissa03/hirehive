@@ -16,25 +16,24 @@ const getJobApps = async (jobId, userId) => {
 const shortlistApplicant = async (jobAppId, userId, shortlisted) => {
   const response = await axios.put(
     `${API_URL}${jobAppId}`,
-    { userId, shortlisted }, 
+    { userId, shortlisted },
     {
       headers: {
         Authorization: `Bearer ${localStorageUtils.getToken()}`,
       },
     }
   );
-  return response; 
+  return response;
 };
 
 const createApplication = async (jobId, data) => {
   const response = await axios.post(`${API_URL}apply/${jobId}`, data, {
     headers: {
-      Authorization: `Bearer ${localStorageUtils.getToken()}`
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
     },
   });
-  return response
-
-}
+  return response;
+};
 
 const getJobAppDetails = async (jobAppId, userId) => {
   const response = await axios.get(`${API_URL}${jobAppId}`, {
@@ -44,7 +43,7 @@ const getJobAppDetails = async (jobAppId, userId) => {
     },
   });
   return response;
-}
+};
 
 const getMatchingApps = async (jobId, userId) => {
   const response = await axios.get(`${API_URL}getMatchingApplicants/${jobId}`, {
@@ -54,6 +53,33 @@ const getMatchingApps = async (jobId, userId) => {
     },
   });
   return response;
-}
+};
 
-export default { getJobApps, shortlistApplicant, createApplication, getJobAppDetails, getMatchingApps };
+const getMyJobApps = async (userId) => {
+  const response = await axios.get(`${API_URL}myJobApps/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+  });
+  return response;
+};
+
+const deleteJobApp = async (jobAppId, userId) => {
+  const response = axios.delete(`${API_URL}${jobAppId}`, {
+    data: { userId }, 
+    headers: {
+      Authorization: `Bearer ${localStorageUtils.getToken()}`,
+    },
+  });
+  return response;
+};
+
+export default {
+  getJobApps,
+  shortlistApplicant,
+  createApplication,
+  getJobAppDetails,
+  getMatchingApps,
+  getMyJobApps,
+  deleteJobApp
+};

@@ -6,6 +6,7 @@ import localStorageUtils from "../../utils/localStorageUtils";
 import DeleteModal from "../ConfirmDelete/DeleteModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import bee from '/images/bee.png';
 
 function Applications() {
   const [applications, setApplications] = useState([]);
@@ -86,7 +87,7 @@ function Applications() {
       <ToastContainer />
       <div className={`container mt-5 ${styles.container}`}>
         <h2 className={styles.heading}>
-          <span className={styles.beeIcon}>🐝</span> Applications
+           Applications <span className={styles.beeIcon}><img src={bee} width={'60px'} height={'70px'}/></span>
         </h2>
         <Table className={styles.table}>
           <thead className={styles.thead}>

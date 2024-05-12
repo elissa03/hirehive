@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import userService from "../../services/userService";
 import { ToastContainer, toast } from "react-toastify";
 
-// TODO: implement sign up with google
-
 function Signup() {
   const [data, setData] = useState({
     username: "",
@@ -49,14 +47,13 @@ function Signup() {
       });
 
       if (response.status === 201) {
-        // console.log("sign up success", response.data);
         toast.success("Account successfully created!", {
           position: "top-center",
           autoClose: 2000,
-          onClose: () => navigate("/"), // Redirect after the toast message
+          onClose: () => navigate("/"),
         });
         reset();
-      } 
+      }
     } catch (error) {
       if (
         error.response &&
@@ -79,15 +76,14 @@ function Signup() {
   };
 
   return (
-    <div className={`container-fluid ${styles.smallFont}`}>
+    <div className={`container-fluid ${styles.largeFont}`}>
       <div className="row">
         <div
           className={`col-md-5 ${styles.honeycombContainer} ${styles.honeycombFlip}`}
-          style={{ backgroundImage: `url(${honeycomb})` }}
+          style={{ backgroundImage: `url(${honeycomb})`, height: "100vh" }}
         ></div>
         <div className={`col-md-7 ${styles.signupContainer}`}>
           <ToastContainer />
-          {/* Sign Up form */}
           <div className={`card ${styles.cardNoBorder}`}>
             <div className={`card-body ${styles.formPadding}`}>
               <h3 className={`mb-3 ${styles.leftAlignText}`}>
@@ -100,13 +96,13 @@ function Signup() {
               <div className="mb-3">
                 <label
                   htmlFor="username"
-                  className={`form-label ${styles.smallFont}`}
+                  className={`form-label ${styles.largeFont}`}
                 >
                   Username
                 </label>
                 <input
                   type="text"
-                  className={`form-control ${styles.smallInput}`}
+                  className={`form-control ${styles.largeInput}`}
                   placeholder="Example123"
                   value={data.username}
                   onChange={(e) =>
@@ -118,13 +114,13 @@ function Signup() {
               <div className="mb-3">
                 <label
                   htmlFor="email"
-                  className={`form-label ${styles.smallFont}`}
+                  className={`form-label ${styles.largeFont}`}
                 >
                   Email
                 </label>
                 <input
                   type="email"
-                  className={`form-control ${styles.smallInput}`}
+                  className={`form-control ${styles.largeInput}`}
                   placeholder="Example@email.com"
                   value={data.email}
                   onChange={(e) => setData({ ...data, email: e.target.value })}
@@ -134,13 +130,13 @@ function Signup() {
               <div className="mb-3">
                 <label
                   htmlFor="password"
-                  className={`form-label ${styles.smallFont}`}
+                  className={`form-label ${styles.largeFont}`}
                 >
                   Password
                 </label>
                 <input
                   type="password"
-                  className={`form-control ${styles.smallInput}`}
+                  className={`form-control ${styles.largeInput}`}
                   placeholder="At least 6 characters"
                   value={data.password}
                   onChange={(e) =>
@@ -152,13 +148,13 @@ function Signup() {
               <div className="mb-3">
                 <label
                   htmlFor="confirmpassword"
-                  className={`form-label ${styles.smallFont}`}
+                  className={`form-label ${styles.largeFont}`}
                 >
                   Confirm Password
                 </label>
                 <input
                   type="password"
-                  className={`form-control ${styles.smallInput}`}
+                  className={`form-control ${styles.largeInput}`}
                   placeholder="At least 6 characters"
                   value={data.confirm_password}
                   onChange={(e) =>
@@ -170,45 +166,10 @@ function Signup() {
               {error && <div className={styles.error_msg}>{error}</div>}
               <button
                 type="submit"
-                className={`btn w-100 mb-3 ${styles.signInButton} ${styles.smallButton}`}
+                className={`btn w-100 mb-3 ${styles.signInButton} ${styles.largeButton}`}
                 onClick={handleSignup}
               >
-                Sign In
-              </button>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0px 0 20px 0",
-                }}
-              >
-                <div
-                  style={{
-                    borderBottom: "1px solid #CFDFE2",
-                    flexGrow: 1,
-                    marginRight: "10px",
-                  }}
-                ></div>
-                <span style={{ padding: "0 10px", color: "#294957" }}>Or</span>
-                <div
-                  style={{
-                    borderBottom: "1px solid #CFDFE2",
-                    flexGrow: 1,
-                    marginLeft: "10px",
-                  }}
-                ></div>
-              </div>
-              <button
-                type="button"
-                className={`btn btn-light border w-100 mb-3 ${styles.smallButton}`}
-              >
-                <img
-                  src={googleIcon}
-                  alt="Google sign-in"
-                  className={`me-2 ${styles.google}`}
-                />
-                Sign up with Google
+                Sign Up
               </button>
               <div className="text-center">
                 <span>Already have an account? </span>

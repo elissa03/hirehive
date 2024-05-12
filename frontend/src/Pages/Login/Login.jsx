@@ -9,9 +9,6 @@ import authService from "../../services/authService";
 import localStorageUtils from "../../utils/localStorageUtils";
 import { useNavigate } from "react-router-dom";
 
-
-// TODO: implement sign in with google
-
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,34 +20,28 @@ function Login({ onLogin }) {
   const handleLogin = async () => {
     setError("");
     try {
-      // check if both fields are filled
       if (!email || !password) {
         setError("Email and Password are required.");
-        return; // stop the function if validation fails
+        return;
       }
 
-      // check if the email follows the correct format
       if (!emailRegex.test(email)) {
         setError("Please enter a valid email address.");
-        return; // stop the function if validation fails
+        return;
       }
 
       const response = await authService.login(email, password);
-      console.log("login res", response);
 
       if (response.status === 200) {
         let authenticatedUser = response.data.user;
         authenticatedUser.token = response.data.token;
-        //console.log(authenticatedUser);
         localStorageUtils.setLocalStorageUser(authenticatedUser);
-        console.log("Preparing to show success toast");
         toast.success("Logged in successfully", {
           position: "top-center",
-          autoClose: 2000, // display for 2 seconds
+          autoClose: 2000,
           onClose: () => {
-            // ensure onLogin and navigation occur after the toast
             onLogin();
-            reset(); //clear the form fields
+            reset();
             navigate("/dashboard");
           },
         });
@@ -73,10 +64,9 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className={`container-fluid ${styles.smallFont}`}>
+    <div className={`container-fluid ${styles.largeFont}`}>
       <div className="row">
         <div className={`col-md-7 ${styles.loginContainer}`}>
-          {/* Login form */}
           <ToastContainer />
           <div className={`card ${styles.cardNoBorder}`}>
             <div className={`card-body ${styles.formPadding}`}>
@@ -90,13 +80,13 @@ function Login({ onLogin }) {
               <div className="mb-3">
                 <label
                   htmlFor="email"
-                  className={`form-label ${styles.smallFont}`}
+                  className={`form-label ${styles.largeFont}`}
                 >
                   Email
                 </label>
                 <input
                   type="email"
-                  className={`form-control ${styles.smallInput}`}
+                  className={`form-control ${styles.largeInput}`}
                   placeholder="Example@email.com"
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
@@ -106,24 +96,23 @@ function Login({ onLogin }) {
               <div className="mb-3">
                 <label
                   htmlFor="password"
-                  className={`form-label ${styles.smallFont}`}
+                  className={`form-label ${styles.largeFont}`}
                 >
                   Password
                 </label>
                 <input
                   type="password"
-                  className={`form-control ${styles.smallInput}`}
+                  className={`form-control ${styles.largeInput}`}
                   placeholder="At least 6 characters"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   required
-                  // minLength="8"
                 />
               </div>
               <div className="d-flex justify-content-between mb-4">
                 <a
                   href="/forgotpass"
-                  className={`text-decoration-none  ${styles.forgotPasswordButton}`}
+                  className={`text-decoration-none ${styles.forgotPasswordButton}`}
                 >
                   Forgot Password?
                 </a>
@@ -131,45 +120,10 @@ function Login({ onLogin }) {
               {error && <div className={styles.error_msg}>{error}</div>}
               <button
                 type="submit"
-                className={`btn w-100 mb-3 ${styles.signInButton} ${styles.smallButton}`}
+                className={`btn w-100 mb-3 ${styles.signInButton} ${styles.largeButton}`}
                 onClick={handleLogin}
               >
                 Sign In
-              </button>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0px 0 20px 0",
-                }}
-              >
-                <div
-                  style={{
-                    borderBottom: "1px solid #CFDFE2",
-                    flexGrow: 1,
-                    marginRight: "10px",
-                  }}
-                ></div>
-                <span style={{ padding: "0 10px", color: "#294957" }}>Or</span>
-                <div
-                  style={{
-                    borderBottom: "1px solid #CFDFE2",
-                    flexGrow: 1,
-                    marginLeft: "10px",
-                  }}
-                ></div>
-              </div>
-              <button
-                type="button"
-                className={`btn btn-light border w-100 mb-3 ${styles.smallButton}`}
-              >
-                <img
-                  src={googleIcon}
-                  alt="Google sign-in"
-                  className={`me-2 ${styles.google}`}
-                />
-                Sign in with Google
               </button>
               <div className="text-center">
                 <span>Don't have an account? </span>
@@ -189,7 +143,7 @@ function Login({ onLogin }) {
         </div>
         <div
           className={`col-md-5 ${styles.honeycombContainer}`}
-          style={{ backgroundImage: `url(${honeycomb})` }}
+          style={{ backgroundImage: `url(${honeycomb})`, height: "100vh" }}
         ></div>
       </div>
     </div>

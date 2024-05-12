@@ -36,7 +36,6 @@ function JobCards({ initialJobsData }) {
   const [selectedApplicantsJobId, setSelectedApplicantsJobId] = useState(null);
   const menuRef = useRef(null);
 
-
   const openDeleteModal = (jobId) => {
     setJobToDelete(jobId);
     setShowDeleteModal(true);
@@ -59,7 +58,7 @@ function JobCards({ initialJobsData }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []); 
+  }, []);
 
   return (
     <>
@@ -76,6 +75,7 @@ function JobCards({ initialJobsData }) {
                     handleChange(e, "title", editedJob, setEditedJob)
                   }
                   className={styles.editInput}
+                  placeholder="Job Title"
                 />
               ) : (
                 <h3>{job.title}</h3>
@@ -90,7 +90,7 @@ function JobCards({ initialJobsData }) {
                 {activeMenuJobId === job._id && (
                   <div ref={menuRef} className={styles.cardMenu}>
                     <button onClick={() => setSelectedApplicantsJobId(job._id)}>
-                      Check Applicants
+                      View Applicants
                     </button>
                     <button
                       onClick={() =>
@@ -120,6 +120,8 @@ function JobCards({ initialJobsData }) {
                   onChange={(e) =>
                     handleChange(e, "description", editedJob, setEditedJob)
                   }
+                  placeholder="Job Description"
+                  className={styles.textarea}
                 />
                 {editedJob.requirements.map((requirement, index) => (
                   <div key={index} className={styles.requirementField}>
@@ -135,6 +137,7 @@ function JobCards({ initialJobsData }) {
                           setEditedJob
                         )
                       }
+                      placeholder="Requirement"
                     />
                     <button
                       className={`${styles.button} ${styles.minusButton}`}
@@ -274,6 +277,3 @@ function JobCards({ initialJobsData }) {
 }
 
 export default JobCards;
-
-
-// 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

@@ -57,7 +57,7 @@
 }
 
 .error_msg {
-  width: 450px;
+  width: 470px;
   padding: 15px;
   margin: 5px 0;
   font-size: 14px;
@@ -65,4 +65,18 @@
   color: white;
   border-radius: 5px;
   text-align: center;
+}
+
+.largeFont {
+  font-size: 1rem !important;
+}
+
+.largeButton {
+  padding: 10px 20px !important;
+  font-size: 1rem !important;
+}
+
+.largeInput {
+  padding: 10px !important;
+  font-size: 1rem !important;
 }

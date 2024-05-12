@@ -1,0 +1,32 @@
+/* MainDash.module.css */
+
+.section {
+  margin-bottom: 20px;
+}
+
+.statistics {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statistic {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #000; /* Black border */
+  border-radius: 10px;
+  flex: 1;
+  margin-right: 20px;
+  background-color: #fbf07de1; /* Yellow background */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+.statistic:last-child {
+  margin-right: 0;
+}
+
+.info {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 10px;
+}

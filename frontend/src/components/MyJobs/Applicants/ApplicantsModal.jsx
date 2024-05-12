@@ -23,22 +23,43 @@ function ApplicantsModal({ jobId, onClose }) {
   const user = localStorageUtils.getLocalStorageUser();
   const userId = user._id;
 
+  
   useEffect(() => {
     const fetchApplicants = async () => {
-      try {
-        const response = await jobAppService.getJobApps(jobId, userId);
-        console.log("im here", response);
-        setApplicants(response.data);
+      try { 
+
+        const matchingResponse = await jobAppService.getMatchingApps(
+          jobId,
+          userId
+        );
+       
+        console.log('matchingResponse ', matchingResponse)
+
+        const applicantsWithMatching = matchingResponse.data.map(applicantInfo => {
+          console.log('app info ', applicantInfo);
+            const match = applicantInfo.matchingPercentage;
+            const applicant = applicantInfo.applicant;
+            return {
+              ...applicant,
+              matchingPercentage: match ? match : 'N/A'
+            }
+        })
+ 
+        console.log(applicantsWithMatching)
+        setApplicants(applicantsWithMatching);
+
       } catch (error) {
         console.error("Error fetching job applicants:", error);
       }
     };
+
     if (jobId && userId) {
       fetchApplicants();
     }
 
     
   }, [jobId, userId]);
+
 
   const handleGenerateQuestions = async (applicant) => {
     const cvResponse = await cvService.getCv(applicant.cvId, userId);
@@ -150,15 +171,17 @@ function ApplicantsModal({ jobId, onClose }) {
                 <td>
                   {new Date(applicant.submissionDate).toLocaleDateString()}
                 </td>
-                <td>95%</td>
+                <td>
+                  {applicant.matchingPercentage
+                    ? `${applicant.matchingPercentage}%`
+                    : "N/A"}
+                </td>
                 <td>
                   <button
                     className={styles.showQuestionsButton}
                     onClick={() => handleToggleQuestions(applicant)}
                   >
-                    {showQuestions && selectedApplicant === applicant
-                      ? "Hide Questions"
-                      : "Show Questions"}
+                    Generate
                   </button>
                 </td>
                 <td>

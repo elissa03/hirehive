@@ -65,9 +65,9 @@ const customizeCv = async (cvData, jobDescription) => {
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
-        model: "text-davinci-003",
+        model: "gpt-3.5-turbo",
         messages: apiMessages,
-        max_tokens: 250,
+        max_tokens: 500,
       },
       {
         headers: {

@@ -9,6 +9,7 @@ import cvService from '../../services/cvService';
 import localStorageUtils from '../../utils/localStorageUtils';
 import cvFormUtils from '../CV_form/cvFormUtils'; 
 import { ToastContainer, toast } from "react-toastify";
+import openAiService from '../../services/openAiService';
 
 const IndividualCV = () => {
   const navigate = useNavigate();   
@@ -85,7 +86,8 @@ const IndividualCV = () => {
     return (
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
-          <span>Are you sure you want to delete this CV?</span>
+          <span>Are you sure you want to delete this CV?</span><br></br>
+          {/* <span font-size='12px'>( This CV was used in {cvData.jobApps.length} application(s))</span> */}
           <div className={styles.modalButtons}>
             <button onClick={handleDelete} className={styles.confirmButton}>Confirm</button>
             <button onClick={() => setShowDeleteModal(false)} className={styles.cancelButton}>Cancel</button>
@@ -136,7 +138,87 @@ const IndividualCV = () => {
   };
 
   const CustomizeModal = () => {
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+      try {
+
+        const userId = localStorageUtils.getLocalUserId();
+
+        if (!userId) {
+          toast.error("You can't customize the CV, try logging in again.", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+
+          return;
+        }
+
+        if (!jobDescription || (cvData.experience.length === 0 && cvData.education.length === 0)) {
+          toast.error("You can't customize an empty CV!", {
+            position: "top-right",
+            autoClose: 2000,
+          });
+          return;
+        }
+
+        const data_to_customize = {'experience': cvData.experience, 'education': cvData.education, 
+                                   'skills': cvData.skills, 'projects': cvData.projects} 
+
+        toast.success('Customized CV successfully!', {
+          position: "top-right",
+          autoClose: 2000, 
+        });
+
+        console.log(data_to_customize);
+
+        const response = await openAiService.customizeCv(data_to_customize, jobDescription)
+
+        console.log(response)
+        const new_data = JSON.parse(response);
+
+        try {
+          const updateData = {userId: userId, newData: new_data};
+
+          const updateResponse = await cvService.updateCv(cvId, updateData);
+
+          if(updateResponse.status === 200) {
+            toast.success("CV updated successfully", {
+              position: "top-right",
+              autoClose: 2000, 
+            });
+    
+            setJobDescription('');  
+            setShowCustomizeModal(false); 
+      
+            setTimeout(() => {
+              window.location.reload()
+            }, 2000);
+    
+          }
+          else {
+            toast.error('An error occurred', {
+              position: "top-right",
+              autoClose: 2000,
+            });
+          }
+        }
+        catch (error) {
+
+          toast.error('Error updating CV!', {
+            position: "top-right",
+            autoClose: 2000, 
+          }
+          )
+
+        }
+        
+
+      } catch(error) {
+        toast.error('Error customizing CV!', {
+          position: "top-right",
+          autoClose: 2000, 
+        }
+        )
+      }
       console.log("Submitted Job Description:", jobDescription); 
       setJobDescription('');  
       setShowCustomizeModal(false);  
@@ -154,8 +236,9 @@ const IndividualCV = () => {
             placeholder="Paste the job description here..."
             rows="10"
             value={jobDescription}
+            // onBlur={(e) => setJobDescription(e.target.value)}
             onChange={(e) => setJobDescription(e.target.value)}
-          ></textarea>
+          ></textarea> 
           <button onClick={handleSubmit} className={styles.submitButton}>Customize</button>
         </div>
       </div>

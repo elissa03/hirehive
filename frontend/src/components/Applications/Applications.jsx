@@ -14,6 +14,7 @@ function Applications() {
   const [currentAppId, setCurrentAppId] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);
   const [currentApp, setCurrentApp] = useState(null);
+   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchJobApplications() {
@@ -26,7 +27,7 @@ function Applications() {
             submissionDate: formatDate(app.submissionDate),
           }));
           setApplications(formattedApps);
-          console.log(applications)
+          console.log(applications);
         } else {
           console.error(
             "Failed to fetch job applications:",
@@ -35,6 +36,8 @@ function Applications() {
         }
       } catch (error) {
         console.error("Error fetching job applications:", error);
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
       }
     }
     fetchJobApplications();
@@ -85,98 +88,105 @@ function Applications() {
   return (
     <>
       <ToastContainer />
-      <div className={`container mt-5 ${styles.container}`}>
-        <h2 className={styles.heading}>
-           Applications <span className={styles.beeIcon}><img src={bee} width={'60px'} height={'70px'}/></span>
-        </h2>
-        <Table className={styles.table}>
-          <thead className={styles.thead}>
-            <tr>
-              <th>Job Title</th>
-              <th>Hirer Name</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>View</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody className={styles.tbody}>
-            {applications.map((app, index) => (
-              <tr key={index} className={styles.row}>
-                <td>{app.jobId.title}</td>
-                <td>{`${app.jobId.postedBy.username}`}</td>
-                <td>{app.status}</td>
-                <td>{app.submissionDate}</td>
-                <td>
-                  <Button
-                    variant="outline-warning"
-                    className={styles.btnView}
-                    onClick={() => openViewModal(app)}
-                  >
-                    View
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    variant="outline-danger"
-                    className={styles.btnDelete}
-                    onClick={() => openDeleteModal(app._id)}
-                  >
-                    Delete
-                  </Button>
-                </td>
+      {loading ? (
+        <div className="loader">Loading...</div>
+      ) : (
+        <div className={`container mt-5 ${styles.container}`}>
+          <h2 className={styles.heading}>
+            Applications{" "}
+            <span className={styles.beeIcon}>
+              <img src={bee} width={"60px"} height={"70px"} />
+            </span>
+          </h2>
+          <Table className={styles.table}>
+            <thead className={styles.thead}>
+              <tr>
+                <th>Job Title</th>
+                <th>Hirer Name</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>View</th>
+                <th>Delete</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-        <DeleteModal
-          isOpen={showDeleteModal}
-          onCancel={closeDeleteModal}
-          onConfirm={handleDelete}
-        />
-        <Modal
-          show={showViewModal}
-          onHide={closeViewModal}
-          centered
-          className={styles.viewModal}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Application Details</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {currentApp && (
-              <div>
-                <p>
-                  <strong>Job Title:</strong> {currentApp.jobId.title}
-                </p>
-                <p>
-                  <strong>Job Description:</strong>{" "}
-                  {currentApp.jobId.description}
-                </p>
-                <p>
-                  <strong>Hirer Name:</strong>{" "}
-                  {currentApp.jobId.postedBy.username}
-                </p>
-                <p>
-                  <strong>Status:</strong>{" "}
-                  {currentApp.status}
-                </p>
-                <p>
-                  <strong>Shortlisted:</strong>{" "}
-                  {currentApp.shortlisted ? "Yes" : "No"}
-                </p>
-                <p>
-                  <strong>Cover Letter:</strong> {currentApp.coverLetter}
-                </p>
-                <a href={`/get-cv/${currentApp.cvId._id}`}>View CV</a>
-                <p>
-                  <strong>Submission Date:</strong> {currentApp.submissionDate}
-                </p>
-              </div>
-            )}
-          </Modal.Body>
-        </Modal>
-      </div>
+            </thead>
+            <tbody className={styles.tbody}>
+              {applications.map((app, index) => (
+                <tr key={index} className={styles.row}>
+                  <td>{app.jobId.title}</td>
+                  <td>{`${app.jobId.postedBy.username}`}</td>
+                  <td>{app.status}</td>
+                  <td>{app.submissionDate}</td>
+                  <td>
+                    <Button
+                      variant="outline-warning"
+                      className={styles.btnView}
+                      onClick={() => openViewModal(app)}
+                    >
+                      View
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      variant="outline-danger"
+                      className={styles.btnDelete}
+                      onClick={() => openDeleteModal(app._id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <DeleteModal
+            isOpen={showDeleteModal}
+            onCancel={closeDeleteModal}
+            onConfirm={handleDelete}
+          />
+          <Modal
+            show={showViewModal}
+            onHide={closeViewModal}
+            centered
+            className={styles.viewModal}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Application Details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {currentApp && (
+                <div>
+                  <p>
+                    <strong>Job Title:</strong> {currentApp.jobId.title}
+                  </p>
+                  <p>
+                    <strong>Job Description:</strong>{" "}
+                    {currentApp.jobId.description}
+                  </p>
+                  <p>
+                    <strong>Hirer Name:</strong>{" "}
+                    {currentApp.jobId.postedBy.username}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {currentApp.status}
+                  </p>
+                  <p>
+                    <strong>Shortlisted:</strong>{" "}
+                    {currentApp.shortlisted ? "Yes" : "No"}
+                  </p>
+                  <p>
+                    <strong>Cover Letter:</strong> {currentApp.coverLetter}
+                  </p>
+                  <a href={`/get-cv/${currentApp.cvId._id}`}>View CV</a>
+                  <p>
+                    <strong>Submission Date:</strong>{" "}
+                    {currentApp.submissionDate}
+                  </p>
+                </div>
+              )}
+            </Modal.Body>
+          </Modal>
+        </div>
+      )}
     </>
   );
 }

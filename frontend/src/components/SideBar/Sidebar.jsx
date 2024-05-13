@@ -17,7 +17,7 @@ import logo from "../../../public/images/plain-logo.png";
 
 function Sidebar({ handleLogout, setActiveComponent }) {
   // Initialize state from localStorage if available
-  const [active, setActive] = useState(localStorage.getItem("activeComponent") || "dashboard");
+  const [active, setActive] = useState(localStorage.getItem("activeComponent") || "cvs");
   const [jobsDropdownOpen, setJobsDropdownOpen] = useState(false);
 
   // Effect to update the parent component's active component state

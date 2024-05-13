@@ -187,7 +187,7 @@ const deleteCv = async (cvId, data) => {
       };
     }
 
-    await CV.deleteOne({ _id: cvId });
+    // await CV.deleteOne({ _id: cvId });
 
     await User.updateOne({ _id: user._id }, { $pull: { cvIds: cvId } });
 

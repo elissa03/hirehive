@@ -17,7 +17,7 @@ const SOFT_SKILLS = [
   "Resourcefulness", "Strategic thinking", "Goal setting", "Self-awareness", "Gratitude", "Vision",
   "Enthusiasm", "Diplomacy", "Risk management", "Writing skills", "Decision analysis", "Follow-up",
   "Non-verbal communication", "Assertiveness", "Relationship building", "Respect", "Humor",
-  "Conflict prevention", "Self-care", "Grit"
+  "Conflict prevention", "Self-care", "Grit", "NodeJS", "NestJS", "NextJS"
 ];
 
 

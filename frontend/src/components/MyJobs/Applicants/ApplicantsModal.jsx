@@ -44,7 +44,7 @@ function ApplicantsModal({ jobId, onClose }) {
             const applicant = applicantInfo.applicant;
             return {
               ...applicant,
-              matchingPercentage: match ? match : 'N/A'
+              matchingPercentage: match ? match : "0" 
             }
         })
  
@@ -174,7 +174,7 @@ function ApplicantsModal({ jobId, onClose }) {
                             />
                         </td>
                         <td>{new Date(applicant.submissionDate).toLocaleDateString()}</td>
-                        <td>{applicant.matchingPercentage ? `${applicant.matchingPercentage}%` : "N/A"}</td>
+                        <td>{applicant.matchingPercentage ? `${applicant.matchingPercentage}%` : "0%" }</td>
                         <td>
                             <button
                                 className={styles.showQuestionsButton}

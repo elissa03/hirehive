@@ -61,12 +61,12 @@ async function findTopMatchingApplicants(job, applicants, threshold=10) {
 
         const matchingPercentage = Math.round(calculateMatchingPercentage(job.requirements, cv.skills));
         
-        if (matchingPercentage >= threshold) {
+        // if (matchingPercentage >= threshold) {
 
-            var applicantEntry = { 'applicant': applicant, 'matchingPercentage': matchingPercentage };
+        var applicantEntry = { 'applicant': applicant, 'matchingPercentage': matchingPercentage };
 
-            matchingApplicants.push(applicantEntry);
-        }
+        matchingApplicants.push(applicantEntry);
+        // }
 
     }
 

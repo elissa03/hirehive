@@ -44,6 +44,48 @@ const generateInterviewQuestions = async (
   }
 };
 
+
+const customizeCv = async (cvData, jobDescription) => {
+  const apiMessages = [
+    {
+      role: "system",
+      content:
+        "You are an AI tasked with customizing a CV based on a job description.",
+    },
+    {
+      role: "user",
+      content: `Customize the CV data based on the job description provided. The CV data to customize is: ${JSON.stringify(cvData)}. 
+                The job description is: ${jobDescription}. Give me the education and experience objects exactly like you received them,
+                only fix the description in every object in each array making it better language and more thorough and detailed, end each
+                 sentence by a period '.', answer in a professional tone. Only provide the customized output without introductory sentences.`,
+    },
+  ];
+
+  try {
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        model: "text-davinci-003",
+        messages: apiMessages,
+        max_tokens: 250,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${API_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    // Extract and return the customized output from the response
+    return response.data.choices[0].message.content.trim();
+  } catch (error) {
+    console.error("Error customizing CV based on job description:", error);
+    return null;
+  }
+};
+ 
 export default {
   generateInterviewQuestions,
+  customizeCv 
 };

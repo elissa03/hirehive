@@ -60,10 +60,10 @@ function UpdateCV() {
             title: data.title,
             firstName: data.firstName,
             lastName: data.lastName,
-            phoneNumber: data.phoneNumber,
-            linkedin: data.linkedin,
-            github: data.github,
-            address: data.address,
+            phoneNumber: data.phoneNumber || '',
+            linkedin: data.linkedin || '',
+            github: data.github || '',
+            address: data.address || '',
             email: data.email,
             education: data.education || [],
             experience: data.experience || [],
@@ -248,6 +248,7 @@ function UpdateCV() {
     trimmedFormData['experience'] = experiences;
     trimmedFormData['skills'] = skills;
     trimmedFormData['languages'] = languages;
+    trimmedFormData['projects'] = projects;
     
     const updateData = {userId: localStorageUtils.getLocalUserId(), newData: trimmedFormData};
     submitCv(updateData);

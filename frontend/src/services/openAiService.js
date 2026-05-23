@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "sk-proj-VMsNahZ1XqzJPWyVvu5jT3BlbkFJVkCX8F3zquyodSdF9YMU";
+const API_KEY = "api_key";
 
 const generateInterviewQuestions = async (
   applicantData,
